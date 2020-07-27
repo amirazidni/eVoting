@@ -38,7 +38,7 @@
       
       <li class="nav-item">
         <div class="info">
-           <a href="#" class="d-block"> <i class="fa fa-user"></i> Log out</a>
+        <a href="../logout.php" class="d-block"> <i class="fa fa-power-off"></i> Log out</a>
         </div>
         
         <!-- <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
@@ -112,7 +112,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="../logout.php" class="nav-link">
               <i class="nav-icon fas fa-power-off"></i>
               <p>
                 Logout
