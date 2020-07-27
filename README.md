@@ -17,6 +17,7 @@ Struktur folder/file project
 	- login.php (log in admin)
 	- logout.php (log out admin)
 	- koneksi.php (koneksi DB) //belum dibuat
+
 (bawaan template)
 - \build
 - \dist
