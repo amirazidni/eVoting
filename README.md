@@ -15,7 +15,7 @@ Struktur folder/file project
 		- admin.php (edit password admin, halaman edit admin)
 		- rekapitulasi.php (halaman statistik pemilihan)
 	- login.php (log in admin)
-	- logout.php (log out admin) //belum dibuat
+	- logout.php (log out admin)
 	- koneksi.php (koneksi DB) //belum dibuat
 (bawaan template)
 - \build
