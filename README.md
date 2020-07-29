@@ -4,6 +4,7 @@
 
 Struktur folder/file project
 - index.php (halaman utama)
+- \api (tempat API)
 - \content (halaman client)
 	- index.php (login pemilih)
 	- pemilihan.php (halaman pemilihan)
