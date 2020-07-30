@@ -8,44 +8,47 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
   
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/product.php';
+include_once '../objects/pilihan.php';
+include_once '../objects/calon.php';
   
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
   
-// prepare product object
-$product = new Product($db);
+// prepare object
+$pilihan = new Pilihan($db);
+
+$calon = new Calon($db);
   
 // get id of product to be edited
 $data = json_decode(file_get_contents("php://input"));
   
 // set ID property of product to be edited
-$product->id = $data->id;
-  
+$pilihan->nomor_urut = $data->nomor_urut;
+$pilihan->nim = $data->nim;
+$calon->nomor_urut = $data->nomor_urut;
+$calon->vote = $data->vote;
+    # nim, nomor_urut insert ke tabel pilihan
+    # vote update ke tabel calon
 // set product property values
-$product->name = $data->name;
-$product->price = $data->price;
-$product->description = $data->description;
-$product->category_id = $data->category_id;
+
+
   
 // update the product
-if($product->update()){
-  
+if($calon->update()){
+    if($pilihan->insert()){
     // set response code - 200 ok
     http_response_code(200);
   
     // tell the user
-    echo json_encode(array("message" => "Product was updated."));
-}
-  
-// if unable to update the product, tell the user
-else{
-  
-    // set response code - 503 service unavailable
-    http_response_code(503);
-  
-    // tell the user
-    echo json_encode(array("message" => "Unable to update product."));
+    echo json_encode(array("message" => "Success updated."));
+    } else{
+    
+        // set response code - 503 service unavailable
+        http_response_code(503);
+    
+        // tell the user
+        echo json_encode(array("message" => "Failed."));
+    }
 }
 ?>
