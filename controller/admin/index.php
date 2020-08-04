@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+<?php
+    include "../../api/config/database.php";
+    include "../cek-admin.php";
+?>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Sistem Pemilihan Online</title>
@@ -26,6 +30,9 @@
   <link rel="stylesheet" href="../../plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- jQuery -->
+  <script src="../../plugins/jquery/jquery.js"></script>
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -69,7 +76,7 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
+      
       
 
       <!-- Sidebar Menu -->
@@ -151,6 +158,7 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
+    
     <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
@@ -159,8 +167,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
-
+                  <h3><div id="pemilih"></div></h3>
                 <p>Jumlah Pemilih</p>
               </div>
               <div class="icon">
@@ -176,7 +183,7 @@
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>53</h3>
+                <h3><div id="calon"></div></h3>
                 <p>Jumlah Calon</p>
               </div>
               <div class="icon">
@@ -190,7 +197,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>44</h3>
+                <h3><div id="suara_masuk"></div></h3>
 
                 <p>Suara Masuk</p>
               </div>
@@ -205,7 +212,7 @@
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>65</h3>
+                <h3><div id="sisa"></div></h3>
 
                 <p>Suara Belum Digunakan</p>
               </div>
@@ -217,6 +224,7 @@
           </div>
           <!-- ./col -->
         </div>
+        <!-- </div> ./load latest -->
         <!-- /.row -->
         <!-- Main row -->
         <div class="row">
@@ -239,6 +247,7 @@
                 <canvas id="pieChart" style="min-height: 250px; height: 250px;  max-width: 100%;"></canvas>
               </div>
               <!-- /.card-body -->
+              <h4></h4>
             </div>
             <!-- /.PIE card -->
             
@@ -246,10 +255,23 @@
           <!-- /.Left col -->
           <!-- right col (We are only adding the ID to make the widgets sortable)-->
           <section class="col-lg-5 connectedSortable">
-
-            
-           
-            
+          <!-- <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fa fa-cog fa-spin fa-fw"></i>
+                  Live Statistik Suara Masuk
+                </h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
+                  
+                </div>
+              </div>
+              <div class="card-body ">
+              <canvas id="chartContainer" style="height: 300px; width: 100%;"></canvas>
+              </div>
+              /.card-body 
+            </div> -->
+          
 
             
           </section>
@@ -258,7 +280,9 @@
         <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
     </section>
-    <!-- /.content -->
+        
+    <!-- /Main content -->    
+        
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
@@ -279,6 +303,7 @@
 
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>
+
 <!-- jQuery UI 1.11.4 -->
 <script src="../../plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -287,6 +312,7 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 <!-- ChartJS -->
 <script src="../../plugins/chart.js/Chart.min.js"></script>
 <!-- Sparkline -->
@@ -311,43 +337,66 @@
 <script src="../../dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
+
+
+
+
 </body>
 </html>
-<script>
-  $(function () {
-    /* ChartJS
-     * -------
-     * Here we will create a few charts using ChartJS
-     */    
-    //-------------
-    //- PIE CHART -
-    //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    var pieData        = {
-      labels: [
-          'Suara Masuk', 
-          'Suara Belum Digunakan', 
-      ],
-      datasets: [
-        {
-          data: [75,55],
-          backgroundColor : ['#00a65a', '#eeeeee'],
-        }
-      ]
+<!-- CUSTOM DATA VIEW REALTIME -->
+<script type="text/javascript">
+    var pemilih = document.getElementById('pemilih');
+    var calon = document.getElementById('calon');
+    var pilihan = document.getElementById('suara_masuk');
+    var sisa = document.getElementById('sisa');
+    $(document).ready(function() {
+        selesai();
+        updatePie();
+    });
+    
+    function selesai() {
+      setTimeout(function() {
+        update();
+        selesai();
+      }, 200);
+    };
+    
+    function update() {
+      $.getJSON("tampil.php", function(data) {
+            pemilih.innerHTML = data.pemilih;
+            calon.innerHTML = data.calon;
+            pilihan.innerHTML = data.pilihan;
+            sisa.innerHTML = data.sisa;
+            
+      });
+    };
+    function updatePie() {
+      setTimeout(function() {
+        pieConfig.data.datasets[0].data[0] = pilihan.innerHTML; //suara masuk 
+        pieConfig.data.datasets[0].data[1] = sisa.innerHTML; //suara sisa       
+        window.myPie.update();
+        updatePie();
+      }, 2000);
     }
-    var pieOptions     = {
-      maintainAspectRatio : false,
-      responsive : true,
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    var pieChart = new Chart(pieChartCanvas, {
-      type: 'pie',
-      data: pieData,
-      options: pieOptions      
-    })
+    
 
-  
-  })
+    /* ChartJS */
+    var pieConfig        = {
+      type: 'pie',
+      data: {
+				datasets: [{
+					data: [ 0, 0 ],
+					backgroundColor : ['#00a65a', '#ffc107'],
+				}],
+				labels: [ 'Suara Masuk', 'Suara Belum Digunakan'],
+      },
+      options :{
+        maintainAspectRatio : false,
+        responsive : true,
+      }
+    };
+    window.onload = function() {
+			var ctx = document.getElementById('pieChart').getContext('2d');
+			window.myPie = new Chart(ctx, pieConfig);
+		};  
 </script>

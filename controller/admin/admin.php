@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+<?php
+    include "../../api/config/database.php";
+    include "../cek-admin.php";
+?>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Sistem Pemilihan Online</title>
@@ -160,16 +164,20 @@
             <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title">Ganti Password</h3>
+                
               </div>
               <div class="card-body">
-                <form role="form" action="/editpassword" method="post" oninput='p2.setCustomValidity(p2.value != p1.value ? "Password Tidak Sama!" : "")'>
+              <?php
+                  include "edit-password.php";
+                ?>
+                <form role="form" action="" method="post" oninput='p2.setCustomValidity(p2.value != p1.value ? "Password Tidak Sama!" : "")'>
                     <div class="form-group">
                       <label for="PasswordLama">Password Lama</label>
-                      <input type="password" class="form-control" id="PasswordLama" placeholder="Password Lama" required>
+                      <input type="password" name="passLama" class="form-control" id="PasswordLama" placeholder="Password Lama" required>
                     </div>
                     <div class="form-group">
                       <label for="PasswordBaru">Password Baru</label>
-                      <input type="password" class="form-control" id="PasswordBaru" name="p1" placeholder="Password Baru">
+                      <input type="password" name="passBaru" class="form-control" id="PasswordBaru" name="p1" placeholder="Password Baru">
                     </div>
                     <div class="form-group">
                       <label for="KonfirmasiPassword">Konfirmasi Password Baru</label>

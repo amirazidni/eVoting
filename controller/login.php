@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<?php
+    session_start();
+    include "../api/config/database.php";
+?>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Log in</title>
+  <title>eVoting | Log in</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -20,16 +24,18 @@
     <a href="#"><b>LOGIN ADMIN</b></a>
   </div>
 
-
+  <?php
+    include "loginadmin.php";
+?>
 
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Masukan Username dan Password</p>
 
-      <form action="admin/" method="post"> <!-- direct link -->
+      <form action="" method="post"> <!-- direct link -->
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Username">
+          <input type="text" class="form-control" placeholder="Username" name="user" autofocus required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -37,7 +43,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" placeholder="Password" name="pass" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>

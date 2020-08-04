@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -33,7 +34,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item">
-        <h2 class="text-dark">Data Pemilih</h2>
+        <h2 class="text-dark">Data Calon | Edit</h2>
       </li>
     </ul>
 
@@ -82,7 +83,7 @@
             </li>
           
           <li class="nav-item">
-            <a href="data-pemilih.php" class="nav-link active">
+            <a href="data-pemilih.php" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Data Pemilih
@@ -91,7 +92,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="data-calon.php" class="nav-link">
+            <a href="data-calon.php" class="nav-link active">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                 Data Calon
@@ -140,115 +141,107 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
-    <?php
-    if(isset($_REQUEST['command'])) {
-      
-      if($_REQUEST['command']=='unlock' && isset($_REQUEST['nim'])){
-        $nim = $_REQUEST['nim'];
-        @mysqli_query($kon, "UPDATE pemilih set status ='1' where nim = '$nim'");
-      } elseif($_REQUEST['command']=='lock' && isset($_REQUEST['nim'])){
-        $nim = $_REQUEST['nim'];
-        @mysqli_query($kon, "UPDATE pemilih set status ='0' where nim = '$nim'");
-      }
-    }
-    ?>
-    <script type="text/javascript">
-    function unlock(nim){
-      if(confirm('Ini akan membuka kunci suara pemilih. Sudah yakin?')){
-        document.form1.command.value='unlock';
-        document.form1.nim.value=nim;
-        document.form1.submit();
-      }
-    }
-    function lock(nim){
-      if(confirm('Ini akan mengunci suara pemilih. Sudah yakin?')){
-        document.form1.command.value='lock';
-        document.form1.nim.value=nim;
-        document.form1.submit();
-      }
-    }
-  </script>
+
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <div class="col-6"></div>
-              <div class="col-4">
-              <form action="import-pemilih.php" method="post" enctype="multipart/form-data">
-                <div class="input-group">
-                  <div class="custom-file">
-                    <input type="file" name="file" class="custom-file-input" id="exampleInputFile">
-                    <label class="custom-file-label" for="exampleInputFile">Import Data Pemilih</label>
-                  </div>
-                  <div class="input-group-append">
-                    <button type="submit" class="btn btn-info"><i class="fa fa-upload"></i></button>
-                    <button type="button" onClick="location.href='../../dist/import/formulir.xls';" class="btn btn-danger"><i class="fa fa-download"></i></button>
-                  </div>
-                  
-                </div>
-                </form>
-              </div>
+              <div class="col-10"></div>
               <div class="col-2">
-                <h3><button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#tambah-pemilih"><i class="fa fa-plus"></i> Tambah Pemilih</button></h3>
+                
               </div>
             </div>
             <div class="card">
+            <?php
+                $no = $_GET['no'];
+                if(empty($no)){
+                    header("location:data-calon.php");	
+                }
+                $query = mysqli_query($kon, "SELECT * FROM calon where id = '$no'");
+                $hasil = mysqli_fetch_array($query);
+                    
+            function alert($alert){
+                echo "<script type='text/javascript'>
+                    alert('".$alert."');
+                    </script>";
+            }
+            function redir($redir){
+                echo "<script type='text/javascript'>
+                    document.location='".$redir."';
+                    </script>";
+            }
 
-            <!-- HIDDEN FORM FOR UN/LOCK -->
-            <form name="form1">
-              <input type="hidden" name="command">
-              <input type="hidden" name="nim">
-            </form>
-
+            
+                    if(!empty($_POST)){
+                        extract($_POST);
+                        $nomor_urut = mysqli_real_escape_string($kon, $_POST['nomor_urut']);
+                        $nama_ketua = mysqli_real_escape_string($kon, $_POST['nama_ketua']);
+                        $nama_wakil = mysqli_real_escape_string($kon, $_POST['nama_wakil']);
+                        $visi_misi = mysqli_real_escape_string($kon, $_POST['visi_misi']);
+                        $namafile	= $_FILES['dp']['name'];
+                        $namafile2	= strtolower("calon-".$nama_ketua."-".$namafile);
+                        $fileSize	= $_FILES['dp']['size'];  
+                        $fileError	= $_FILES['dp']['error'];
+                        
+                        if(empty($namafile)){
+                            $query = mysqli_query($kon, "UPDATE calon set nomor_urut = '$nomor_urut', nama1 = '$nama_ketua', nama2 = '$nama_wakil', visi_misi = '$visi_misi' where id = '$no'"); 
+                            if($query){
+                                alert('Gagal upload foto!');
+                                redir('data-calon.php');	
+                            }
+                        }else{
+                            $move = move_uploaded_file($_FILES['dp']['tmp_name'], '../../build/img/upload/'.$namafile2);
+                            $query = mysqli_query($kon, "UPDATE calon set nomor_urut = '$nomor_urut', nama1 = '$nama_ketua', nama2 = '$nama_wakil', visi_misi = '$visi_misi', foto = '$namafile2' where id = '$no'"); 
+                            if($query){
+                                alert('Sukses');
+                                redir('data-calon.php');	
+                            }
+                        }
+                    }
+                
+            ?>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped" style="display:none">
-                  <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>NIM</th>
-                    <th>Nama</th>
-                    <th>Password</th>
-                    <th>Opsi</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <?php
-                    require_once "../../api/config/database.php";
-                    $query = mysqli_query($kon, "SELECT * FROM pemilih");
-                    $i = 1;
-                    while($hasil = mysqli_fetch_array($query)){
-                  ?>
-                      <tr>
-                        <td><?php echo $i; ?></td>
-                        <td><?php echo $hasil['nim']; ?></td>
-                        <td><?php echo $hasil['nama']; ?></td>
-                        <td><?php echo $hasil['kelas']; ?></td>
-                        <td>
-                          <div class="btn-group btn-group-sm">
-                          <?php
-                           $stat = $hasil['status'];
-                           $nim = $hasil['nim'];
-                            if($stat == 0){
-                          ?>
-                            <a href="javascript:unlock('<?php echo $nim; ?>')" class="btn btn-warning"><i class="fas fa-lock"></i></a>
-                            <?php
-                            } elseif ($stat == 1){
-                            ?>	
-                            <a href="javascript:lock('<?php echo $nim; ?>')" class="btn btn-success"><i class="fas fa-unlock"></i></a>
-                            <?php
-                                }
-                            ?>
-                            <a onClick="return confirm('Yakin menghapus pemilih ini?')" href="delete-pemilih.php?nim=<?php echo $hasil['nim']; ?>" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                          </div>
-                        </td>
-                      </tr>
-                    <?php $i++; } ?>
-                  </tbody>
-                  
+                <form runat="server" action="" method="post" enctype="multipart/form-data">
+                <h2>Edit Calon</h2>
+                <table class="table table-striped">
+                    <tr>
+                        <th>Nomor Urut</th>
+                        <th> : </th>
+                        <td><input class="form-control" type="number" value="<?php echo $hasil['nomor_urut']; ?>" name="nomor_urut"/></td>
+                    </tr>
+                    <tr>
+                        <th>Nama Ketua</th>
+                        <th> : </th>
+                        <td><input class="form-control" type="text" value="<?php echo $hasil['nama1']; ?>" name="nama_ketua"/></td>
+                    </tr>
+                    <tr>
+                        <th>Nama Wakil</th>
+                        <th> : </th>
+                        <td><input class="form-control" type="text" value="<?php echo $hasil['nama2']; ?>" name="nama_wakil"/></td>
+                    </tr>
+                    <tr>
+                        <th>Visi Misi</th>
+                        <th> : </th>
+                        <td><textarea name="visi_misi" class="form-control" type="text" style="height:100px;"><?php echo $hasil['visi_misi']; ?></textarea></td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <th rowspan="2">Foto</th>
+                        <th rowspan="2"> : </th>
+                        <td><img id="foto_dp" src="../../build/img/upload/<?php echo $hasil['foto']; ?>" width="30%" height="40%" ></td>
+                    </tr>
+                    <tr>
+                        <td><input type="file" name="dp" id="foto" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" ><input type="submit" class="btn btn-success" value="Submit" /></td>
+                    </tr>
                 </table>
+                </form>
+                
               </div>
               <!-- /.card-body -->
             </div>
@@ -259,42 +252,6 @@
         <!-- /.row -->
       </div>
       <!-- /.container-fluid -->
-      <!-- modal area -->
-      <div class="modal fade" id="tambah-pemilih">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Tambah Pemilih</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form role="form" action="tambah-pemilih.php" enctype="multipart/form-data" method="post">
-                <div class="form-group">
-                    <label for="email">NIM:</label>
-                    <input name="nim" class="form-control" id="nim" placeholder="Masukan NIM" autofocus required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Nama:</label>
-                    <input name="nama" class="form-control" id="nama" placeholder="Masukan Nama" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Kelas:</label>
-                    <input name="kelas" class="form-control" id="kelas" placeholder="Masukan Kelas" required>
-                </div>
-              <div class="modal-footer">
-                <button type="reset" class="btn btn-danger" >Reset</button>
-                <button type="submit" class="btn btn-primary">Tambah</button>
-              </div>
-              </form>
-            </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /modal area -->
-      
     </section>
     <!-- /.content -->
   </div>
@@ -329,13 +286,23 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 <!-- page script -->
-<script>
-  $(function () {
-    $("#example1").DataTable({
-      "order": [[ 0, 'asc' ]],
+<script type="text/javascript">
+
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = function(e) {
+        document.getElementById('foto_dp').src=e.target.result;
+        }
+        
+        reader.readAsDataURL(input.files[0]); // convert to base64 string
+    }
+  }
+    $("#foto").change(function() {
+    readURL(this);
     });
-    setTimeout(function () { $("#example1").show() }, 50);
-  });
+
 </script>
 </body>
 </html>

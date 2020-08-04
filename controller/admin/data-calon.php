@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+<?php
+    include "../../api/config/database.php";
+    include "../cek-admin.php";
+?>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Sistem Pemilihan Online</title>
@@ -155,7 +159,6 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    
                     <th>Nomor Urut</th>
                     <th>Nama Ketua</th>
                     <th>Nama Wakil</th>
@@ -164,49 +167,24 @@
                   </tr>
                   </thead>
                   <tbody>
+                    <?php
+                      $query = mysqli_query($kon, "SELECT * FROM calon order by nomor_urut ASC")or die(mysqli_error($kon));
+                      while($hasil = mysqli_fetch_array($query)){
+                    ?> 
                   <tr>
                     
-                    <td>Internet
-                      Explorer 4.0
-                    </td>
-                    <td>Win 95+</td>
-                    <td> 4</td>
-                    <td>X</td>
+                    <td><?php echo $hasil['nomor_urut']; ?></td>
+                    <td><?php echo $hasil['nama1']; ?></td>
+                    <td><?php echo $hasil['nama2']; ?></td>
+                    <td><?php echo $hasil['visi_misi']; ?></td>
                     <td>
                       <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        <a href="update.php?no=<?php echo $hasil['id']; ?>" class="btn btn-info"><i class="fas fa-edit"></i></a>
+                        <a onClick="return confirm('Yakin menghapus data calon?')" href="delete.php?no=<?php echo $hasil['id']; ?>" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                       </div>
                     </td>
                   </tr>
-                  <tr>
-                    
-                    <td>Internet
-                      Explorer 5.0
-                    </td>
-                    <td>Win 95+</td>
-                    <td>5</td>
-                    <td>C</td>
-                    <td>
-                      <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                      </div>
-                    </td>
-                  <tr>
-                    
-                    <td>Internet
-                      Explorer 5.5
-                    </td>
-                    <td>Win 95+</td>
-                    <td>5.5</td>
-                    <td>A</td>
-                    <td>
-                      <div class="btn-group btn-group-sm">
-                        <a href="#" class="btn btn-info"><i class="fas fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                      </div>
-                    </td>
+                      <?php } ?>
                   
                   </tbody>
                   
@@ -232,7 +210,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <form role="form" action="tambahcalon.php" enctype="multipart/form-data" method="post">
+              <form role="form" action="tambah-calon.php" enctype="multipart/form-data" method="post">
                 <div class="form-group">
                     <label for="email">Nomor Urut:</label>
                     <input type="number" name="no" class="form-control" id="no" placeholder="Masukan Nomor Urut" autofocus required>
@@ -253,14 +231,14 @@
                   <label for="inputfoto">Pilih Foto</label>
                   <div class="input-group">
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="foto">
+                      <input type="file" class="custom-file-input" id="foto" name="foto">
                       <label class="custom-file-label" for="inputfoto">Pilih Foto</label>
                     </div>
                   </div>
                 </div>
               <div class="modal-footer">
                 <button type="reset" class="btn btn-danger" >Reset</button>
-                <button type="button" class="btn btn-primary">Tambah</button>
+                <button type="submit" class="btn btn-primary">Tambah</button>
               </div>
               </form>
             </div>

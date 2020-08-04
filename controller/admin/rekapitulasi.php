@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+<?php
+    include "../../api/config/database.php";
+    include "../cek-admin.php";
+?>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Sistem Pemilihan Online</title>
@@ -14,6 +18,8 @@
   <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- jQuery -->
+  <script src="../../plugins/jquery/jquery.js"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -50,7 +56,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <img src="dist/img/ex-logo1.png" alt="eVoting Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <img src="../../dist/img/ex-logo1.png" alt="eVoting Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Voting</span>
     </a>
 
@@ -129,11 +135,8 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-10">
-            
+            <!-- kosong -->
           </div>
-          
-          
-          
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -156,40 +159,32 @@
                       <th style="width: 10px">No</th>
                       <th>Nama Calon</th>
                       <th colspan="2">Statistik Suara</th>
-                      <!-- <th >Label</th> -->
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1.</td>
-                      <td>Bambang - Joko</td>
-                      <td style="width: 50%">
-                        <div class="progress progress-xs">
-                          <div class="progress-bar " style="width: 55%"></div>
-                        </div>
-                      </td>
-                      <td style="width: 20px"><span class="badge bg-success">55%</span></td>
-                    </tr>
-                    <tr>
-                      <td>2.</td>
-                      <td>Mahasisa - Mahasiasia</td>
-                      <td>
-                        <div class="progress progress-xs">
-                          <div class="progress-bar" style="width: 70%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-success">70%</span></td>
-                    </tr>
-                    <tr>
-                      <td>3.</td>
-                      <td>Dia - Bukan aku</td>
-                      <td>
-                        <div class="progress progress-xs progress-striped active">
-                          <div class="progress-bar" style="width: 30%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-success">30%</span></td>
-                    </tr>
+                    <?php
+                      include_once "../../api/config/database.php";
+                      $query = mysqli_query($kon, "SELECT * FROM calon order by nomor_urut ASC")or die(mysqli_error($kon));
+                      $query2 = mysqli_query($kon, "SELECT * FROM pilihan")or die(mysqli_error($kon));
+                      $jmlh = mysqli_num_rows( $query2);
+                      while($hasil = mysqli_fetch_array($query)){
+                        if($jmlh>0){
+                          $persen = number_format(($hasil['vote']/$jmlh)*100,2);
+                        } else {
+                            $persen = 0;
+                        }
+                        ?>
+                          <tr>
+                            <td id="nomor_urut"><?php echo $hasil['nomor_urut']; ?></td>
+                            <td id="nama"><?php echo $hasil['nama1']." - ".$hasil['nama2']; ?></td>
+                            <td style="width: 50%">
+                              <div class="progress progress-xs">
+                                <div id="prosentase" class="progress-bar " style="width: <?php echo $persen; ?>%"></div>
+                              </div>
+                            </td>
+                            <td style="width: 20px"><span class="badge bg-success"><?php echo $persen; ?>%</span></td>
+                          </tr>
+                        <?php } ?>
                   </tbody>
                 </table>
               </div>
@@ -306,89 +301,106 @@
 <script src="../../dist/js/demo.js"></script>
 <!-- page script -->
 <script>
-  $(function () {
-    /* ChartJS
-     * -------
-     * Here we will create a few charts using ChartJS
-     */    
+    $(document).ready(function() {
+      // getData();
+        // selesai();
+    });
+    
+    function selesai() {
+      setTimeout(function() {
+        update();
+        selesai();
+      }, 200);
+    };
+    
+    function update() {
+      $.getJSON("tampil.php", function(data) {
+            pemilih.innerHTML = data.pemilih;
+            calon.innerHTML = data.calon;
+            pilihan.innerHTML = data.pilihan;
+            sisa.innerHTML = data.sisa;
+            
+      });
+    };
+    function getData() {
+      $.getJSON("data-rekap.php", function(data) {
+        a = 0;
+        barConfig.data.datasets.splice(0, 3);
+        
+        $.each(data, function() {
+          pieConfig.data.labels.push(this['nama']);
+          pieConfig.data.datasets.forEach((dataset) => {
+              dataset.data.push(this['suara']);
+          });
+          
+          var bgColor=["#f56954","#00a65a","#00a6FF"];
+          var newDataset = {
+              label: data[a].nama,
+              data: data[a].suara,
+              backgroundColor: bgColor[a]
+          };
+          a++;
+          barConfig.data.datasets.push(newDataset);
+        });
+        window.myPie.update();
+        window.myBar.update();
+      });
+        
+      };
+    
     //-------------
     //- PIE CHART -
     //-------------
-    // Get context with jQuery - using jQuery's .get() method.
-    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    var pieData        = {
-      labels: [
-          'Paslon 1', 
-          'Paslon 2', 
-      ],
-      datasets: [
-        {
-          data: [700,500],
-          backgroundColor : ['#f56954', '#00a65a'],
-        }
-      ]
-    }
-    var pieOptions     = {
-      maintainAspectRatio : false,
-      responsive : true,
-    }
-    //Create pie or douhnut chart
-    // You can switch between pie and douhnut using the method below.
-    var pieChart = new Chart(pieChartCanvas, {
+    window.onload = function() {
+      var pieChart = document.getElementById('pieChart').getContext('2d');
+      var barChart = document.getElementById('barChart').getContext('2d');
+      
+      window.myPie = new Chart(pieChart, pieConfig);
+      window.myBar = new Chart(barChart, barConfig);
+      getData();    
+    };
+    var pieConfig     = {
       type: 'pie',
-      data: pieData,
-      options: pieOptions      
-    })
-
+      data: {
+				datasets: [{
+					data: [],
+          backgroundColor : ['#f56954', '#00a65a','#00a6FF'],
+				}],
+				labels: [],
+      },
+      options :{
+        maintainAspectRatio : false,
+        responsive : true,
+      }
+    };   
     //-------------
     //- BAR CHART -
     //-------------
-    var areaChartData = {
-      labels  : ['Perolehan Suara'],
-      datasets: [
-        {
-          label               : 'Paslon 1',
-          backgroundColor     : 'rgba(60,141,188,0.9)',
-          borderColor         : 'rgba(60,141,188,0.8)',
-          pointRadius          : false,
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28]
-        },
-        {
-          label               : 'Paslon 2',
-          backgroundColor     : 'rgba(210, 214, 222, 1)',
-          borderColor         : 'rgba(210, 214, 222, 1)',
-          pointRadius         : false,
-          pointColor          : 'rgba(210, 214, 222, 1)',
-          pointStrokeColor    : '#c1c7d1',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [65]
-        },
-      ]
-    }
-    var barChartCanvas = $('#barChart').get(0).getContext('2d')
-    var barChartData = jQuery.extend(true, {}, areaChartData)
-    var temp0 = areaChartData.datasets[0]
-    var temp1 = areaChartData.datasets[1]
-    barChartData.datasets[0] = temp1
-    barChartData.datasets[1] = temp0
-
-    var barChartOptions = {
-      responsive              : true,
-      maintainAspectRatio     : false,
-      datasetFill             : false
-    }
-
-    var barChart = new Chart(barChartCanvas, {
-      type: 'bar', 
-      data: barChartData,
-      options: barChartOptions
-    })
-  })
+    var barConfig = {
+      type: 'bar',
+      options:{ 
+        responsive: true,
+        scales: {
+                  yAxes: [{
+                      ticks: {
+                          beginAtZero: true
+                      }
+                  }]
+              },
+      },
+      data: {
+        labels: ['Hasil Perhitungan Suara'],
+        datasets: [
+          {
+            label: [],
+            data: [],
+            backgroundColor : ['#f56954']
+          }
+        ]
+      }
+    };
+    
+   
 </script>
 </body>
 </html>
