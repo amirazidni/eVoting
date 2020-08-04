@@ -23,5 +23,5 @@ class Database{
         return $this->conn;
     }
 }
-    $kon = mysqli_connect("127.0.0.1","root","", "evoting");
+    $kon = mysqli_connect("localhost","root","", "evoting");
 ?>

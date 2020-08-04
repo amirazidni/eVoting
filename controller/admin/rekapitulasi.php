@@ -251,13 +251,14 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <div class="row">
-                  <div class="col-sm-6">
-                    <button type="button" class="btn btn-block btn-primary"><i class="fa fa-upload"></i> Ekspor</button>
-                    <button type="button" class="btn btn-block btn-success"><i class="fas fa-download"></i> Impor</button>
+                  <div class="col-sm-4">
+                  <a onClick="return confirm('Ini akan menyimpan hasil pemilihan dengan mengunduh dalam bentuk enkripsi. Yakin?')" href="import-hasil.php" class="btn btn-success"><i class="fa fa-download"></i> Unduh </a>
                   </div>
-                  <div class="col-sm-6">
-                    
-                    <button type="button" class="btn btn-block btn-danger"><i class="fas fa-undo"></i> Reset Suara</button>
+                  <div class="col-sm-4">
+                  <a onClick="return confirm('Ini akan membuka hasil pemilihan dengan mengunggah dan proses dekripsi. Yakin?')" href="decrypt.php" class="btn btn-info"><i class="fa fa-upload"></i> Unggah </a>
+                  </div>
+                  <div class="col-sm-4">
+                    <a onClick="return confirm('Ini akan menghapus semua suara masuk. Yakin?')" href="reset-hasil.php" class="btn btn-danger"><i class="fas fa-undo"></i>Reset Suara</a>
                   </div>
                 </div>
               </div>
