@@ -23,5 +23,4 @@ class Database{
         return $this->conn;
     }
 }
-    $kon = mysqli_connect("localhost","root","", "evoting");
 ?>
