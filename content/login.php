@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition login-page">
+<?php
+	include_once "proses-login.php";
+?>
 <div class="login-box">
   <div class="login-logo">
     <a href="#"><b>LOGIN PEMILIH </b></a>
@@ -24,11 +27,11 @@
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Masukan NIM dan Password</p>
+      <p class="login-box-msg">Masukan NIM</p>
 
-      <form action="pemilihan.php" method="post"> <!-- direct link -->
+      <form method="post"> <!-- direct link -->
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="NIM">
+          <input type="text" class="form-control" name="nim" placeholder="NIM">
           <div class="input-group-append">
             <div class="input-group-text">
             </div>
