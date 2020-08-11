@@ -252,10 +252,10 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-sm-4">
-                  <a onClick="return confirm('Ini akan menyimpan hasil pemilihan dengan mengunduh dalam bentuk enkripsi. Yakin?')" href="import-hasil.php" class="btn btn-success"><i class="fa fa-download"></i> Unduh </a>
+                  <a data-toggle="modal" data-target="#unduh-hasil" class="btn btn-success"><i class="fa fa-download"></i> Unduh </a>
                   </div>
                   <div class="col-sm-4">
-                  <a onClick="return confirm('Ini akan membuka hasil pemilihan dengan mengunggah dan proses dekripsi. Yakin?')" href="decrypt.php" class="btn btn-info"><i class="fa fa-upload"></i> Unggah </a>
+                  <a class="btn btn-info" data-toggle="modal" data-target="#unggah-hasil"><i class="fa fa-upload"></i> Unggah </a>
                   </div>
                   <div class="col-sm-4">
                     <a onClick="return confirm('Ini akan menghapus semua suara masuk. Yakin?')" href="reset-hasil.php" class="btn btn-danger"><i class="fas fa-undo"></i>Reset Suara</a>
@@ -270,6 +270,67 @@
         </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
+
+      <!-- modal area -->
+      <div class="modal fade" id="unggah-hasil">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Unggah Hasil</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <form action="dekripsi.php" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="email">Password:</label>
+                    <input name="pass" type="password" class="form-control"  placeholder="Masukan password untuk dekripsi" autofocus required>
+                </div>
+                <div class="input-group">
+                  <div class="custom-file">
+                    <input type="file" name="file" class="custom-file-input" id="exampleInputFile">
+                    <label class="custom-file-label" for="exampleInputFile">Unggah hasil terenkripsi untuk membukanya</label>
+                  </div>
+                </div>
+            </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-info"><i class="fa fa-upload"></i>Unggah</button>
+                  </div>
+                </form>
+            </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /modal area -->
+
+      <div class="modal fade" id="unduh-hasil">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Unduh Hasil</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <form action="enkripsi.php" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="email">Password:</label>
+                    <input name="pass" type="password" class="form-control"  placeholder="Masukan password untuk enkripsi" autofocus required>
+                </div>
+            </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-info"><i class="fa fa-download"></i>Unduh</button>
+                  </div>
+                </form>
+            </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /modal area -->
     </section>
     <!-- /.content -->
   </div>

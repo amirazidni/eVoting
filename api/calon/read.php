@@ -50,7 +50,7 @@ if($num>0){
     http_response_code(200);
   
     // show categories data in json format
-    echo json_encode($categories_arr);
+    echo json_encode($categories_arr, JSON_PRETTY_PRINT);
 } else {
   
     // set response code - 404 Not found
