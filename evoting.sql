@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 27, 2020 at 09:51 AM
+-- Generation Time: Aug 11, 2020 at 06:54 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -35,6 +35,14 @@ CREATE TABLE `admin` (
   `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id`, `username`, `password`, `nama`, `email`) VALUES
+(1, 'admin', '90b9aa7e25f80cf4f64e990b78a9fc5ebd6cecad', 'Mimi', 'mimin@mail.com'),
+(2, 'admin2', '90b9aa7e25f80cf4f64e990b78a9fc5ebd6cecad', 'Siapa', 'Siapa@mail.com');
+
 -- --------------------------------------------------------
 
 --
@@ -48,8 +56,18 @@ CREATE TABLE `calon` (
   `nama2` varchar(255) NOT NULL,
   `foto` varchar(255) NOT NULL,
   `visi_misi` text NOT NULL,
-  `vote` int(10) NOT NULL
+  `vote` int(10) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `calon`
+--
+
+INSERT INTO `calon` (`id`, `nomor_urut`, `nama1`, `nama2`, `foto`, `visi_misi`, `vote`) VALUES
+(1, 1, 'Dino', 'Laela', 'calon-a.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 1),
+(2, 2, 'Weldan', 'Mantio', 'calon-b.png', 'Sukses Spirit Kreatif', 2),
+(6, 3, 'Santoso', 'Santi', 'calon-suroso-calon-santoso-los dol.png', 'INTINYA BEGITU', 1),
+(7, 4, 'Hue', 'Hiya', 'calon--spring-in-japan-❤-4k-hd-desktop-wallpaper-for-4k-ultra-hd-tv.jpg', 'Mamama', 0);
 
 -- --------------------------------------------------------
 
@@ -61,9 +79,25 @@ CREATE TABLE `pemilih` (
   `id` int(10) NOT NULL,
   `nim` varchar(20) NOT NULL,
   `nama` varchar(255) NOT NULL,
-  `password` varchar(7) NOT NULL,
-  `nomor_urut` int(2) NOT NULL
+  `kelas` varchar(7) NOT NULL,
+  `nomor_urut` int(2) NOT NULL,
+  `status` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pemilih`
+--
+
+INSERT INTO `pemilih` (`id`, `nim`, `nama`, `kelas`, `nomor_urut`, `status`) VALUES
+(1, '18110224', 'Zidni', 'IF 18 E', 0, 1),
+(2, '18110223', 'Fauzi', 'IF 18 E', 0, 1),
+(3, '18110244', 'Ali', 'IF 18 E', 0, 1),
+(4, '18110253', 'Tegar', 'IF 18 E', 0, 1),
+(11, '0220', 'Nagita', 'IF 18 E', 0, 1),
+(12, '0218', 'Vania', 'IF 18 E', 0, 1),
+(15, '18110239', 'Jali', 'IF 18 E', 0, 0),
+(16, '18110007', 'Reska', 'IF 18 E', 0, 0),
+(17, '18120001', 'Agus', 'SI 18 D', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -76,6 +110,17 @@ CREATE TABLE `pilihan` (
   `nim` varchar(20) NOT NULL,
   `nomor_urut` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pilihan`
+--
+
+INSERT INTO `pilihan` (`id`, `nim`, `nomor_urut`) VALUES
+(1, '18110224', 1),
+(2, '18110244', 2),
+(3, '18110223', 2),
+(4, '1822', 3),
+(5, '18110007', 3);
 
 --
 -- Indexes for dumped tables
@@ -113,25 +158,25 @@ ALTER TABLE `pilihan`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `calon`
 --
 ALTER TABLE `calon`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `pemilih`
 --
 ALTER TABLE `pemilih`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `pilihan`
 --
 ALTER TABLE `pilihan`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
