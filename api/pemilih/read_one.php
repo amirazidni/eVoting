@@ -28,7 +28,7 @@ if($product->nim != null){
     $product_arr = array(
         "nim" => $product->nim,
         "nama" => $product->nama,
-        "kelas" => $product->kelas,
+        "password" => $product->password,
         "nomor_urut" => $product->nomor_urut,
         "status" => $product->status
   

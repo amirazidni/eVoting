@@ -9,7 +9,7 @@ class Pemilih{
     public $id;
     public $nim;
     public $nama;
-    public $kelas;
+    public $password;
     public $nomor_urut;
     public $status;
   
@@ -39,7 +39,7 @@ class Pemilih{
             // set values to object properties
             $this->nim = $row['nim'];
             $this->nama = $row['nama'];
-            $this->kelas = $row['kelas'];
+            $this->password = $row['password'];
             $this->nomor_urut = $row['nomor_urut'];
             $this->status = $row['status'];
         } else {
