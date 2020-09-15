@@ -400,12 +400,12 @@ if($login=='loginadmin'){
                     </div>
                 </div>
 
-                <div class="row form-group">
+                <!--<div class="row form-group">
                     <div class="col col-md-3"><label for="password" class=" form-control-label">password</label></div>
-                      <div class="col-12 col-md-9">
-                        <input type="password" id="password" name="password" placeholder="password" class="form-control" required readonly value="<?= $password; ?>">
-                    </div>
-                </div>
+                      <div class="col-12 col-md-9">-->
+                        <input type="hidden" id="password" name="password" placeholder="password" required readonly value="<?= $password; ?>">
+                    <!--</div>
+                </div>-->
 
                 <div class="row form-group">
                     <div class="col col-md-3"><label for="nama" class=" form-control-label">Nama Pemilih</label></div>
