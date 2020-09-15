@@ -1,26 +1,30 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Hasilpilih extends CI_Controller {
-	public function __construct(){
+class Hasilpilih extends CI_Controller
+{
+	public function __construct()
+	{
 		parent::__construct();
-		$this->load->model('M_calon','mc');
-		$this->load->model('M_pemilih','mp');
-    }
-	
-	public function index(){
+		$this->load->model('M_calon', 'mc');
+		$this->load->model('M_pemilih', 'mp');
+	}
+
+	public function index()
+	{
 		$x = [
 			'data' 			=> $this->mc->show_calon(),
 			'datapemilih' 	=> $this->mp->show_pemilih()
 		];
 		$this->load->view('hasilpemilihan', $x);
-    }
-	
-	public function export(){
+	}
+
+	public function export()
+	{
 		$x = [
 			'data'			=> $this->mc->show_calon(),
 			'datapemilih'	=> $this->mp->show_pemilih()
 		];
 		$this->load->view('hasilpemilihanexport', $x);
-    }
+	}
 }
