@@ -13,7 +13,7 @@ GET
             - foto
             - vote
             - visi_misi
-    -> evoting/api/calon/read.php
+    - address: evoting/api/calon/read.php
 
 2. Read tabel pemilih
     - utk halaman login pemilih cek nama dan status aktivasi
@@ -24,14 +24,14 @@ GET
         - kelas
         - nomor_urut
         - status
-    -> evoting/api/pemilih/read_one.php
+    - address: evoting/api/pemilih/read_one.php
 
 3. Read tabel pilihan
     - utk halaman proses pemilihan, mengecek apakah suara sudah masuk atau belum
     - parameter: nim
     - struktur JSON:
         - nim
-    -> evoting/api/pilihan/read.php
+    - address: evoting/api/pilihan/read.php
 
 POST
 4. Update
@@ -41,7 +41,7 @@ POST
         - nim
         - nomor_urut
         - vote
-    -> evoting/api/pemilih/update.php
+    - address: evoting/api/pemilih/update.php
 
 
 Footnote:
