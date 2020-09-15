@@ -1,15 +1,50 @@
-Contoh penggunaan API dengan native PHP
-Pada umumnya API adalah komunikasi dua software dengan JSON
+NOTE: databasenya ada yg beda antara native sama CI
+aku belum cek yg versi CI DBnya kaya gimana, bawah ini masih DB versi native, sorry...
 
--) Akses API yg ada di folder product\... untuk menjalankan API di tabel product
- Akses database dengan hasil JSON: read.php
- Kirim JSON untuk input ke database: create.php
- ... dst bisa dilihat dari judul filenya
+GET
+1. Read tabel calon
+    - utk halaman pemilihan tampil semua calon
+    - parameter: (ga pake karena tampil semua)
+    - struktur JSON:
+        => records
+            => nomor_urut
+            => nama1
+            => nama2
+            => foto
+            => vote
+            => visi_misi
+    -> evoting/api/calon/read.php
 
--) Contoh kirim JSON dengan PHP: contoh_create.php
+2. Read tabel pemilih
+    - utk halaman login pemilih cek nama dan status aktivasi
+    - parameter: nim
+    - struktur JSON:
+        => nim
+        => nama
+        => kelas
+        => nomor_urut
+        => status
+    -> evoting/api/pemilih/read_one.php
 
--) Uji API juga bisa menggunakan Postman: https://www.postman.com/downloads/
+3. Read tabel pilihan
+    - utk halaman proses pemilihan, mengecek apakah suara sudah masuk atau belum
+    - parameter: nim
+    - struktur JSON:
+        => nim
+    -> evoting/api/pilihan/read.php
 
--) Untuk file lain hanya sebagai perangkat penopang contoh API ini
+POST
+4. Update
+    - utk update ke tabel pilihan dan tabel calon setelah pemilihan berhasil
+    - parameter: -
+    - struktur JSON yg dikirim:
+        => nim
+        => nomor_urut
+        => vote
+    -> evoting/api/pemilih/update.php
 
-Lebih detail: https://www.codeofaninja.com/2017/02/create-simple-rest-api-in-php.html
+
+Footnote:
+yg di folder object itu object semua tabel
+yg di folder config itu koneksi (bisa diganti pakai koneksi yg udah dipasang di CI)
+yg di folder contoh_api_client itu contoh akses API server dari client (PHP)
