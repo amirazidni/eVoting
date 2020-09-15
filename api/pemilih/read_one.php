@@ -46,4 +46,3 @@ if($product->nim != null){
     // tell the user product does not exist
     echo json_encode(array("message" => "Pemilih tidak terdaftar."));
 }
-?>
