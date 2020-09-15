@@ -225,7 +225,7 @@ if($login=='loginadmin'){
                         <td>
                             <a class="btn btn-primary" data-toggle="modal" data-target="#editdata<?= $id;?>"  href=""><i class="fas fa-edit"></i></a>
 
-                            <a class="btn btn-danger" href="<?= 'datacal/delete/'.$id=$i['id']; ?>"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-danger" href="<?= 'datacal/delete/'.$id=$i['id']; ?>" onclick="return confirm('Yakin ingin menghapus nomor urut <?= $nomorurut; ?>?');"><i class="fa fa-trash"></i></a>
                            
                         </td>
                   </tr>
@@ -261,7 +261,7 @@ if($login=='loginadmin'){
                 <div class="row form-group">
                             <div class="col col-md-3"><label for="nomorurut" class=" form-control-label">Nomor Urut</label></div>
                               <div class="col-12 col-md-9">
-                                <input type="number" id="nomorurut" name="nomorurut" placeholder="Nomor Urut"  class="form-control" required>
+                                <input type="number" id="nomorurut" name="nomorurut" placeholder="Nomor Urut"  class="form-control" required min="1">
                             </div>
                         </div>
 

@@ -30,7 +30,7 @@ class M_calon extends CI_Model{
       }   
 
     public function insert_data(){
-		$this->id = date("yyyyMMddHHmmss");
+		$this->id = (new DateTime('now', null))->format('YmdHis');
 		$data = [
 			'id' 		=> $this->id,
 			'nomorurut'	=> $this->db->escape_str($this->input->post('nomorurut', true)),
@@ -62,9 +62,14 @@ class M_calon extends CI_Model{
 								$r=$i['id'];
                                 $k=$i['suara'];
         if ($k==$id) {
-        	$this->db->query("UPDATE pemilih set suara='0' where id='$r'");
+			//$this->db->query("UPDATE pemilih set suara='0' where id='$r'"); <-- kurang safety
+			$this->db->update('pemilih', ["suara" => "0"], ["id" => $r]);
         };
 		endforeach;
+
+		$get_data = $this->db->select("foto")->from("calon")->where("id", $id)->get()->row();
+
+		unlink("upload/" . $get_data->foto);
 
 		$this->db->where('id',$id);
 		$this->db->delete('calon');
@@ -99,7 +104,7 @@ class M_calon extends CI_Model{
 			'nama2'		=> $this->db->escape_str($this->input->post('nama2', true)),
 			'visi'		=> $this->db->escape_str($this->input->post('visi', true)),
 			'misi'		=> $this->db->escape_str($this->input->post('misi', true)),
-			'foto'		=> $this->_uploadImage()
+			'foto'		=> $this->_uploadImage('edit', $id)
 		];
 		// $post = $this->input->post();
 		// $this->id = uniqid();
@@ -107,7 +112,12 @@ class M_calon extends CI_Model{
         // $this->nama1 = $post["nama1"];
         // $this->nama2 = $post["nama2"];
         // $this->visi = $post["visi"];
-        // $this->misi = $post["misi"];
+		// $this->misi = $post["misi"];
+		
+		$get_data = $this->db->select("foto")->from("calon")->where("id", $id)->get()->row();
+
+		unlink("upload/" . $get_data->foto);
+
 		$this->db->where('id', $id);
 		$this->db->update('calon', $data);
 		if ($this->db->affected_rows()>0) {
@@ -160,32 +170,49 @@ class M_calon extends CI_Model{
 	
 
 // 	}
-private function _uploadImage()
+	private function _uploadImage(String $action = 'add', String $filename = '')
 	{
-		$config['upload_path']          = './upload/';
-		$config['allowed_types']        = 'gif|jpg|png';
-		$config['file_name']            = $this->id;
-		$config['overwrite']			= true;
-		// $config['max_size']             = 1024; // 1MB
-    // $config['max_width']            = 1024;
-    // $config['max_height']           = 768;
+		if ($action == 'add') {
+			$config['upload_path']          = './upload/';
+			$config['allowed_types']        = 'gif|jpg|png';
+			$config['file_name']            = $this->id;
+			$config['overwrite']			= true;
+			// $config['max_size']             = 1024; // 1MB
+			// $config['max_width']            = 1024;
+			// $config['max_height']           = 768;
 
-    $this->load->library('upload', $config);
+			$this->load->library('upload', $config);
 
-    if ($this->upload->do_upload('upfoto')) {
-        return $this->upload->data("file_name");
-    }
-    
-    return "default.jpg";
+			if ($this->upload->do_upload('upfoto')) {
+				return $this->upload->data("file_name");
+			}
+			
+			return "default.jpg";
+		} else if ($action == 'edit') {
+			$config['upload_path']          = './upload/';
+			$config['allowed_types']        = 'gif|jpg|png';
+			$config['file_name']            = $filename;
+			$config['overwrite']			= true;
+			// $config['max_size']             = 1024; // 1MB
+			// $config['max_width']            = 1024;
+			// $config['max_height']           = 768;
+
+			$this->load->library('upload', $config);
+
+			if ($this->upload->do_upload('upfoto')) {
+				return $this->upload->data("file_name");
+			}
+			
+			return "default.jpg";
+		}
+
+			// private function _deleteImage($id)
+			// {
+			// 	$product = $this->$id;
+			// 	if ($product->image != "default.jpg") {
+			// 		$filename = explode(".", $product->image)[0];
+			// 		return array_map('unlink', glob(FCPATH."upload/$filename.*"));
+			// 	}
+			// }
 	}
-
-	// private function _deleteImage($id)
-	// {
-	// 	$product = $this->$id;
-	// 	if ($product->image != "default.jpg") {
-	// 		$filename = explode(".", $product->image)[0];
-	// 		return array_map('unlink', glob(FCPATH."upload/$filename.*"));
-	// 	}
-	// }
-
 }
