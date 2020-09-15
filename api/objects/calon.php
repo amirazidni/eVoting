@@ -27,4 +27,3 @@ class Calon{
         return $stmt;
     }
 }
-?>

@@ -1,53 +1,59 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Datacal extends CI_Controller {
+class Datacal extends CI_Controller
+{
 
-	public function __construct(){
+	public function __construct()
+	{
 		parent::__construct();
 		$this->load->model('M_calon','mc');
 		$this->load->library("l_session");
 		$this->l_session->admin();
-    }
+  }
 	
-	public function index(){
-        $x['data']	=	$this->mc->show_calon();
-        $this->load->view('datacalon',$x);
-    }
+	public function index()
+  {
+     $x['data']	=	$this->mc->show_calon();
+     $this->load->view('datacalon',$x);
+  }
 
-    public function insert(){
+	public function insert()
+	{
 		$result	=	$this->mc->insert_data();
-		if($result){
-			$this->session->set_flashdata('success_msg','Data berhasil ditambah');
-		}else{
-			$this->session->set_flashdata('error_msg','Gagal menambah data');
+		if ($result) {
+			$this->session->set_flashdata('success_msg', 'Data berhasil ditambah');
+		} else {
+			$this->session->set_flashdata('error_msg', 'Gagal menambah data');
 		}
 		redirect(base_url('Datacal'));
 	}
 
-	public function edit($id){
+	public function edit($id)
+	{
 		$result	=	$this->mc->editcalon($id);
-		if($result){
-			$this->session->set_flashdata('success_msg','Data berhasil diubah');
-		}else{
-			$this->session->set_flashdata('error_msg','Gagal mengubah data');
+		if ($result) {
+			$this->session->set_flashdata('success_msg', 'Data berhasil diubah');
+		} else {
+			$this->session->set_flashdata('error_msg', 'Gagal mengubah data');
 		}
 		redirect(base_url('Datacal'));
 	}
-	
-	public function delete($id){
+
+	public function delete($id)
+	{
 		$result	=	$this->mc->deletecalon($id);
-		if($result){
-			$this->session->set_flashdata('success_msg','Data berhasil dihapus');
-		}else{
-			$this->session->set_flashdata('error_msg','Gagal menghapus data');
+		if ($result) {
+			$this->session->set_flashdata('success_msg', 'Data berhasil dihapus');
+		} else {
+			$this->session->set_flashdata('error_msg', 'Gagal menghapus data');
 		}
 		redirect(base_url('Datacal'));
 	}
-	
-	public function hapussemua(){
+
+	public function hapussemua()
+	{
 		$result	=	$this->mc->truncate();
 		redirect(base_url('Datacal'));
 	}
-	
 }
