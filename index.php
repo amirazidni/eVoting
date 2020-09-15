@@ -70,11 +70,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Card title</h5>
+                <h5 class="card-title">Login Pemilih</h5>
 
                 <p class="card-text">
-                  Some quick example text to build on the card title and make up the bulk of the card's
-                  content.
+                  Silahkan pilih tombol login dibawah ini untuk melakukan pemilihan calon presiden dan wakil presiden BEM.
                 </p>
 
                 <a href="content/login.php" class="btn btn-primary">Login Pemilih</a>
@@ -88,13 +87,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- /.content-wrapper -->
 
   <!-- Main Footer -->
-  <footer class="main-footer">
-    <!-- To the right -->
-    <div class="float-right d-none d-sm-inline">
-      Anything you want
+   <footer class="main-footer">
+    <strong>Copyright &copy; 2020 <a href="">E-voting team</a>.</strong>
+    <div class="float-right d-none d-sm-inline-block">
+      <b>v</b> 1.0
     </div>
-    <!-- Default to the left -->
-    <strong>Copyright &copy; 2014-2020 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
   </footer>
 </div>
 <!-- ./wrapper -->

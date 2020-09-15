@@ -210,7 +210,7 @@
                     <th>No</th>
                     <th>NIM</th>
                     <th>Nama</th>
-                    <th>Password</th>
+                    <th>Kelas</th>
                     <th>Opsi</th>
                   </tr>
                   </thead>
@@ -299,12 +299,11 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.0.5
+   <footer class="main-footer">
+    <strong>Copyright &copy; 2020 <a href="">E-voting team</a>.</strong>
+    <div class="float-right d-none d-sm-inline-block">
+      <b>v</b> 1.0
     </div>
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-    reserved.
   </footer>
 
   <!-- Control Sidebar -->

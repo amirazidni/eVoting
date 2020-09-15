@@ -163,6 +163,7 @@
                     <th>Nama Ketua</th>
                     <th>Nama Wakil</th>
                     <th>Visi Misi</th>
+                    <th>Foto</th>
                     <th>Opsi</th>
                   </tr>
                   </thead>
@@ -177,6 +178,7 @@
                     <td><?php echo $hasil['nama1']; ?></td>
                     <td><?php echo $hasil['nama2']; ?></td>
                     <td><?php echo $hasil['visi_misi']; ?></td>
+                    <td><img src="../../build/img/upload/<?= $hasil["foto"]; ?>" width="50"></td>
                     <td>
                       <div class="btn-group btn-group-sm">
                         <a href="update.php?no=<?php echo $hasil['id']; ?>" class="btn btn-info"><i class="fas fa-edit"></i></a>
@@ -252,11 +254,10 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.0.5
+    <strong>Copyright &copy; 2020 <a href="">E-voting team</a>.</strong>
+    <div class="float-right d-none d-sm-inline-block">
+      <b>v</b> 1.0
     </div>
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-    reserved.
   </footer>
 
   <!-- Control Sidebar -->

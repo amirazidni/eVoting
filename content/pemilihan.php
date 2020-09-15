@@ -55,7 +55,7 @@
                           </div>
                           <div class="card-body pt-0">
                             <div class="row">
-                              <!-- <div class="col-7">
+                             <!--  <div class="col-7">
                                 <h1 class="lead"><b>Visi Misi: </b> <?php echo($calon['visi_misi']);?></h1>
                               </div> -->
                               <div class="col-12 text-center ">

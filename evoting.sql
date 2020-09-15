@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 11, 2020 at 06:54 AM
--- Server version: 10.4.13-MariaDB
--- PHP Version: 7.4.8
+-- Waktu pembuatan: 12 Agu 2020 pada 03.15
+-- Versi server: 10.1.36-MariaDB
+-- Versi PHP: 7.2.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -24,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Struktur dari tabel `admin`
 --
 
 CREATE TABLE `admin` (
@@ -36,7 +37,7 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `admin`
+-- Dumping data untuk tabel `admin`
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`, `nama`, `email`) VALUES
@@ -46,7 +47,7 @@ INSERT INTO `admin` (`id`, `username`, `password`, `nama`, `email`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `calon`
+-- Struktur dari tabel `calon`
 --
 
 CREATE TABLE `calon` (
@@ -56,23 +57,23 @@ CREATE TABLE `calon` (
   `nama2` varchar(255) NOT NULL,
   `foto` varchar(255) NOT NULL,
   `visi_misi` text NOT NULL,
-  `vote` int(10) DEFAULT 0
+  `vote` int(10) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `calon`
+-- Dumping data untuk tabel `calon`
 --
 
 INSERT INTO `calon` (`id`, `nomor_urut`, `nama1`, `nama2`, `foto`, `visi_misi`, `vote`) VALUES
 (1, 1, 'Dino', 'Laela', 'calon-a.png', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 1),
-(2, 2, 'Weldan', 'Mantio', 'calon-b.png', 'Sukses Spirit Kreatif', 2),
-(6, 3, 'Santoso', 'Santi', 'calon-suroso-calon-santoso-los dol.png', 'INTINYA BEGITU', 1),
-(7, 4, 'Hue', 'Hiya', 'calon--spring-in-japan-❤-4k-hd-desktop-wallpaper-for-4k-ultra-hd-tv.jpg', 'Mamama', 0);
+(2, 2, 'Weldan', 'Mantio', 'calon-b.png', 'Sukses Spirit Kreatif', 3),
+(6, 3, 'Santoso', 'Santi', 'calon-suroso-calon-santoso-los dol.png', 'INTINYA BEGITU', 2),
+(7, 4, 'Hue', 'Hiya', 'calon-hue-penguins.jpg', 'Mamama', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pemilih`
+-- Struktur dari tabel `pemilih`
 --
 
 CREATE TABLE `pemilih` (
@@ -85,14 +86,14 @@ CREATE TABLE `pemilih` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `pemilih`
+-- Dumping data untuk tabel `pemilih`
 --
 
 INSERT INTO `pemilih` (`id`, `nim`, `nama`, `kelas`, `nomor_urut`, `status`) VALUES
 (1, '18110224', 'Zidni', 'IF 18 E', 0, 1),
 (2, '18110223', 'Fauzi', 'IF 18 E', 0, 1),
 (3, '18110244', 'Ali', 'IF 18 E', 0, 1),
-(4, '18110253', 'Tegar', 'IF 18 E', 0, 1),
+(4, '18110253', 'Tegar', 'IF 18 E', 3, 1),
 (11, '0220', 'Nagita', 'IF 18 E', 0, 1),
 (12, '0218', 'Vania', 'IF 18 E', 0, 1),
 (15, '18110239', 'Jali', 'IF 18 E', 0, 0),
@@ -102,7 +103,7 @@ INSERT INTO `pemilih` (`id`, `nim`, `nama`, `kelas`, `nomor_urut`, `status`) VAL
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pilihan`
+-- Struktur dari tabel `pilihan`
 --
 
 CREATE TABLE `pilihan` (
@@ -112,7 +113,7 @@ CREATE TABLE `pilihan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `pilihan`
+-- Dumping data untuk tabel `pilihan`
 --
 
 INSERT INTO `pilihan` (`id`, `nim`, `nomor_urut`) VALUES
@@ -120,63 +121,75 @@ INSERT INTO `pilihan` (`id`, `nim`, `nomor_urut`) VALUES
 (2, '18110244', 2),
 (3, '18110223', 2),
 (4, '1822', 3),
-(5, '18110007', 3);
+(5, '18110007', 3),
+(7, '18110253', 3);
+
+--
+-- Trigger `pilihan`
+--
+DELIMITER $$
+CREATE TRIGGER `nomor_urut` AFTER INSERT ON `pilihan` FOR EACH ROW BEGIN
+ UPDATE pemilih SET nomor_urut=nomor_urut+NEW.nomor_urut
+ WHERE nim=NEW.nim;
+END
+$$
+DELIMITER ;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `admin`
+-- Indeks untuk tabel `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `calon`
+-- Indeks untuk tabel `calon`
 --
 ALTER TABLE `calon`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `pemilih`
+-- Indeks untuk tabel `pemilih`
 --
 ALTER TABLE `pemilih`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `pilihan`
+-- Indeks untuk tabel `pilihan`
 --
 ALTER TABLE `pilihan`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `admin`
+-- AUTO_INCREMENT untuk tabel `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `calon`
+-- AUTO_INCREMENT untuk tabel `calon`
 --
 ALTER TABLE `calon`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `pemilih`
+-- AUTO_INCREMENT untuk tabel `pemilih`
 --
 ALTER TABLE `pemilih`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `pilihan`
+-- AUTO_INCREMENT untuk tabel `pilihan`
 --
 ALTER TABLE `pilihan`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
