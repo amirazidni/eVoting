@@ -6,41 +6,41 @@ GET
     - utk halaman pemilihan tampil semua calon
     - parameter: (ga pake karena tampil semua)
     - struktur JSON:
-        => records
-            => nomor_urut
-            => nama1
-            => nama2
-            => foto
-            => vote
-            => visi_misi
+        - records
+            - nomor_urut
+            - nama1
+            - nama2
+            - foto
+            - vote
+            - visi_misi
     -> evoting/api/calon/read.php
 
 2. Read tabel pemilih
     - utk halaman login pemilih cek nama dan status aktivasi
     - parameter: nim
     - struktur JSON:
-        => nim
-        => nama
-        => kelas
-        => nomor_urut
-        => status
+        - nim
+        - nama
+        - kelas
+        - nomor_urut
+        - status
     -> evoting/api/pemilih/read_one.php
 
 3. Read tabel pilihan
     - utk halaman proses pemilihan, mengecek apakah suara sudah masuk atau belum
     - parameter: nim
     - struktur JSON:
-        => nim
+        - nim
     -> evoting/api/pilihan/read.php
 
 POST
 4. Update
     - utk update ke tabel pilihan dan tabel calon setelah pemilihan berhasil
-    - parameter: -
+    - parameter: none
     - struktur JSON yg dikirim:
-        => nim
-        => nomor_urut
-        => vote
+        - nim
+        - nomor_urut
+        - vote
     -> evoting/api/pemilih/update.php
 
 
