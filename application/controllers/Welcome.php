@@ -4,14 +4,30 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Welcome extends CI_Controller
 {
 
-	public function __construct()
-	{
-		parent::__construct();
+	protected $data_id;
+
+	public function __construct() {
+		parent :: __construct();
 		$this->load->model('M_login');
+		$this->load->library("session");
+		$this->data_id = $this->session->userdata();
 	}
 
-	public function index()
-	{
+	public function index() {
+		switch($this->data_id['status']) {
+			case "loginmahasiswa":
+				redirect("form");
+				break;
+			case "loginadmin":
+				redirect("dasbor");
+				break;
+			default :
+				redirect("welcome/login");
+				break;
+		}
+	}
+
+	public function login() {
 		$this->load->view('login');
 	}
 
@@ -38,25 +54,30 @@ class Welcome extends CI_Controller
 			];
 			$this->session->set_userdata($data_session);
 			redirect(base_url("Dasbor"));
-		} else if ($cek2 > 0) {
-			$hasil = $this->db->query("SELECT *  FROM pemilih where nim='$username'");
-			foreach ($hasil->result_array() as $i) :
+		}else if($cek2 > 0){
+			$this->data_id = $this->session->userdata();
+			$hasil=$this->db->query("SELECT *  FROM pemilih where nim='$username'");
+			foreach($hasil->result_array() as $i):
 				$k	=	$i['suara'];
 				$ab	=	$i['aktivasi'];
 				if ($ab != '0' && $k == 0) {
 					$data_session = [
 						'nim' => $username,
-						'nama' => $i['nama'],
-						'status' => "loginmahasiswa"
+						'nama' =>$i['nama'],
+						'status' => "loginmahasiswa",
+						'aktivasi' => $ab,
+						'suara' => $k
 					];
 					$this->session->set_userdata($data_session);
 					redirect(base_url("Form"));
-				} else if ($k == 0 && $ab == 0) {
-					redirect(base_url("?pesan=belumabsen"));
-				} else if ($k != '0' && $ab != '0') {
-					redirect(base_url("?pesan=sudahmemilih"));
-				} else {
-					redirect(base_url("?pesan=gagal"));
+				}else if ($k==0 && $ab==0) {
+					redirect("welcome/login?pesan=belumabsen");
+				}
+				else if ($k!='0' && $ab!='0') {
+					redirect("welcome/login?pesan=sudahmemilih");
+				}
+				else{
+					redirect("welcome/login?pesan=gagal");
 				}
 			endforeach;
 		} else if ($cek3 > 0) {
@@ -70,14 +91,14 @@ class Welcome extends CI_Controller
 				$this->session->set_userdata($data_session);
 				redirect(base_url("Pengawas"));
 			endforeach;
-		} else {
-			redirect(base_url('?pesan=gagal'));
+		}else{
+			redirect('welcome/login?pesan=gagal');
 		}
 	}
 
 	public function logout()
 	{
 		$this->session->sess_destroy();
-		redirect(base_url('?pesan=logout'));
+		redirect('welcome/login?pesan=logout');	
 	}
 }
