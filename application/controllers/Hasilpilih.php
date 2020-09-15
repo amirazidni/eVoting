@@ -6,6 +6,8 @@ class Hasilpilih extends CI_Controller {
 		parent::__construct();
 		$this->load->model('M_calon','mc');
 		$this->load->model('M_pemilih','mp');
+		$this->load->library("l_session");
+		$this->l_session->admin();
     }
 	
 	public function index(){

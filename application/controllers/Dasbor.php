@@ -7,6 +7,8 @@ class Dasbor extends CI_Controller {
 		parent::__construct();
 		$this->load->model('M_calon','mc');
 		$this->load->model('M_pemilih','mp');
+		$this->load->library("l_session");
+		$this->l_session->admin();
     }
       
     public function index(){
@@ -16,6 +18,6 @@ class Dasbor extends CI_Controller {
 			'datapemilih1'	=> $this->mp->show_pemilih()
         ];
 		
-		$this->load->view('Dashboard', $data);
+		$this->load->view('dashboard', $data);
       }
 }

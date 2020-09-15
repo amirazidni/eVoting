@@ -69,6 +69,12 @@ class M_calon extends CI_Model{
 		$this->db->where('id',$id);
 		$this->db->delete('calon');
 		// $this->_deleteImage($id);
+		if(file_exists(FCPATH.'/upload/'.$id.'.jpg') || file_exists(FCPATH.'/upload/'.$id.'.jpeg') || file_exists(FCPATH.'/upload/'.$id.'.png') || file_exists(FCPATH.'/upload/'.$id.'.gif')){
+			unlink(FCPATH.'/upload/'.$id.'.jpg');
+			unlink(FCPATH.'/upload/'.$id.'.jpeg');
+			unlink(FCPATH.'/upload/'.$id.'.png');
+			unlink(FCPATH.'/upload/'.$id.'.gif');
+		}
 		if($this->db->affected_rows()>0){
 			return true;
 		}else{

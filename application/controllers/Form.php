@@ -3,14 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Form extends CI_Controller {
 
+	protected $data_id;
+
 	function __construct(){
 		parent::__construct();
 		$this->load->model('M_calon','mc');
+		$this->load->library("l_session");
+		$this->l_session->mahasiswa();
 	}
 
-	public function index()
-	{
-		$x['data']=$this->mc->show_calon();
+	public function index(){
+		$x['data'] = $this->mc->show_calon();
 		$this->load->view('formpemilihan',$x);
 	}
 	public function pilih($id){
@@ -21,6 +24,6 @@ class Form extends CI_Controller {
 		// 	$this->session->set_flashdata('error_msg','Gagal mengubah data');
 		// }
 		$this->session->sess_destroy();
-		redirect(base_url("?pesan=terimakasih"));
+		redirect("welcome/login?pesan=terimakasih");
 	}
 }
