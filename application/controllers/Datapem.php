@@ -7,7 +7,7 @@ class Datapem extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('M_pemilih','mp');
+		$this->load->model('M_pemilih', 'mp');
 		$this->load->library("l_session");
 		$this->l_session->admin();
 	}
@@ -22,6 +22,30 @@ class Datapem extends CI_Controller
 	{
 		$x['data']	=	$this->mp->show_pemilih();
 		$this->load->view('datapemilihexport', $x);
+	}
+
+	public function import()
+	{
+		$data = $this->input->post('records');
+		$data = json_decode($data, true);
+		foreach ($data as $d) {
+			$object = [
+				'Nomor' => $this->db->escape_str($this->security->xss_clean($d['Nomor'])),
+				'Months' => $this->db->escape_str($this->security->xss_clean($d['Months'])),
+				'Days' => $this->db->escape_str($this->security->xss_clean($d['Days'])),
+				'Merk' => $this->db->escape_str($this->security->xss_clean($d['Merk'])),
+			];
+			$persamaan = $this->db->get_where('percobaan', ['Nomor' => $object['Nomor']])->row_array();
+			if ($persamaan['Nomor'] == $object['Nomor']) {
+				false;
+				// echo json_encode('Data telah diinput!', true);
+			} else {
+				$this->db->insert('percobaan', $object);
+				true;
+				// echo json_encode('Berhasil disimpan!', true);
+			}
+		};
+		echo json_encode('Berhasil disimpan!', true);
 	}
 
 	public function insert()
@@ -57,16 +81,16 @@ class Datapem extends CI_Controller
 		redirect(base_url('Datapem'));
 	}
 
-	public function resetpilihan($id)
-	{
-		$result	=	$this->mp->reset($id);
-		if ($result) {
-			$this->session->set_flashdata('success_msg', 'Data pemilih berhasil direset');
-		} else {
-			$this->session->set_flashdata('error_msg', 'Gagal mereset data pemilih');
-		}
-		redirect(base_url('Datapem'));
-	}
+	// public function resetpilihan($id)
+	// {
+	// 	$result	=	$this->mp->reset($id);
+	// 	if ($result) {
+	// 		$this->session->set_flashdata('success_msg', 'Data pemilih berhasil direset');
+	// 	} else {
+	// 		$this->session->set_flashdata('error_msg', 'Gagal mereset data pemilih');
+	// 	}
+	// 	redirect(base_url('Datapem'));
+	// }
 
 	public function hapussemua()
 	{

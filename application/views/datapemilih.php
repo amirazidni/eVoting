@@ -14,6 +14,12 @@
   <link rel="stylesheet" href="<?= base_url() ?>assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="<?= base_url() ?>assets/dist/css/adminlte.min.css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <style>
+    th,
+    td {
+      white-space: nowrap;
+    }
+  </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -50,7 +56,8 @@
 
         <li class="nav-item">
           <div class="info">
-            <a href="" data-toggle="modal" data-target="#konfirmkeluar" class="d-block"> <i class="fa fa-power-off"></i> Log out</a>
+            <a href="" data-toggle="modal" data-target="#konfirmkeluar" class="d-block"> <i class="fa fa-power-off"></i>
+              Log out</a>
           </div>
 
           <!-- <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
@@ -176,28 +183,17 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">
-              <div class="row">
-                <div class="col-6"></div>
-                <div class="col-4">
-                  <div class="input-group">
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="exampleInputFile">
-                      <label class="custom-file-label" for="exampleInputFile">Import Data Pemilih</label>
-                    </div>
-                    <div class="input-group-append">
-                      <button type="button" class="btn btn-info">Upload</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-2">
-                  <h3><button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#tambahdata"><i class="fa fa-plus"></i> Tambah Pemilih</button></h3>
+              <div class="row mb-2">
+                <div class="col-12 d-flex">
+                  <button type="button" class="ml-auto btn btn-success" data-toggle="modal" id="import_data"><i class="fa fa-envelope"></i> Import Data Excel/CSV</button>
+                  <button type="button" class="ml-2 btn btn-primary" data-toggle="modal" id="insert_data"><i class="fa fa-plus"></i> Tambah Pemilih</button>
                 </div>
               </div>
               <div class="card">
 
                 <!-- /.card-header -->
-                <div class="card-body">
-                  <table id="example1" class="table table-bordered table-striped">
+                <div class="card-body table-responsive">
+                  <table id="example1" class="w-100 table table-bordered table-striped">
                     <thead>
                       <tr>
                         <th>No</th>
@@ -211,71 +207,70 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <?php $no = 1;
-                        foreach ($data->result_array() as $i) :
-                          $id = $i['id'];
-                          $nim = $i['nim'];
-                          $nama = $i['nama'];
-                          $kelas = $i['kelas'];
-                          $suara = $i['suara'];
-                          $aktivasi = $i['aktivasi'];
-                        ?>
-                      <tr>
-                        <td><?= "$no" ?></td>
-                        <td><?= $nim; ?> </td>
-                        <td><?= $nama; ?> </td>
-                        <td><?= $kelas; ?> </td>
-                        <td><?php
+                      <?php $no = 1;
+                      foreach ($data->result_array() as $i) :
+                        $id = $i['id'];
+                        $nim = $i['nim'];
+                        $nama = $i['nama'];
+                        $kelas = $i['kelas'];
+                        $suara = $i['suara'];
+                        $aktivasi = $i['aktivasi'];
+                      ?>
+                        <tr>
+                          <td><?= $no; ?></td>
+                          <td><?= $nim; ?> </td>
+                          <td><?= $nama; ?> </td>
+                          <td><?= $kelas; ?> </td>
+                          <td><?php
+                              if ($aktivasi == '0') {
+                              ?>
+                              <button type="button" class="btn btn-danger">Belum Diaktivasi</button>
+                            <?php
+                              } else {
+                            ?>
+                              <button type="button" class="btn btn-success">Telah Diaktivasi</button>
+                            <?php
+                              };
+                            ?> </td>
+                          <td><?php
+                              if ($suara == '0') {
+                              ?>
+                              <button type="button" class="btn btn-danger">Belum Memilih</button>
+                            <?php
+                              } else {
+                            ?>
+                              <button type="button" class="btn btn-success">Telah Memilih</button>
+                            <?php
+                              };
+                            ?> </td>
+                          </td>
+                          <td>
+
+
+                            <a class="btn btn-success" data-toggle="modal" data-target="#editdata<?php echo $id; ?>" href=""><i class="fa fa-edit"></i></a>
+
+                            <?php
                             if ($aktivasi == '0') {
                             ?>
-                            <button type="button" class="btn btn-danger">Belum Diaktivasi</button>
-                          <?php
+                              <a class="btn btn-warning" href="datapem/edita/<?php echo $id; ?>" title="Absen" href=""><i class="fa fa-lock"></i></a>
+                            <?php
                             } else {
-                          ?>
-                            <button type="button" class="btn btn-success">Telah Diaktivasi</button>
-                          <?php
-                            };
-                          ?> </td>
-                        <td><?php
-                            if ($suara == '0') {
                             ?>
-                            <button type="button" class="btn btn-danger">Belum Memilih</button>
-                          <?php
-                            } else {
-                          ?>
-                            <button type="button" class="btn btn-success">Telah Memilih</button>
-                          <?php
+                              <a class="btn btn-primary" href="datapem/editbatal/<?php echo $id; ?>" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a>
+                            <?php
                             };
-                          ?> </td>
-                        </td>
-                        <td>
+                            ?>
 
+                            <!-- <a class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Reset Pilihan" href="<?php // echo  base_url('index.php/datapem/resetpilihan/' . $id); 
+                                                                                                                                      ?>"><i class="fa fa-undo"></i></a> -->
 
-                          <a class="btn btn-success" data-toggle="modal" data-target="#editdata<?php echo $id; ?>" href=""><i class="fa fa-edit"></i></a>
+                            <a class="btn btn-danger" href="<?php echo  base_url('index.php/datapem/delete/' . $id); ?>"><i class="fa fa-trash"></i></a>
+                          </td>
+                        </tr>
 
-                          <?php
-                          if ($aktivasi == '0') {
-                          ?>
-                            <a class="btn btn-warning" href="datapem/edita/<?php echo $id; ?>" title="Absen" href=""><i class="fa fa-lock"></i></a>
-                          <?php
-                          } else {
-                          ?>
-                            <a class="btn btn-primary" href="datapem/editbatal/<?php echo $id; ?>" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a>
-                          <?php
-                          };
-                          ?>
-
-                          <a class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Reset Pilihan" href="<?php echo  base_url('index.php/datapem/resetpilihan/' . $id); ?>"><i class="fa fa-undo"></i></a>
-
-                          <a class="btn btn-danger" href="<?php echo  base_url('index.php/datapem/delete/' . $id); ?>"><i class="fa fa-trash"></i></a>
-                        </td>
-                      </tr>
-
-                    <?php $no++;
-                        endforeach; ?>
+                      <?php $no++;
+                      endforeach; ?>
                     </tbody>
-
                   </table>
                 </div>
                 <!-- /.card-body -->
@@ -324,53 +319,12 @@
 
 
     <!-- modal tambah -->
-    <div class="modal fade" id="tambahdata">
+    <div class="modal fade" id="insert_data_modal">
       <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Tambah Pemilih</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <?= form_open_multipart('datapem/insert'); ?>
-            <form action="datapem/insert" method="post">
-              <div class="row form-group">
-                <div class="col col-md-3"><label for="nim" class=" form-control-label">NIM</label></div>
-                <div class="col-12 col-md-9">
-                  <input type="text" id="nim" name="nim" placeholder="NIM" class="form-control" required>
-                </div>
-              </div>
-
-              <div class="row form-group">
-                <div class="col col-md-3"><label for="password" class=" form-control-label">password</label></div>
-                <div class="col-12 col-md-9">
-                  <input type="password" id="password" name="password" placeholder="password" class="form-control" required>
-                </div>
-              </div>
-
-              <div class="row form-group">
-                <div class="col col-md-3"><label for="nama" class=" form-control-label">Nama Pemilih</label></div>
-                <div class="col-12 col-md-9">
-                  <input type="text" id="nama" name="nama" placeholder="Nama" class="form-control" required>
-                </div>
-              </div>
-
-              <div class="row form-group">
-                <div class="col col-md-3"><label for="kelas" class=" form-control-label">kelas</label></div>
-                <div class="col-12 col-md-9">
-                  <input type="text" id="kelas" name="kelas" placeholder="kelas" class="form-control" required>
-                </div>
-              </div>
-
-          </div>
-          <div class="modal-footer">
-            <button type="reset" class="btn btn-danger">Reset</button>
-            <button type="submit" class="btn btn-primary">Tambah</button>
-          </div>
-          </form>
-        </div>
+        <!-- Insert Data -->
+        <div class="modal-content" id="insert_data_form"></div>
+        <!-- Import Data -->
+        <div class="modal-content" id="insert_data_import"></div>
         <!-- /.modal-content -->
       </div>
       <!-- /.modal-dialog -->
@@ -476,7 +430,6 @@
     <!-- /.control-sidebar -->
   </div>
   <!-- ./wrapper -->
-
   <!-- jQuery -->
   <script src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
   <!-- Bootstrap 4 -->
@@ -491,21 +444,138 @@
   <!-- AdminLTE for demo purposes -->
   <script src="<?= base_url() ?>assets/dist/js/demo.js"></script>
   <!-- page script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.min.js"></script>
+  <!-- import export excel -->
   <script>
-    $(function() {
+    document.addEventListener('DOMContentLoaded', function() {
       $("#example1").DataTable({
-        "responsive": true,
-        "autoWidth": false,
-      });
-      $('#example2').DataTable({
         "paging": true,
-        "lengthChange": false,
-        "searching": false,
+        "lengthChange": true,
+        "searching": true,
         "ordering": true,
         "info": true,
-        "autoWidth": false,
+        "autoWidth": true,
         "responsive": true,
       });
+
+      const insertData = document.querySelector('#insert_data');
+      const importData = document.querySelector('#import_data');
+      const insertDataForm = document.querySelector('#insert_data_form');
+      const insertDataImport = document.querySelector('#insert_data_import');
+      const insertDataModal = $('#insert_data_modal');
+
+      insertData.addEventListener('click', function() {
+        insertDataForm.innerHTML = `
+          <div class="modal-header">
+            <h4 class="modal-title">Tambah Pemilih</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <?= form_open_multipart('datapem/insert'); ?>
+          <div class="modal-body">
+            <div class="row form-group">
+              <div class="col col-md-3"><label for="nim" class=" form-control-label">NIM</label></div>
+              <div class="col-12 col-md-9">
+                <input type="text" id="nim" name="nim" placeholder="NIM" class="form-control" required>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col col-md-3"><label for="password" class=" form-control-label">password</label></div>
+              <div class="col-12 col-md-9">
+                <input type="password" id="password" name="password" placeholder="password" class="form-control" required>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col col-md-3"><label for="nama" class=" form-control-label">Nama Pemilih</label></div>
+              <div class="col-12 col-md-9">
+                <input type="text" id="nama" name="nama" placeholder="Nama" class="form-control" required>
+              </div>
+            </div>
+            <div class="row form-group">
+              <div class="col col-md-3"><label for="kelas" class=" form-control-label">kelas</label></div>
+              <div class="col-12 col-md-9">
+                <input type="text" id="kelas" name="kelas" placeholder="kelas" class="form-control" required>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-danger">Reset</button>
+            <button type="submit" class="btn btn-primary">Tambah</button>
+          </div>
+          </form>
+        `;
+        insertDataModal.modal();
+      });
+
+      importData.addEventListener('click', function() {
+        insertDataImport.innerHTML = `
+          <div class="modal-header">
+            <h4 class="modal-title">Import Data Pemilih</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row form-group">
+              <div class="col col-12 col-sm-12 col-md-3 col-xl-3">
+                <label for="upload_excel" class="form-control-label">Upload file excel</label>
+              </div>
+              <div class="col-12 col-sm-12 col-md-9 col-xl-9">
+                <input type="file" id="upload_excel" name="upload_excel" placeholder="Pilih file" class="form-control" required accept=".xls, .xlsx"> <!--id input upload-excel-->
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" id="btn_upload">Upload Sekarang</button>
+          </div>
+        `;
+        insertDataModal.modal();
+        formImport();
+      });
+
+      insertDataModal.on('hidden.bs.modal', function() {
+        insertDataImport.innerHTML = null;
+        insertDataForm.innerHTML = null;
+      });
+
+      function formImport() {
+        const uploadExcel = document.querySelector('#upload_excel');
+        const btnUploadExcel = document.querySelector('#btn_upload');
+        let selectedUploadExcel;
+        uploadExcel.addEventListener('change', function(e) {
+          selectedUploadExcel = e.target.files[0];
+          // console.log(e.target.files[0]);
+        });
+        btnUploadExcel.addEventListener('click', function() {
+          if (selectedUploadExcel.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+            const fileReader = new FileReader();
+            var urlencoded = new URLSearchParams();
+            fileReader.readAsBinaryString(selectedUploadExcel);
+            fileReader.onload = function(e) {
+              const data = e.target.result;
+              const workbook = XLSX.read(data, { type: 'binary' });
+              let json;
+              // console.log(e.target.result);
+              // console.log(workbook);
+              workbook.SheetNames.forEach(function(data) {
+                json = XLSX.utils.sheet_to_json(workbook.Sheets[data]);
+              });
+              // console.log(json);
+              urlencoded.append('records', JSON.stringify(json)),
+              fetch(`<?= base_url('Datapem/import'); ?>`, { 
+                method: 'POST',
+                body: urlencoded,
+              }).then(function(response) {
+                return response.json();
+              }).then(function(result) {
+                console.log(result);
+              });
+            }
+          }
+        });
+      }
     });
   </script>
 </body>
