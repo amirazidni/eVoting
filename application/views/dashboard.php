@@ -388,7 +388,7 @@
         ],
         datasets: [{
           data: [<?= $sudahmemilih; ?>, <?= $belummemilih; ?>],
-          backgroundColor: ['#00a65a', '#eeeeee'],
+          backgroundColor: ['#00a65a', '#ffc107'],
         }]
       }
       var pieOptions = {

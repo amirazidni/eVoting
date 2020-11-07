@@ -13,7 +13,7 @@
 <body class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
-      <a href="#"><b>LOGIN ADMIN</b></a>
+      <a href="#"><b>SELAMAT DATANG DI PEMIRA 2020</b></a>
     </div>
 
     <?php
@@ -61,7 +61,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block">Masuk</button>
           </div>
         </div>
         <?= form_close(); ?>

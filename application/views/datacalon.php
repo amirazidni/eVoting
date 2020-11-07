@@ -194,14 +194,14 @@
                   <table id="example1" class="table table-bordered table-striped">
                     <thead>
                       <tr>
-                        <th>No</th>
-                        <th>Nomor Urut</th>
+                        
+                        <th>No. Urut</th>
                         <th>Presiden</th>
                         <th>Wakil </th>
                         <th>Visi</th>
                         <th>Misi</th>
                         <th>Foto</th>
-                        <th>Vote</th>
+                        
                         <th>Aksi</th>
                         <!-- <th width="150"><button class="btn btn-danger" data-toggle="modal" data-target="#truncate" >Kosongkan</button></th> -->
                       </tr>
@@ -219,14 +219,14 @@
                         $vote = $i['vote'];
                       ?>
                         <tr>
-                          <td><?= "$no" ?></td>
+                          <!-- <td><?= "$no" ?></td> -->
                           <td>0<?= $nomorurut; ?></td>
                           <td><?= $nama1; ?></td>
                           <td><?= $nama2; ?></td>
                           <td><?= $visi; ?> </td>
                           <td><?= $misi; ?> </td>
                           <td><img src="<?= base_url('upload/' . $foto) ?>" width="64"> </td>
-                          <td><?= $vote; ?> </td>
+                          
                           <td>
                             <a class="btn btn-primary" data-toggle="modal" data-target="#editdata<?= $id; ?>" href=""><i class="fas fa-edit"></i></a>
 
