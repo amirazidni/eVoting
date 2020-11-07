@@ -28,12 +28,18 @@ class Datapem extends CI_Controller
 	{
 		$data = $this->input->post('records');
 		$data = json_decode($data, true);
-		$interval = date("YmdHis");
+		if(!empty($this->db->get('pemilih')->num_rows())) {
+			$query 	= $this->db->query("SELECT * FROM pemilih ORDER BY id DESC LIMIT 1");
+			$result = $query->result_array();
+			$interval = date("YmdHis") + $result['id'];
+		} else {
+			$interval = date("YmdHis");
+		}
 		foreach ($data as $d) {
 			$object = [
 				'id' => $this->db->escape_str($this->security->xss_clean($interval++)),
 				'nim' => $this->db->escape_str($this->security->xss_clean($d['nim'])),
-				'password' => $this->db->escape_str($this->security->xss_clean($d['password'])),
+				'password' => $this->db->escape_str($this->security->xss_clean(md5($d['password']))),
 				'nama' => $this->db->escape_str($this->security->xss_clean($d['nama'])),
 				'kelas' => $this->db->escape_str($this->security->xss_clean($d['kelas'])),
 				'suara' => $this->db->escape_str($this->security->xss_clean(0)),
@@ -44,9 +50,10 @@ class Datapem extends CI_Controller
 				false;
 				// echo json_encode('Data telah diinput!', true);
 			} else {
-				$this->db->insert('pemilih', $object);
+				// $this->db->insert('pemilih', $object);
 				true;
 				// echo json_encode('Berhasil disimpan!', true);
+				echo json_encode($object);
 			}
 		};
 		echo json_encode('Berhasil disimpan!', true);
