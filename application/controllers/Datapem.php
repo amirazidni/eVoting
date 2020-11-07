@@ -30,17 +30,18 @@ class Datapem extends CI_Controller
 		$data = json_decode($data, true);
 		foreach ($data as $d) {
 			$object = [
-				'Nomor' => $this->db->escape_str($this->security->xss_clean($d['Nomor'])),
-				'Months' => $this->db->escape_str($this->security->xss_clean($d['Months'])),
-				'Days' => $this->db->escape_str($this->security->xss_clean($d['Days'])),
-				'Merk' => $this->db->escape_str($this->security->xss_clean($d['Merk'])),
+				'id' => $this->db->escape_str($this->security->xss_clean(date("yyyyMMddHHmmss"))),
+				'nim' => $this->db->escape_str($this->security->xss_clean($d['nim'])),
+				'password' => $this->db->escape_str($this->security->xss_clean($d['password'])),
+				'nama' => $this->db->escape_str($this->security->xss_clean($d['nama'])),
+				'kelas' => $this->db->escape_str($this->security->xss_clean($d['kelas'])),
 			];
-			$persamaan = $this->db->get_where('percobaan', ['Nomor' => $object['Nomor']])->row_array();
-			if ($persamaan['Nomor'] == $object['Nomor']) {
+			$persamaan = $this->db->get_where('pemilih', ['nim' => $object['nim']])->row_array();
+			if ($persamaan['nim'] == $object['nim']) {
 				false;
 				// echo json_encode('Data telah diinput!', true);
 			} else {
-				$this->db->insert('percobaan', $object);
+				$this->db->insert('pemilih', $object);
 				true;
 				// echo json_encode('Berhasil disimpan!', true);
 			}
