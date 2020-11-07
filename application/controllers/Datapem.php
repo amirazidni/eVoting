@@ -28,13 +28,16 @@ class Datapem extends CI_Controller
 	{
 		$data = $this->input->post('records');
 		$data = json_decode($data, true);
+		$interval = date("YmdHis");
 		foreach ($data as $d) {
 			$object = [
-				'id' => $this->db->escape_str($this->security->xss_clean(date("yyyyMMddHHmmss"))),
+				'id' => $this->db->escape_str($this->security->xss_clean($interval++)),
 				'nim' => $this->db->escape_str($this->security->xss_clean($d['nim'])),
 				'password' => $this->db->escape_str($this->security->xss_clean($d['password'])),
 				'nama' => $this->db->escape_str($this->security->xss_clean($d['nama'])),
 				'kelas' => $this->db->escape_str($this->security->xss_clean($d['kelas'])),
+				'suara' => $this->db->escape_str($this->security->xss_clean(0)),
+				'aktivasi' => $this->db->escape_str($this->security->xss_clean(0)),
 			];
 			$persamaan = $this->db->get_where('pemilih', ['nim' => $object['nim']])->row_array();
 			if ($persamaan['nim'] == $object['nim']) {
