@@ -13,7 +13,7 @@
 <body class="hold-transition login-page">
   <div class="login-box">
     <div class="login-logo">
-      <a href="#"><b>Masuk Sebagai Pemilih</b></a>
+      <a href="#"><b>Masuk Sebagai Admin</b></a>
     </div>
 
     <?php
@@ -41,7 +41,7 @@
       <div class="card-body login-card-body">
         <p class="login-box-msg">Masukan Username dan Password</p>
 
-        <?= form_open(base_url('Welcome/aksi_login')); ?>
+        <?= form_open(base_url('welcome_admin/aksi_login')); ?>
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Input NIM" name="username" required>
           <div class="input-group-append">
