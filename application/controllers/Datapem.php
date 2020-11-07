@@ -48,11 +48,11 @@ class Datapem extends CI_Controller
 			$persamaan = $this->db->get_where('pemilih', ['nim' => $object['nim']])->row_array();
 			if ($persamaan['nim'] == $object['nim']) {
 				false;
-				echo json_encode('Data telah diinput!', true);
+				// echo json_encode('Data telah diinput!', true);
 			} else {
-				// $this->db->insert('pemilih', $object);
+				$this->db->insert('pemilih', $object);
 				true;
-				echo json_encode('Berhasil disimpan!', true);
+				// echo json_encode('Berhasil disimpan!', true);
 			}
 		};
 		echo json_encode('Berhasil disimpan!', true);
