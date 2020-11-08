@@ -17,14 +17,13 @@ class M_pemilih extends CI_Model
 	function insert_data()
 	{
 		$field = array(
-			'id' => date("YmdHis");,
+			'id' => date("YmdHis"),
 			'nim' => $this->db->escape_str($this->input->post('nim', true)),
 			'password' => md5($this->db->escape_str($this->input->post('password', true))),
 			'nama' => $this->db->escape_str($this->input->post('nama', true)),
 			'kelas' => $this->db->escape_str($this->input->post('kelas', true)),
 			'suara' => '0',
 			'aktivasi' => '0'
-
 		);
 		$this->db->insert('pemilih', $field);
 		if ($this->db->affected_rows() > 0) {
