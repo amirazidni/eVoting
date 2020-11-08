@@ -24,7 +24,7 @@
 										<div class="row">
 											<div class="col text-center">
 												<H3>Selamat Datang <?php echo $this->session->userdata('nama'); ?>!
-												</H3>Silahkan pilih calon pasangan Presiden dan Wakil Presiden dengan
+												</H3>Silahkan pilih calon pasangan Presiden dan Wakil Presiden BEM dengan
 												bijak
 											</div>
 										</div>
