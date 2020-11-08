@@ -37,7 +37,7 @@ class Datapem extends CI_Controller
 		if(!empty($this->db->get('pemilih')->num_rows())) {
 			$query 	= $this->db->query("SELECT * FROM pemilih ORDER BY id DESC LIMIT 1");
 			$result = $query->result_array();
-			$interval = date("YmdHis") + $result['id'];
+			$interval = date("YmdHis") + $result[0]['id'];
 		} else {
 			$interval = date("YmdHis");
 		}
