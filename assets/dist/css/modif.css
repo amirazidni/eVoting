@@ -1,0 +1,12 @@
+#formpemilihan,.login-card-body  {
+    background-color: #e9ecef;
+}
+
+#formpemilihan .card{
+    margin-bottom: 0px;
+    
+}
+#formpemilihan .card .card-danger,#formpemilihan .card {
+    box-shadow: none;
+    border:none;
+}

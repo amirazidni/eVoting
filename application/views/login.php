@@ -61,7 +61,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <button type="submit" class="btn btn-primary btn-block">Selanjutnya</button>
+            <button type="submit" class="btn btn-primary btn-block">Masuk</button>
           </div>
         </div>
         <?= form_close(); ?>
