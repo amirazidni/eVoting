@@ -306,7 +306,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Edit Pemilih</h4>
+            <h4 class="modal-title">Ubah Pemilih</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -350,7 +350,7 @@
           </div>
           <div class="modal-footer">
             <button type="reset" class="btn btn-danger">Reset</button>
-            <button type="submit" class="btn btn-primary">Tambah</button>
+            <button type="submit" class="btn btn-primary">Ubah</button>
           </div>
           </form>
         <!-- /.modal-content -->
