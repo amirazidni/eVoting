@@ -63,14 +63,8 @@ class Welcome extends CI_Controller
 					redirect("welcome/login?pesan=belumabsen");
 				} else if ($k != '0' && $ab != '0') {
 					redirect("welcome/login?pesan=sudahmemilih");
-<<<<<<< HEAD
-				}
-				else{
-					redirect("welcome/login?pesan=gagal&p=not");
-=======
 				} else {
 					redirect("welcome/login?pesan=gagal");
->>>>>>> 0fa7e97bd283080af0bfab1a6e0ce924292c36d2
 				}
 			endforeach;
 		} else {
