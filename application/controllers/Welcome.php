@@ -67,7 +67,7 @@ class Welcome extends CI_Controller
 					redirect("welcome/login?pesan=sudahmemilih");
 				}
 				else{
-					redirect("welcome/login?pesan=gagal");
+					redirect("welcome/login?pesan=gagal&p=not");
 				}
 			endforeach;
 		} else {
