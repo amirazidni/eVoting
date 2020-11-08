@@ -284,12 +284,29 @@
               <!-- /.Left col -->
               <!-- right col (We are only adding the ID to make the widgets sortable)-->
               <section class="col-lg-5 connectedSortable">
-
-
-
-
-
-
+                <div class="card card-warning collapsed-card">
+                <div class="card-header">
+                  <h3 class="card-title">
+                    <i class="fa fa-cog fa-spin fa-fw"></i>
+                    
+                    Pengolahan Lanjutan
+                  </h3>
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                  <!-- /.card-tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <a onClick="return confirm('Ini akan menghapus semua suara masuk. Yakin?')" href="#" class="btn btn-danger"><i class="fas fa-undo"></i> Reset Suara Masuk</a>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </div>
               </section>
               <!-- right col -->
             </div>

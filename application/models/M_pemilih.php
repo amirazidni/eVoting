@@ -67,6 +67,7 @@ class M_pemilih extends CI_Model
 		$field = array(
 			'nama' => $this->db->escape_str($this->input->post('nama', true)),
 			'kelas' => $this->db->escape_str($this->input->post('kelas', true)),
+			'password' => md5($this->db->escape_str($this->input->post('password', true))),
 		);
 		$this->db->update('pemilih', $field);
 

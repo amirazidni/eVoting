@@ -242,7 +242,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Tambah Pemilih</h4>
+            <h4 class="modal-title">Ubah Pemilih</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -259,7 +259,7 @@
               <!--<div class="row form-group">
                   <div class="col col-md-3"><label for="password" class=" form-control-label">password</label></div>
                     <div class="col-12 col-md-9">-->
-              <input type="hidden" id="password" name="password" placeholder="password" required readonly value="">
+              <!-- <input type="hidden" id="password" name="password" placeholder="password" required readonly value=""> -->
               <!--</div>
               </div>-->
 
@@ -276,11 +276,17 @@
                   <input type="text" id="edit_kelas" name="kelas" placeholder="kelas" class="form-control" required value="">
                 </div>
               </div>
+              <div class="row form-group">
+                <div class="col col-md-3"><label for="edit_password" class=" form-control-label">password</label></div>
+                <div class="col-12 col-md-9">
+                  <input type="password" id="edit_password" name="password" placeholder="password" class="form-control" required value="">
+                </div>
+              </div>
 
           </div>
           <div class="modal-footer">
             <button type="reset" class="btn btn-danger">Reset</button>
-            <button type="submit" class="btn btn-primary">Tambah</button>
+            <button type="submit" class="btn btn-primary">Ubah</button>
           </div>
           </form>
           <!-- /.modal-content -->
@@ -437,6 +443,7 @@
           document.querySelector('#edit_nim').value = `${result.data.nim}`;
           document.querySelector('#edit_nama').value = `${result.data.nama}`;
           document.querySelector('#edit_kelas').value = `${result.data.kelas}`;
+          document.querySelector('#edit_password').value = `${result.data.password}`;
           document.querySelector('#edit_form').setAttribute('action', `<?= base_url('Datapem/edit/'); ?>${id}`);
         });
       });
@@ -444,7 +451,7 @@
       insertData.addEventListener('click', function() {
         insertDataForm.innerHTML = `
           <div class="modal-header">
-            <h4 class="modal-title">Tambah Pemilih</h4>
+            <h4 class="modal-title">Edit Pemilih</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
