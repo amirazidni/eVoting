@@ -3,10 +3,15 @@
 class M_pemilih extends CI_Model
 {
 
-	function show_pemilih()
+	function show_pemilih($where = null)
 	{
-		$hasil = $this->db->query("SELECT * FROM pemilih");
-		return $hasil;
+		if($where == null) {
+			$hasil = $this->db->query("SELECT * FROM pemilih");
+			return $hasil;
+		} else {
+			$hasil = $this->db->get_where('pemilih', ['id' => $where])->row_array();
+			return $hasil;
+		}	
 	}
 
 

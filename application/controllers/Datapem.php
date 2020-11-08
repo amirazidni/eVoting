@@ -18,6 +18,12 @@ class Datapem extends CI_Controller
 		$this->load->view('datapemilih', $x);
 	}
 
+	public function show_detail($id) {
+		$result['data'] = $this->mp->show_pemilih($id);
+		header("Content-type:application/json");
+		echo json_encode($result, true);
+	}
+
 	public function export()
 	{
 		$x['data']	=	$this->mp->show_pemilih();
@@ -55,6 +61,7 @@ class Datapem extends CI_Controller
 				// echo json_encode('Berhasil disimpan!', true);
 			}
 		};
+		header("Content-type: application/json");
 		echo json_encode('Berhasil disimpan!', true);
 	}
 

@@ -247,7 +247,7 @@
                           <td>
 
 
-                            <a class="btn btn-success" data-toggle="modal" data-target="#editdata<?php echo $id; ?>" href=""><i class="fa fa-edit"></i></a>
+                            <a class="btn btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="<?= $id; ?>" href="javascript:void(0);"><i class="fa fa-edit"></i></a>
 
                             <?php
                             if ($aktivasi == '0') {
@@ -280,37 +280,6 @@
           <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
-        <!-- modal area -->
-        <div class="modal fade" id="tambah-pemilih">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">Tambah Pemilih</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form role="form" action="tambahcalon.php" enctype="multipart/form-data" method="post">
-                  <div class="form-group">
-                    <label for="email">NIM:</label>
-                    <input name="nim" class="form-control" id="nim" placeholder="Masukan NIM" autofocus required>
-                  </div>
-                  <div class="form-group">
-                    <label for="email">Nama:</label>
-                    <input name="nama" class="form-control" id="nama" placeholder="Masukan Nama" required>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="reset" class="btn btn-danger">Reset</button>
-                    <button type="button" class="btn btn-primary">Tambah</button>
-                  </div>
-                </form>
-              </div>
-              <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-          </div>
-          <!-- /modal area -->
       </section>
       <!-- /.content -->
     </div>
@@ -331,66 +300,56 @@
 
 
     <!-- modal Ubah -->
-    <?php
-    foreach ($data->result_array() as $i) :
-      $id = $i['id'];
-      $nim = $i['nim'];
-      $password = $i['password'];
-      $nama = $i['nama'];
-      $kelas = $i['kelas'];
-      $suara = $i['suara'];
-    ?>
-      <div class="modal fade" id="editdata<?= $id; ?>">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Tambah Pemilih</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form action="<?= site_url('datapem/edit/' . $id); ?>" method="post">
-                <div class="row form-group">
-                  <div class="col col-md-3"><label for="nim" class=" form-control-label">NIM</label></div>
-                  <div class="col-12 col-md-9">
-                    <input type="text" id="nim" name="nim" placeholder="NIM" class="form-control" required readonly value="<?= $nim; ?>">
-                  </div>
-                </div>
-
-                <!--<div class="row form-group">
-                    <div class="col col-md-3"><label for="password" class=" form-control-label">password</label></div>
-                      <div class="col-12 col-md-9">-->
-                <input type="hidden" id="password" name="password" placeholder="password" required readonly value="<?= $password; ?>">
-                <!--</div>
-                </div>-->
-
-                <div class="row form-group">
-                  <div class="col col-md-3"><label for="nama" class=" form-control-label">Nama Pemilih</label></div>
-                  <div class="col-12 col-md-9">
-                    <input type="text" id="nama" name="nama" placeholder="Nama" class="form-control" required value="<?= $nama; ?>">
-                  </div>
-                </div>
-
-                <div class="row form-group">
-                  <div class="col col-md-3"><label for="kelas" class=" form-control-label">kelas</label></div>
-                  <div class="col-12 col-md-9">
-                    <input type="text" id="kelas" name="kelas" placeholder="kelas" class="form-control" required value="<?= $kelas; ?>">
-                  </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-              <button type="reset" class="btn btn-danger">Reset</button>
-              <button type="submit" class="btn btn-primary">Tambah</button>
-            </div>
-            </form>
+    <div class="modal fade" id="editdata">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Tambah Pemilih</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
+          <div class="modal-body">
+            <form id="edit_form" action="" method="post">
+              <div class="row form-group">
+                <div class="col col-md-3"><label for="edit_nim" class=" form-control-label">NIM</label></div>
+                <div class="col-12 col-md-9">
+                  <input type="text" id="edit_nim" name="nim" placeholder="NIM" class="form-control" required readonly value="">
+                </div>
+              </div>
+
+              <!--<div class="row form-group">
+                  <div class="col col-md-3"><label for="password" class=" form-control-label">password</label></div>
+                    <div class="col-12 col-md-9">-->
+              <input type="hidden" id="password" name="password" placeholder="password" required readonly value="">
+              <!--</div>
+              </div>-->
+
+              <div class="row form-group">
+                <div class="col col-md-3"><label for="edit_nama" class=" form-control-label">Nama Pemilih</label></div>
+                <div class="col-12 col-md-9">
+                  <input type="text" id="edit_nama" name="nama" placeholder="Nama" class="form-control" required value="">
+                </div>
+              </div>
+
+              <div class="row form-group">
+                <div class="col col-md-3"><label for="edit_kelas" class=" form-control-label">kelas</label></div>
+                <div class="col-12 col-md-9">
+                  <input type="text" id="edit_kelas" name="kelas" placeholder="kelas" class="form-control" required value="">
+                </div>
+              </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-danger">Reset</button>
+            <button type="submit" class="btn btn-primary">Tambah</button>
+          </div>
+          </form>
+        <!-- /.modal-content -->
       </div>
-    <?php endforeach; ?>
+      <!-- /.modal-dialog -->
+    </div>
+    </div>
     <!-- /modal Ubah -->
 
 
@@ -459,6 +418,23 @@
       const insertDataForm = document.querySelector('#insert_data_form');
       const insertDataImport = document.querySelector('#insert_data_import');
       const insertDataModal = $('#insert_data_modal');
+      const btnBody = $('body');
+
+      btnBody.on('click', '#editdata_btn', function(e) {
+        e.preventDefault();
+        const id = $(this).data('id');
+        // console.log(id);
+        fetch(`<?= base_url('Datapem/show_detail/'); ?>${id}`, { 
+          method: 'GET',
+        }).then(function(response) {
+          return response.json();
+        }).then(function(result) {
+          document.querySelector('#edit_nim').value = `${result.data.nim}`;
+          document.querySelector('#edit_nama').value = `${result.data.nama}`;
+          document.querySelector('#edit_kelas').value = `${result.data.kelas}`;
+          document.querySelector('#edit_form').setAttribute('action', `<?= base_url('Datapem/edit/'); ?>${id}`);
+        });
+      });
 
       insertData.addEventListener('click', function() {
         insertDataForm.innerHTML = `
