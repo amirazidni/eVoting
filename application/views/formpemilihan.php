@@ -4,13 +4,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>AdminLTE 3 | Log in</title>
+	<title>PEMIRA 2020</title>
 	<link rel="stylesheet" href="<?=base_url()?>assets/plugins/fontawesome-free/css/all.min.css">
 	<link rel="stylesheet" href="<?=base_url()?>assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
 	<link rel="stylesheet" href="<?=base_url()?>assets/dist/css/adminlte.min.css">
+	<link rel="stylesheet" href="<?=base_url()?>assets/dist/css/modif.css">
 </head>
 
-<body class="hold-transition">
+<body class="hold-transition" id="formpemilihan">
 	<div class="content">
 		<div class="card">
 			<div class="card-body login-card-body">
@@ -23,7 +24,7 @@
 										<div class="row">
 											<div class="col text-center">
 												<H3>Selamat Datang <?php echo $this->session->userdata('nama'); ?>!
-												</H3>Silahkan pilih calon pasangan Presiden dan Wakil Presiden dengan
+												</H3>Silahkan pilih calon pasangan Presiden dan Wakil Presiden BEM dengan
 												bijak
 											</div>
 										</div>

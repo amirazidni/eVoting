@@ -39,7 +39,7 @@
     <!-- /.login-logo -->
     <div class="card">
       <div class="card-body login-card-body">
-        <p class="login-box-msg">Masukan Username dan Password</p>
+        <p class="login-box-msg">Masukan NIM dan Password</p>
 
         <?= form_open(base_url('Welcome/aksi_login')); ?>
         <div class="input-group mb-3">
@@ -61,7 +61,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-primary btn-block">Masuk</button>
           </div>
         </div>
         <?= form_close(); ?>
