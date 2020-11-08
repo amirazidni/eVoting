@@ -207,67 +207,6 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <?php $no = 1;
-                      foreach ($data->result_array() as $i) :
-                        $id = $i['id'];
-                        $nim = $i['nim'];
-                        $nama = $i['nama'];
-                        $kelas = $i['kelas'];
-                        $suara = $i['suara'];
-                        $aktivasi = $i['aktivasi'];
-                      ?>
-                        <tr>
-                          <td><?= $no; ?></td>
-                          <td><?= $nim; ?> </td>
-                          <td><?= $nama; ?> </td>
-                          <td><?= $kelas; ?> </td>
-                          <td><?php
-                              if ($aktivasi == '0') {
-                              ?>
-                              <button type="button" class="btn btn-danger">Belum Diaktivasi</button>
-                            <?php
-                              } else {
-                            ?>
-                              <button type="button" class="btn btn-success">Telah Diaktivasi</button>
-                            <?php
-                              };
-                            ?> </td>
-                          <td><?php
-                              if ($suara == '0') {
-                              ?>
-                              <button type="button" class="btn btn-danger">Belum Memilih</button>
-                            <?php
-                              } else {
-                            ?>
-                              <button type="button" class="btn btn-success">Telah Memilih</button>
-                            <?php
-                              };
-                            ?> </td>
-                          </td>
-                          <td>
-
-
-                            <a class="btn btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="<?= $id; ?>" href="javascript:void(0);"><i class="fa fa-edit"></i></a>
-
-                            <?php
-                            if ($aktivasi == '0') {
-                            ?>
-                              <a class="btn btn-warning" href="datapem/edita/<?php echo $id; ?>" title="Absen" href=""><i class="fa fa-lock"></i></a>
-                            <?php
-                            } else {
-                            ?>
-                              <a class="btn btn-primary" href="datapem/editbatal/<?php echo $id; ?>" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a>
-                            <?php
-                            };
-                            ?>
-
-                            <!-- <a class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Reset Pilihan" href="<?php // echo  base_url('index.php/datapem/resetpilihan/' . $id); 
-                                                                                                                                      ?>"><i class="fa fa-undo"></i></a> -->
-                          </td>
-                        </tr>
-
-                      <?php $no++;
-                      endforeach; ?>
                     </tbody>
                   </table>
                 </div>
@@ -403,7 +342,7 @@
   <!-- page script -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      $("#example1").DataTable({
+      const t = $("#example1").DataTable({
         "paging": true,
         "lengthChange": true,
         "searching": true,
@@ -411,7 +350,53 @@
         "info": true,
         "autoWidth": true,
         "responsive": true,
+        "order": [[1, "asc"]],
+        "processing": true,
+        ajax:`<?= base_url('pengawas/show_all'); ?>`,
+        columns: [
+          {data:null},
+          {data:"nim"},
+          {data:"nama"},
+          {data:"kelas"},
+          {data:null,
+            render: function(data, type, row) {
+              if(row.aktivasi == 0) {
+                return `<button type="button" class="btn btn-sm btn-danger">Belum Diaktivasi</button>`;
+              } else {
+                return `<button type="button" class="btn btn-sm btn-success">Telah Diaktivasi</button>`;
+              }
+            }
+          },
+          {data:null,
+            render: function(data, type, row) {
+              if(row.suara == 0) {
+                return `<button type="button" class="btn btn-sm btn-danger">Belum Memilih</button>`;
+              } else {
+                return `<button type="button" class="btn btn-sm btn-success">Telah Memilih</button>`;
+              }
+            }
+          },
+          {data:null,
+            render: function(data, type, row) {
+              const btn_edit = `<a class="btn btn-sm btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${row.id}" href="javascript:void(0);"><i class="fa fa-edit"></i></a>`;
+              if(row.aktivasi == 0) {
+                return `
+                ${btn_edit} 
+                <a class="btn btn-sm btn-warning" href="pengawas/edit/${row.id}" title="Absen" href=""><i class="fa fa-lock"></i></a>`;
+              } else {
+                return `
+                ${btn_edit} 
+                <a class="btn btn-sm btn-primary" href="pengawas/editbatal/${row.id}" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a>`;
+              }
+            }
+          }
+        ]
       });
+      t.on( 'order.dt search.dt', function () {
+        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+          cell.innerHTML = i+1;
+        });
+      }).draw(); // digunakan untuk menambah index nomor column
 
       const insertData = document.querySelector('#insert_data');
       const importData = document.querySelector('#import_data');
@@ -424,7 +409,7 @@
         e.preventDefault();
         const id = $(this).data('id');
         // console.log(id);
-        fetch(`<?= base_url('Datapem/show_detail/'); ?>${id}`, { 
+        fetch(`<?= base_url('pengawas/show_detail/'); ?>${id}`, { 
           method: 'GET',
         }).then(function(response) {
           return response.json();
@@ -432,7 +417,7 @@
           document.querySelector('#edit_nim').value = `${result.data.nim}`;
           document.querySelector('#edit_nama').value = `${result.data.nama}`;
           document.querySelector('#edit_kelas').value = `${result.data.kelas}`;
-          document.querySelector('#edit_form').setAttribute('action', `<?= base_url('Datapem/edit/'); ?>${id}`);
+          document.querySelector('#edit_form').setAttribute('action', `<?= base_url('pengawas/edit/'); ?>${id}`);
         });
       });
 

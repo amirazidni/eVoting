@@ -14,11 +14,18 @@ class Datapem extends CI_Controller
 
 	public function index()
 	{
-		$x['data']	=	$this->mp->show_pemilih();
-		$this->load->view('datapemilih', $x);
+		$this->load->view('datapemilih');
 	}
 
-	public function show_detail($id) {
+	public function show_all()
+	{
+		$result['data'] = $this->mp->show_pemilih()->result_array();
+		header("Content-type:application/json");
+		echo json_encode($result, true);
+	}
+
+	public function show_detail($id)
+	{
 		$result['data'] = $this->mp->show_pemilih($id);
 		header("Content-type:application/json");
 		echo json_encode($result, true);
@@ -34,7 +41,7 @@ class Datapem extends CI_Controller
 	{
 		$data = $this->input->post('records');
 		$data = json_decode($data, true);
-		if(!empty($this->db->get('pemilih')->num_rows())) {
+		if (!empty($this->db->get('pemilih')->num_rows())) {
 			$query 	= $this->db->query("SELECT * FROM pemilih ORDER BY id DESC LIMIT 1");
 			$result = $query->result_array();
 			$interval = date("YmdHis") + $result[0]['id'];
@@ -45,7 +52,7 @@ class Datapem extends CI_Controller
 			$object = [
 				'id' => $this->db->escape_str($this->security->xss_clean($interval++)),
 				'nim' => $this->db->escape_str($this->security->xss_clean($d['nim'])),
-				'password' => md5($this->db->escape_str($this->security->xss_clean($d['password']))),
+				'password' => $this->db->escape_str($this->security->xss_clean(md5($d['password']))),
 				'nama' => $this->db->escape_str($this->security->xss_clean($d['nama'])),
 				'kelas' => $this->db->escape_str($this->security->xss_clean($d['kelas'])),
 				'suara' => $this->db->escape_str($this->security->xss_clean(0)),

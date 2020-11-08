@@ -14,8 +14,19 @@ class Pengawas extends CI_Controller
 	
 	public function index()
   {
-		$x['data']	=	$this->mp->show_pemilih();
-		$this->load->view('viewpengawas', $x);
+		$this->load->view('viewpengawas');
+	}
+
+	public function show_all() {
+		$result['data'] = $this->mp->show_pemilih()->result_array();
+		header("Content-type:application/json");
+		echo json_encode($result, true);
+	}
+
+	public function show_detail($id) {
+		$result['data'] = $this->mp->show_pemilih($id);
+		header("Content-type:application/json");
+		echo json_encode($result, true);
 	}
 
 	public function edit($id)

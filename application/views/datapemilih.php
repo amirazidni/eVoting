@@ -203,73 +203,9 @@
                         <th>Aktivasi</th>
                         <th>Suara</th>
                         <th>Aksi</th>
-                        <!-- <th width="150"><button class="btn btn-danger" data-toggle="modal" data-target="#truncate" >Kosongkan</button></th> -->
                       </tr>
                     </thead>
                     <tbody>
-                      <?php $no = 1;
-                      foreach ($data->result_array() as $i) :
-                        $id = $i['id'];
-                        $nim = $i['nim'];
-                        $nama = $i['nama'];
-                        $kelas = $i['kelas'];
-                        $suara = $i['suara'];
-                        $aktivasi = $i['aktivasi'];
-                      ?>
-                        <tr>
-                          <td><?= $no; ?></td>
-                          <td><?= $nim; ?> </td>
-                          <td><?= $nama; ?> </td>
-                          <td><?= $kelas; ?> </td>
-                          <td><?php
-                              if ($aktivasi == '0') {
-                              ?>
-                              <button type="button" class="btn btn-danger">Belum Diaktivasi</button>
-                            <?php
-                              } else {
-                            ?>
-                              <button type="button" class="btn btn-success">Telah Diaktivasi</button>
-                            <?php
-                              };
-                            ?> </td>
-                          <td><?php
-                              if ($suara == '0') {
-                              ?>
-                              <button type="button" class="btn btn-danger">Belum Memilih</button>
-                            <?php
-                              } else {
-                            ?>
-                              <button type="button" class="btn btn-success">Telah Memilih</button>
-                            <?php
-                              };
-                            ?> </td>
-                          </td>
-                          <td>
-
-
-                            <a class="btn btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="<?= $id; ?>" href="javascript:void(0);"><i class="fa fa-edit"></i></a>
-
-                            <?php
-                            if ($aktivasi == '0') {
-                            ?>
-                              <a class="btn btn-warning" href="datapem/edita/<?php echo $id; ?>" title="Absen" href=""><i class="fa fa-lock"></i></a>
-                            <?php
-                            } else {
-                            ?>
-                              <a class="btn btn-primary" href="datapem/editbatal/<?php echo $id; ?>" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a>
-                            <?php
-                            };
-                            ?>
-
-                            <!-- <a class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Reset Pilihan" href="<?php // echo  base_url('index.php/datapem/resetpilihan/' . $id); 
-                                                                                                                                      ?>"><i class="fa fa-undo"></i></a> -->
-
-                            <a class="btn btn-danger" href="<?php echo  base_url('index.php/datapem/delete/' . $id); ?>"><i class="fa fa-trash"></i></a>
-                          </td>
-                        </tr>
-
-                      <?php $no++;
-                      endforeach; ?>
                     </tbody>
                   </table>
                 </div>
@@ -347,10 +283,10 @@
             <button type="submit" class="btn btn-primary">Tambah</button>
           </div>
           </form>
-        <!-- /.modal-content -->
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
       </div>
-      <!-- /.modal-dialog -->
-    </div>
     </div>
     <!-- /modal Ubah -->
 
@@ -408,7 +344,7 @@
   <!-- import export excel -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      $("#example1").DataTable({
+      const t = $("#example1").DataTable({
         "paging": true,
         "lengthChange": true,
         "searching": true,
@@ -416,7 +352,71 @@
         "info": true,
         "autoWidth": true,
         "responsive": true,
+        "order": [
+          [1, "asc"]
+        ],
+        "processing": true,
+        ajax: `<?= base_url('Datapem/show_all'); ?>`,
+        columns: [{
+            data: null
+          },
+          {
+            data: "nim"
+          },
+          {
+            data: "nama"
+          },
+          {
+            data: "kelas"
+          },
+          {
+            data: null,
+            render: function(data, type, row) {
+              if (row.aktivasi == 0) {
+                return `<button type="button" class="btn btn-sm btn-danger">Belum Diaktivasi</button>`;
+              } else {
+                return `<button type="button" class="btn btn-sm btn-success">Telah Diaktivasi</button>`;
+              }
+            }
+          },
+          {
+            data: null,
+            render: function(data, type, row) {
+              if (row.suara == 0) {
+                return `<button type="button" class="btn btn-sm btn-danger">Belum Memilih</button>`;
+              } else {
+                return `<button type="button" class="btn btn-sm btn-success">Telah Memilih</button>`;
+              }
+            }
+          },
+          {
+            data: null,
+            render: function(data, type, row) {
+              const btn_edit = `<a class="btn btn-sm btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${row.id}" href="javascript:void(0);"><i class="fa fa-edit"></i></a>`;
+              const btn_hapus = `<a class="btn btn-sm btn-danger" href="<?php echo  base_url('index.php/datapem/delete/'); ?>${row.id}"><i class="fa fa-trash"></i></a>`;
+              if (row.aktivasi == 0) {
+                return `
+                ${btn_edit} 
+                <a class="btn btn-sm btn-warning" href="datapem/edita/${row.id}" title="Absen" href=""><i class="fa fa-lock"></i></a> 
+                ${btn_hapus}`;
+              } else {
+                return `
+                ${btn_edit} 
+                <a class="btn btn-sm btn-primary" href="datapem/editbatal/${row.id}" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a> 
+                ${btn_hapus}`;
+              }
+            }
+          }
+        ]
       });
+      t.on('order.dt search.dt', function() {
+        t.column(0, {
+          search: 'applied',
+          order: 'applied'
+        }).nodes().each(function(cell, i) {
+          cell.innerHTML = i + 1;
+        });
+      }).draw(); // digunakan untuk menambah index nomor column
 
       const insertData = document.querySelector('#insert_data');
       const importData = document.querySelector('#import_data');
@@ -429,7 +429,7 @@
         e.preventDefault();
         const id = $(this).data('id');
         // console.log(id);
-        fetch(`<?= base_url('Datapem/show_detail/'); ?>${id}`, { 
+        fetch(`<?= base_url('datapem/show_detail/'); ?>${id}`, {
           method: 'GET',
         }).then(function(response) {
           return response.json();
@@ -525,30 +525,41 @@
           // console.log(e.target.files[0]);
         });
         btnUploadExcel.addEventListener('click', function() {
-          if (selectedUploadExcel.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
-            const fileReader = new FileReader();
-            var urlencoded = new URLSearchParams();
-            fileReader.readAsBinaryString(selectedUploadExcel);
-            fileReader.onload = function(e) {
-              const data = e.target.result;
-              const workbook = XLSX.read(data, { type: 'binary' });
-              let json;
-              // console.log(e.target.result);
-              // console.log(workbook);
-              workbook.SheetNames.forEach(function(data) {
-                json = XLSX.utils.sheet_to_json(workbook.Sheets[data]);
-              });
-              // console.log(json);
-              urlencoded.append('records', JSON.stringify(json));
-              fetch(`<?= base_url('Datapem/import'); ?>`, { 
-                method: 'POST',
-                body: urlencoded,
-              }).then(function(response) {
-                return response.json();
-              }).then(function(result) {
-                alert(result);
-                window.location.reload();
-              });
+          if (selectedUploadExcel) {
+            if (selectedUploadExcel.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+              const fileReader = new FileReader();
+              const urlencoded = new URLSearchParams();
+              const btnLoading = document.querySelector('#btn_upload');
+              fileReader.readAsBinaryString(selectedUploadExcel);
+              fileReader.onload = function(e) {
+                const data = e.target.result;
+                const workbook = XLSX.read(data, {
+                  type: 'binary'
+                });
+                let json;
+                // console.log(e.target.result);
+                // console.log(workbook);
+                workbook.SheetNames.forEach(function(data) {
+                  json = XLSX.utils.sheet_to_json(workbook.Sheets[data]);
+                });
+                // console.log(json);
+                urlencoded.append('records', JSON.stringify(json));
+                btnLoading.innerText = 'Loading...';
+                btnLoading.setAttribute('disable', true);
+                fetch(`<?= base_url('Datapem/import'); ?>`, {
+                  method: 'POST',
+                  body: urlencoded,
+                }).then(function(response) {
+                  return response.json();
+                }).then(function(result) {
+                  btnLoading.innerText = 'Upload Sekarang';
+                  btnLoading.setAttribute('disable', false);
+                  alert(result);
+                  window.location.reload();
+                });
+              }
+            } else {
+              alert("Maaf sistem tidak disupport!");
             }
           }
         });
