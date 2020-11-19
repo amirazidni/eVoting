@@ -395,7 +395,7 @@
   <script src="<?= base_url() ?>assets/dist/js/demo.js"></script>
   <!-- page script -->
   <script>
-    $(function() {
+    document.addEventListener('DOMContentLoaded', function() {
       const t = $("#example1").DataTable({
         "paging": true,
         "lengthChange": true,
