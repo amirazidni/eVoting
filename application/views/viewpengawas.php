@@ -118,12 +118,20 @@
               <a href="Hasilpilih" class="nav-link">
                 <i class="nav-icon fas fa-edit"></i>
                 <p>
-                  Rekapitulasi
+                  Export PDF
                 </p>
               </a>
             </li>
             <li class="nav-item">
               <a href="Datapeng" class="nav-link">
+                <i class="nav-icon fas fa-user"></i>
+                <p>
+                  Pengawas
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="Dataadmin" class="nav-link">
                 <i class="nav-icon fas fa-user"></i>
                 <p>
                   Admin

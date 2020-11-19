@@ -115,7 +115,7 @@
               <a href="Hasilpilih" class="nav-link">
                 <i class="nav-icon fas fa-edit"></i>
                 <p>
-                  Rekapitulasi
+                  Export PDF
                 </p>
               </a>
             </li>
@@ -123,10 +123,18 @@
               <a href="Datapeng" class="nav-link active">
                 <i class="nav-icon fas fa-user"></i>
                 <p>
-                  Admin
+                  Pengawas
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+                <a href="Dataadmin" class="nav-link">
+                  <i class="nav-icon fas fa-user"></i>
+                  <p>
+                    Admin
+                  </p>
+                </a>
+              </li>
             <li class="nav-item">
               <a href="" data-toggle="modal" data-target="#konfirmkeluar" class="nav-link">
                 <i class="nav-icon fas fa-power-off"></i>
@@ -210,8 +218,8 @@
                           <td><?php echo $namapengawas; ?> </td>
                           <td>
 
-                            <a class="btn btn-primary" data-toggle="modal" data-target="#editdata<?php echo $id; ?>" href=""><i class="fa fa-edit"></i></a>
-                            <a class="btn btn-danger" data-toggle="modal" data-target="#konfirmasihapus" href=""><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editdata<?php echo $id; ?>" href=""><i class="fa fa-edit"></i></a>
+                            <a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#konfirmasihapus" href=""><i class="fa fa-trash"></i></a>
 
                           </td>
                         </tr>

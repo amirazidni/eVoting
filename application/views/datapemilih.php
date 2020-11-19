@@ -118,7 +118,7 @@
               <a href="Hasilpilih" class="nav-link">
                 <i class="nav-icon fas fa-edit"></i>
                 <p>
-                  Rekapitulasi
+                  Export PDF
                 </p>
               </a>
             </li>
@@ -126,10 +126,18 @@
               <a href="Datapeng" class="nav-link">
                 <i class="nav-icon fas fa-user"></i>
                 <p>
-                  Admin
+                  Pengawas
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+                <a href="Dataadmin" class="nav-link">
+                  <i class="nav-icon fas fa-user"></i>
+                  <p>
+                    Admin
+                  </p>
+                </a>
+              </li>
             <li class="nav-item">
               <a href="" data-toggle="modal" data-target="#konfirmkeluar" class="nav-link">
                 <i class="nav-icon fas fa-power-off"></i>

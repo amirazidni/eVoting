@@ -121,7 +121,7 @@
               <a href="Hasilpilih" class="nav-link">
                 <i class="nav-icon fas fa-edit"></i>
                 <p>
-                  Rekapitulasi
+                  Export PDF
                 </p>
               </a>
             </li>
@@ -129,10 +129,18 @@
               <a href="Datapeng" class="nav-link">
                 <i class="nav-icon fas fa-user"></i>
                 <p>
-                  Admin
+                  Pengawas
                 </p>
               </a>
             </li>
+            <li class="nav-item">
+                <a href="Dataadmin" class="nav-link">
+                  <i class="nav-icon fas fa-user"></i>
+                  <p>
+                    Admin
+                  </p>
+                </a>
+              </li>
             <li class="nav-item">
               <a href="" data-toggle="modal" data-target="#konfirmkeluar" class="nav-link">
                 <i class="nav-icon fas fa-power-off"></i>
@@ -192,8 +200,8 @@
               </div>
               <div class="card">
                 <!-- /.card-header -->
-                <div class="card-body">
-                  <table id="example1" class="table table-bordered table-striped">
+                <div class="card-body table-responsive">
+                  <table id="example1" class="w-100 table table-bordered table-striped">
                     <thead>
                       <tr>
                         <th>No. Urut</th>
@@ -434,8 +442,8 @@
             data: null,
             render: function(data, type, row) {
               return `
-              <a class="btn btn-primary" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${row.id}" href="javascript:void(0)"><i class="fas fa-edit"></i></a>
-              <a class="btn btn-danger" href="<?= base_url('datacal/delete/')?>${row.id}" onclick="return confirm('Yakin ingin menghapus nomor urut ${row.nomorurut}?');"><i class="fa fa-trash"></i></a>`;
+              <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${row.id}" href="javascript:void(0)"><i class="fas fa-edit"></i></a>
+              <a class="btn btn-sm btn-danger" href="<?= base_url('datacal/delete/')?>${row.id}" onclick="return confirm('Yakin ingin menghapus nomor urut ${row.nomorurut}?');"><i class="fa fa-trash"></i></a>`;
             }
           }
         ]

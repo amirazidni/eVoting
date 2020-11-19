@@ -1,14 +1,28 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Password extends CI_Controller {
+class Password extends CI_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->library("l_encrypt");
     }
 
-    public function enc($val="", $enc="") {
+    public function enc($enc = "")
+    {
+        $val = $this->input->get('val', true);
         $encode = new L_encrypt(base64_encode($val), $enc, 256, 'CBC');
         echo $this->db->escape_str(urlencode($encode->encrypt()));
     }
+
+    public function dec($enc = "")
+    {
+        $val = $this->input->get('val', true);
+        $decode = new L_encrypt(urldecode($val), $enc, 256, 'CBC');
+        echo $this->db->escape_str(base64_decode($decode->decrypt()));
+    }
+
+    // cara makainya seperti ini
+    // jika memakai <function>/<encryption>?val=<value>
 }
