@@ -386,7 +386,7 @@
           {data: null,
             render: function(data, type, row) {
               const btn_edit = `<a class="btn btn-sm btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${row.id}" href="javascript:void(0);"><i class="fa fa-edit"></i></a>`;
-              const btn_reset = `<a class="btn btn-sm btn-danger" id="editdata_btn" data-id="${row.id}" href="javascript:void(0);"><i class="fa fa-edit"></i> Reset Vote</a>`;
+              const btn_reset = `<a class="btn btn-sm btn-danger" href="<?= base_url('pengawas/resetpilihan/'); ?>${row.id}" onclick="return confirm('Yakin ingin mereset peserta ${row.nim}?');"><i class="fa fa-edit"></i> Reset Vote</a>`;
               if (row.aktivasi == 0) {
                 return `
                 ${btn_edit} 

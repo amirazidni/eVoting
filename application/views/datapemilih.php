@@ -398,7 +398,7 @@
             data: null,
             render: function(data, type, row) {
               const btn_edit = `<a class="btn btn-sm btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${row.id}" href="javascript:void(0);"><i class="fa fa-edit"></i></a>`;
-              const btn_hapus = `<a class="btn btn-sm btn-danger" href="<?php echo  base_url('index.php/datapem/delete/'); ?>${row.id}"><i class="fa fa-trash"></i></a>`;
+              const btn_hapus = `<a class="btn btn-sm btn-danger" href="<?php echo  base_url('index.php/datapem/delete/'); ?>${row.id}" onclick="return confirm('Yakin ingin menghapus nomor urut ${row.nomorurut}?');"><i class="fa fa-trash"></i></a>`;
               if (row.aktivasi == 0) {
                 return `
                 ${btn_edit} 
