@@ -37,21 +37,6 @@
 
 <body>
 
-    <?php
-
-    $login = $this->session->userdata('status');
-    if ($login == 'loginadmin') {
-    } else if ($login == 'loginsiswa') {
-        redirect(base_url('?pesan=salah'));
-    } else if ($login == 'loginpengawas') {
-        redirect(base_url('?pesan=salah'));
-    } else {
-        redirect(base_url('?pesan=belumlogin'));
-    }
-
-    ?>
-
-
 
 
     <div class="content">

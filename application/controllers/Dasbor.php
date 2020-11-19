@@ -10,7 +10,9 @@ class Dasbor extends CI_Controller
 		$this->load->model('M_calon', 'mc');
 		$this->load->model('M_pemilih', 'mp');
 		$this->load->library("l_session");
-		$this->l_session->admin();
+		if ($this->l_session->admin()) {
+			redirect('welcome');
+		}
 	}
 
 	public function index()

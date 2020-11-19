@@ -9,7 +9,9 @@ class Pengawas extends CI_Controller
 		parent::__construct();
 		$this->load->model('M_pemilih', 'mp');
 		$this->load->library("l_session");
-		$this->l_session->pegawai();
+		if($this->l_session->pegawai()) {
+			redirect('welcome');
+		}
 	}
 
 	public function index()

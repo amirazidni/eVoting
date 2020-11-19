@@ -31,20 +31,6 @@
 
 <body>
 
-    <?php
-
-    $login = $this->session->userdata('status');
-    if ($login == 'loginadmin') {
-    } else if ($login == 'loginpengawas') {
-    } else if ($login == 'loginsiswa') {
-        redirect(base_url('?pesan=salah'));
-    } else {
-        redirect(base_url('?pesan=belumlogin'));
-    }
-
-    ?>
-
-
     <!-- Header-->
     <div class="content pb-0">
 
@@ -90,24 +76,6 @@
             </div>
         </div>
         <hr>
-
-        <div class="row">
-
-            <?php $no = 1;
-            foreach ($data->result_array() as $i) :
-                $id = $i['id'];
-                $nama1 = $i['nama1'];
-                $nama2 = $i['nama2'];
-                $visi = $i['visi'];
-                $misi = $i['misi'];
-                $foto = $i['foto'];
-                $vote = $i['vote'];
-            ?>
-
-
-            <?php $no++;
-            endforeach; ?>
-        </div>
         <div class="row">
             <?php $no = 1;
             foreach ($data->result_array() as $i) :
@@ -117,6 +85,7 @@
                 $nama1 = $i['nama1'];
                 $nama2 = $i['nama2'];
                 $foto = $i['foto'];
+                $i['vote'] = count($this->db->get_where('pemilih', ['suara' => $id])->result_array());
                 $vote = $i['vote'];
             ?>
                 <div class="col-md-4">

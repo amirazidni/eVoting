@@ -7,19 +7,21 @@ class Form extends CI_Controller
 	protected $data_id;
 
 	function __construct()
-  {
+	{
 		parent::__construct();
-		$this->load->model('M_calon','mc');
+		$this->load->model('M_calon', 'mc');
 		$this->load->library("l_session");
-		$this->l_session->mahasiswa();
+		if ($this->l_session->mahasiswa()) {
+			redirect('welcome');
+		}
 	}
 
 	public function index()
-  {
+	{
 		$x['data'] = $this->mc->show_calon();
-		$this->load->view('formpemilihan',$x);
+		$this->load->view('formpemilihan', $x);
 	}
-  
+
 	public function pilih($id)
 	{
 		$result = $this->mc->pilihcalon($id);
