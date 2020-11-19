@@ -22,4 +22,16 @@ class Dasbor extends CI_Controller
 		
       $this->load->view('dashboard', $data);
    }
+   function update_realtime() {
+		$pemilih = $this->mp->jumlah_pemilih();
+		$calon = $this->mc->jumlah_calon();
+		$suara_masuk = $this->mp->suara_masuk();
+		$sisa = $pemilih - $suara_masuk;
+
+		$result = array('pemilih' => $pemilih,
+						'calon' => $calon,
+						'pilihan' => $suara_masuk,
+						'sisa' => $sisa);
+		echo $result = json_encode($result, JSON_PRETTY_PRINT);
+   }
 }

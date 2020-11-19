@@ -1,26 +1,3 @@
-  <?php $nototal = 0;
-  $belummemilih = 0;
-  $sudahmemilih = 0;
-  $sudahaktivasibelummilih = 0;
-
-  foreach ($datapemilih1->result_array() as $j) :
-    $id = $j['id'];
-    $suara = $j['suara'];
-    $aktivasi = $j['aktivasi'];
-    if ($suara != 0) {
-      $sudahmemilih++;
-    }
-    if ($suara == 0) {
-      $belummemilih++;
-    }
-    if ($suara == 0 && $aktivasi != 0) {
-      $sudahaktivasibelummilih++;
-    };
-    $nototal++;
-  endforeach;
-
-  ?>
-
   <!DOCTYPE html>
   <html>
 
@@ -197,7 +174,7 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                   <div class="inner">
-                    <h3><?= $nototal; ?></h3>
+                    <h3><div id="pemilih"></div></h3>
 
                     <p>Jumlah Pemilih</p>
                   </div>
@@ -214,7 +191,7 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                   <div class="inner">
-                    <h3><?= $totalcalon; ?></h3>
+                    <h3><div id="calon"></div></h3>
                     <p>Jumlah Calon</p>
                   </div>
                   <div class="icon">
@@ -228,7 +205,7 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                   <div class="inner">
-                    <h3><?= $sudahmemilih; ?></h3>
+                    <h3><div id="suara_masuk"></div></h3>
 
                     <p>Suara Masuk</p>
                   </div>
@@ -243,7 +220,7 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                   <div class="inner">
-                    <h3><?= $belummemilih; ?></h3>
+                    <h3><div id="sisa"></div></h3>
 
                     <p>Suara Belum Digunakan</p>
                   </div>
@@ -387,39 +364,59 @@
   </body>
 
   </html>
-  <script>
-    $(function() {
-      /* ChartJS
-       * -------
-       * Here we will create a few charts using ChartJS
-       */
-      //-------------
-      //- PIE CHART -
-      //-------------
-      // Get context with jQuery - using jQuery's .get() method.
-      var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-      var pieData = {
-        labels: [
-          'Suara Masuk',
-          'Suara Belum Digunakan',
-        ],
-        datasets: [{
-          data: [<?= $sudahmemilih; ?>, <?= $belummemilih; ?>],
-          backgroundColor: ['#00a65a', '#ffc107'],
-        }]
-      }
-      var pieOptions = {
-        maintainAspectRatio: false,
-        responsive: true,
-      }
-      //Create pie or douhnut chart
-      // You can switch between pie and douhnut using the method below.
-      var pieChart = new Chart(pieChartCanvas, {
-        type: 'pie',
-        data: pieData,
-        options: pieOptions
-      })
+  <script type="text/javascript">
+    var pemilih = document.getElementById('pemilih');
+    var calon = document.getElementById('calon');
+    var pilihan = document.getElementById('suara_masuk');
+    var sisa = document.getElementById('sisa');
+    $(document).ready(function() {
+        selesai();
+        updatePie();
+    });
+    
+    function selesai() {
+      setTimeout(function() {
+        update();
+        selesai();
+      }, 200);
+    };
+    
+    function update() {
+      $.getJSON("<?php base_url() ?>Dasbor/update_realtime", function(data) {
+            pemilih.innerHTML = data.pemilih;
+            calon.innerHTML = data.calon;
+            pilihan.innerHTML = data.pilihan;
+            sisa.innerHTML = data.sisa;
+            
+      });
+    };
+    function updatePie() {
+      setTimeout(function() {
+        pieConfig.data.datasets[0].data[0] = pilihan.innerHTML; //suara masuk 
+        pieConfig.data.datasets[0].data[1] = sisa.innerHTML; //suara sisa       
+        window.myPie.update();
+        updatePie();
+      }, 2000);
+    }
+    
 
-
-    })
-  </script>
+    /* ChartJS */
+    var pieConfig        = {
+      type: 'pie',
+      data: {
+				datasets: [{
+					data: [ 0, 0 ],
+					backgroundColor : ['#00a65a', '#ffc107'],
+				}],
+				labels: [ 'Suara Masuk', 'Suara Belum Digunakan'],
+      },
+      options :{
+        maintainAspectRatio : false,
+        responsive : true,
+      }
+    };
+    window.onload = function() {
+			var ctx = document.getElementById('pieChart').getContext('2d');
+			window.myPie = new Chart(ctx, pieConfig);
+		};  
+</script>

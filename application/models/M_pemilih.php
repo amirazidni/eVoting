@@ -2,6 +2,26 @@
 
 class M_pemilih extends CI_Model
 {
+	function jumlah_pemilih()
+	{
+
+		$totalpemilih = $this->db->query("SELECT * FROM pemilih");
+		if ($totalpemilih->num_rows() > 0) {
+			return $totalpemilih->num_rows();
+		} else {
+			return 0;
+		}
+	}
+	function suara_masuk()
+	{
+
+		$totalsuara = $this->db->query("SELECT * FROM pemilih where suara not like '0'");
+		if ($totalsuara->num_rows() > 0) {
+			return $totalsuara->num_rows();
+		} else {
+			return 0;
+		}
+	}
 
 	function show_pemilih($where = null)
 	{
