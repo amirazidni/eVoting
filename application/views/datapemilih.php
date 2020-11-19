@@ -248,28 +248,19 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="edit_form" action="" method="post">
+            <?= form_open('', ['id'=>'edit_form']); ?>
               <div class="row form-group">
                 <div class="col col-md-3"><label for="edit_nim" class=" form-control-label">NIM</label></div>
                 <div class="col-12 col-md-9">
                   <input type="text" id="edit_nim" name="nim" placeholder="NIM" class="form-control" required readonly value="">
                 </div>
               </div>
-
-              <!--<div class="row form-group">
-                  <div class="col col-md-3"><label for="password" class=" form-control-label">password</label></div>
-                    <div class="col-12 col-md-9">-->
-              <!-- <input type="hidden" id="password" name="password" placeholder="password" required readonly value=""> -->
-              <!--</div>
-              </div>-->
-
               <div class="row form-group">
                 <div class="col col-md-3"><label for="edit_nama" class=" form-control-label">Nama Pemilih</label></div>
                 <div class="col-12 col-md-9">
                   <input type="text" id="edit_nama" name="nama" placeholder="Nama" class="form-control" required value="">
                 </div>
               </div>
-
               <div class="row form-group">
                 <div class="col col-md-3"><label for="edit_kelas" class=" form-control-label">kelas</label></div>
                 <div class="col-12 col-md-9">
@@ -288,7 +279,7 @@
             <button type="reset" class="btn btn-danger">Reset</button>
             <button type="submit" class="btn btn-primary">Ubah</button>
           </div>
-          </form>
+          <?= form_close(); ?>
           <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->

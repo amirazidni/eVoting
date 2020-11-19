@@ -19,6 +19,12 @@
   <link rel="stylesheet" href="<?= base_url() ?>assets/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <style>
+    th,
+    td {
+      white-space: nowrap;
+    }
+  </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -179,65 +185,27 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">
-              <div class="row">
-                <div class="col-10"></div>
-                <div class="col-2">
-                  <h3><button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#tambahdata"><i class="fa fa-plus"></i> Tambah Calon</button></h3>
+              <div class="row mb-2">
+                <div class="col-12 d-flex">
+                  <button type="button" class="ml-auto btn btn-primary" data-toggle="modal" data-target="#tambahdata"><i class="fa fa-plus"></i> Tambah Calon</button>
                 </div>
               </div>
               <div class="card">
-
-                <hr>
-
                 <!-- /.card-header -->
                 <div class="card-body">
                   <table id="example1" class="table table-bordered table-striped">
                     <thead>
                       <tr>
-                        
                         <th>No. Urut</th>
                         <th>Presiden</th>
                         <th>Wakil </th>
                         <th>Visi</th>
                         <th>Misi</th>
                         <th>Foto</th>
-                        
                         <th>Aksi</th>
-                        <!-- <th width="150"><button class="btn btn-danger" data-toggle="modal" data-target="#truncate" >Kosongkan</button></th> -->
                       </tr>
                     </thead>
-                    <tbody>
-                      <?php $no = 1;
-                      foreach ($data->result_array() as $i) :
-                        $id = $i['id'];
-                        $nomorurut = $i['nomorurut'];
-                        $nama1 = $i['nama1'];
-                        $nama2 = $i['nama2'];
-                        $visi = $i['visi'];
-                        $misi = $i['misi'];
-                        $foto = $i['foto'];
-                        $vote = $i['vote'];
-                      ?>
-                        <tr>
-                          <!-- <td><?= "$no" ?></td> -->
-                          <td>0<?= $nomorurut; ?></td>
-                          <td><?= $nama1; ?></td>
-                          <td><?= $nama2; ?></td>
-                          <td><?= $visi; ?> </td>
-                          <td><?= $misi; ?> </td>
-                          <td><img src="<?= base_url('upload/' . $foto) ?>" width="64"> </td>
-                          
-                          <td>
-                            <a class="btn btn-primary" data-toggle="modal" data-target="#editdata<?= $id; ?>" href=""><i class="fas fa-edit"></i></a>
-
-                            <a class="btn btn-danger" href="<?= 'datacal/delete/' . $id = $i['id']; ?>" onclick="return confirm('Yakin ingin menghapus nomor urut <?= $nomorurut; ?>?');"><i class="fa fa-trash"></i></a>
-
-                          </td>
-                        </tr>
-                      <?php $no++;
-                      endforeach; ?>
-
-                    </tbody>
+                    <tbody></tbody>
 
                   </table>
                 </div>
@@ -304,7 +272,7 @@
                 <button type="reset" class="btn btn-danger">Reset</button>
                 <button type="submit" class="btn btn-primary">Tambah</button>
               </div>
-              </form>
+              <?= form_close(); ?>
             </div>
             <!-- /.modal-content -->
           </div>
@@ -313,78 +281,65 @@
         <!-- /modal tambah -->
 
         <!-- modal Edit -->
-        <?php
-        foreach ($data->result_array() as $i) :
-          $id = $i['id'];
-          $nomorurut = $i['nomorurut'];
-          $nama1 = $i['nama1'];
-          $nama2 = $i['nama2'];
-          $visi = $i['visi'];
-          $misi = $i['misi'];
-          $foto = $i['foto'];
-          $vote = $i['vote'];
-        ?>
+        <div class="modal fade" id="editdata">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Edit Calon</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <?= form_open_multipart('', ['id'=>'edit_form']); ?>
+                <div class="row form-group">
+                  <div class="col col-md-3"><label for="edit_nomorurut" class="form-control-label">Nomor Urut</label></div>
+                    <div class="col-12 col-md-9">
+                      <input type="number" id="edit_nomorurut" name="nomorurut" placeholder="Nomor Urut" class="form-control">
+                    </div>
+                  </div>
 
-          <div class="modal fade" id="editdata<?= $id; ?>">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title">Tambah Calon</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <?= form_open_multipart('datacal/edit/' . $id); ?>
-                  <form action="<?= site_url('datacal/edit/' . $id); ?>" method="post">
-                    <div class="row form-group">
-                      <div class="col col-md-3"><label for="nomorurut" class=" form-control-label">Nomor Urut</label></div>
-                      <div class="col-12 col-md-9">
-                        <input type="number" id="nomorurut" name="nomorurut" placeholder="Nomor Urut" class="form-control" value="<?= $nomorurut; ?>">
-                      </div>
+                  <div class="row form-group">
+                    <div class="col col-md-3"><label for="edit_nama1" class="form-control-label">Presiden BEM</label></div>
+                    <div class="col-12 col-md-9">
+                      <input type="text" id="edit_nama1" name="nama1" placeholder="Nama Presiden" class="form-control">
                     </div>
+                  </div>
 
-                    <div class="row form-group">
-                      <div class="col col-md-3"><label for="nama1" class=" form-control-label">Presiden BEM</label></div>
-                      <div class="col-12 col-md-9">
-                        <input type="text" id="nama1" name="nama1" placeholder="Nama Presiden" class="form-control" value="<?= $nama1; ?>">
-                      </div>
+                  <div class="row form-group">
+                    <div class="col col-md-3"><label for="edit_nama2" class="form-control-label">Wakil Presiden BEM</label></div>
+                    <div class="col-12 col-md-9">
+                      <input type="text" id="edit_nama2" name="nama2" placeholder="Nama Wakil Presiden" class="form-control">
                     </div>
-
-                    <div class="row form-group">
-                      <div class="col col-md-3"><label for="nama2" class=" form-control-label">Wakil Presiden BEM</label></div>
-                      <div class="col-12 col-md-9">
-                        <input type="text" id="nama2" name="nama2" placeholder="Nama Wakil Presiden" class="form-control" value="<?= $nama2; ?>">
-                      </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col col-md-3"><label for="disabled-input" class="form-control-label">Visi</label></div>
+                    <div class="col-12 col-md-9">
+                      <textarea class="form-control" name="visi" id="edit_visi"></textarea>
                     </div>
-                    <div class="row form-group">
-                      <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Visi</label></div>
-                      <div class="col-12 col-md-9">
-                        <textarea class="form-control" name="visi"><?= $visi; ?></textarea>
-                      </div>
+                  </div>
+                  <div class="row form-group">
+                    <div class="col col-md-3"><label for="disabled-input" class="form-control-label">Misi</label></div>
+                    <div class="col-12 col-md-9">
+                      <textarea class="form-control" name="misi" id="edit_misi"></textarea>
                     </div>
-                    <div class="row form-group">
-                      <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Misi</label></div>
-                      <div class="col-12 col-md-9">
-                        <textarea class="form-control" name="misi"><?= $misi; ?></textarea></div>
-                    </div>
-                    <div class="form-group">
-                      <label for="upfoto">Foto</label>
-                      <img src="<?= base_url('upload/' . $foto) ?>" width="40"> <br>
-                      <input class="form-control-file" type="file" name="upfoto" id="upfoto" />
-                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="upfoto">Foto</label>
+                    <img id="edit_foto" src="" width="40"> <br>
+                    <input class="form-control-file" type="file" name="upfoto" id="upfoto" />
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="reset" class="btn btn-danger">Reset</button>
                   <button type="submit" class="btn btn-primary">Ubah</button>
                 </div>
-                </form>
-              </div>
-              <!-- /.modal-content -->
+              <?= form_close(); ?>
             </div>
-            <!-- /.modal-dialog -->
+            <!-- /.modal-content -->
           </div>
-        <?php endforeach; ?>
+          <!-- /.modal-dialog -->
+        </div>
         <!-- /modal Edit -->
 
 
@@ -441,18 +396,70 @@
   <!-- page script -->
   <script>
     $(function() {
-      $("#example1").DataTable({
-        "responsive": true,
-        "autoWidth": false,
-      });
-      $('#example2').DataTable({
+      const t = $("#example1").DataTable({
         "paging": true,
-        "lengthChange": false,
-        "searching": false,
+        "lengthChange": true,
+        "searching": true,
         "ordering": true,
         "info": true,
-        "autoWidth": false,
+        "autoWidth": true,
         "responsive": true,
+        "order": [
+          [1, "asc"]
+        ],
+        "processing": true,
+        ajax: `<?= base_url('datacal/show_all'); ?>`,
+        columns: [{
+            data: "nomorurut"
+          },
+          {
+            data: "nama1"
+          },
+          {
+            data: "nama2"
+          },
+          {
+            data: "visi"
+          },
+          {
+            data: "misi"
+          },
+          {
+            data: null,
+            render: function(data, type, row) {
+              return `<img src="<?= base_url('upload/') ?>${row.foto}" width="64">`;
+            }
+          },
+          {
+            data: null,
+            render: function(data, type, row) {
+              return `
+              <a class="btn btn-primary" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${row.id}" href="javascript:void(0)"><i class="fas fa-edit"></i></a>
+              <a class="btn btn-danger" href="<?= base_url('datacal/delete/')?>${row.id}" onclick="return confirm('Yakin ingin menghapus nomor urut ${row.nomorurut}?');"><i class="fa fa-trash"></i></a>`;
+            }
+          }
+        ]
+      });
+
+      const btnBody = $('body');
+
+      btnBody.on('click', '#editdata_btn', function(e) {
+        e.preventDefault();
+        const id = $(this).data('id');
+        // console.log(id);
+        fetch(`<?= base_url('datacal/show_detail/'); ?>${id}`, {
+          method: 'GET',
+        }).then(function(response) {
+          return response.json();
+        }).then(function(result) {
+          document.querySelector('#edit_nomorurut').value = `${result.data.nomorurut}`;
+          document.querySelector('#edit_nama1').value = `${result.data.nama1}`;
+          document.querySelector('#edit_nama2').value = `${result.data.nama2}`;
+          document.querySelector('#edit_visi').value = `${result.data.visi}`;
+          document.querySelector('#edit_misi').value = `${result.data.misi}`;
+          document.querySelector('#edit_foto').setAttribute('src', `<?= base_url('upload/'); ?>${result.data.foto}`);
+          document.querySelector('#edit_form').setAttribute('action', `<?= base_url('datacal/edit/'); ?>${id}`);
+        });
       });
     });
   </script>

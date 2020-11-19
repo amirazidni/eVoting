@@ -24,11 +24,15 @@ class M_calon extends CI_Model
 		}
 	}
 
-	function show_calon()
+	function show_calon($where = null)
 	{
-
-		$hasil = $this->db->query("SELECT * FROM calon");
-		return $hasil;
+		if($where == null) {
+			$hasil = $this->db->query("SELECT * FROM calon");
+			return $hasil;
+		} else {
+			$hasil = $this->db->get_where('calon', ['id' => $where])->row_array();
+			return $hasil;
+		}
 	}
 
 	public function insert_data()

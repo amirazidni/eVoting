@@ -7,16 +7,29 @@ class Datacal extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('M_calon','mc');
+		$this->load->model('M_calon', 'mc');
 		$this->load->library("l_session");
 		$this->l_session->admin();
-  }
-	
+	}
+
 	public function index()
-  {
-     $x['data']	=	$this->mc->show_calon();
-     $this->load->view('datacalon',$x);
-  }
+	{
+		$this->load->view('datacalon');
+	}
+
+	public function show_all()
+	{
+		$result['data'] = $this->mc->show_calon()->result_array();
+		header("Content-type:application/json");
+		echo json_encode($result, true);
+	}
+
+	public function show_detail($id)
+	{
+		$result['data'] = $this->mc->show_calon($id);
+		header("Content-type:application/json");
+		echo json_encode($result, true);
+	}
 
 	public function insert()
 	{

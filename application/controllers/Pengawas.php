@@ -7,23 +7,25 @@ class Pengawas extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('M_pemilih','mp');
+		$this->load->model('M_pemilih', 'mp');
 		$this->load->library("l_session");
 		$this->l_session->pegawai();
-    }
-	
+	}
+
 	public function index()
-  {
+	{
 		$this->load->view('viewpengawas');
 	}
 
-	public function show_all() {
+	public function show_all()
+	{
 		$result['data'] = $this->mp->show_pemilih()->result_array();
 		header("Content-type:application/json");
 		echo json_encode($result, true);
 	}
 
-	public function show_detail($id) {
+	public function show_detail($id)
+	{
 		$result['data'] = $this->mp->show_pemilih($id);
 		header("Content-type:application/json");
 		echo json_encode($result, true);
@@ -31,13 +33,35 @@ class Pengawas extends CI_Controller
 
 	public function edit($id)
 	{
+		$result	=	$this->mp->editpemilih($id);
+		if ($result) {
+			$this->session->set_flashdata('success_msg', 'Data berhasil diubah');
+		} else {
+			$this->session->set_flashdata('error_msg', 'Gagal mengubah data');
+		}
+		redirect(base_url('pengawas'));
+	}
+
+	public function edita($id)
+	{
 		$result	=	$this->mp->editaktivasi($id);
 		if ($result) {
 			$this->session->set_flashdata('success_msg', 'Data berhasil diubah');
 		} else {
 			$this->session->set_flashdata('error_msg', 'Gagal mengubah data');
 		}
-		redirect(base_url('Pengawas'));
+		redirect(base_url('pengawas'));
+	}
+
+	public function resetpilihan($id)
+	{
+		$result	=	$this->mp->reset($id);
+		if ($result) {
+			$this->session->set_flashdata('success_msg', 'Data pemilih berhasil direset');
+		} else {
+			$this->session->set_flashdata('error_msg', 'Gagal mereset data pemilih');
+		}
+		redirect(base_url('pengawas'));
 	}
 
 	public function editbatal($id)
@@ -48,7 +72,7 @@ class Pengawas extends CI_Controller
 		} else {
 			$this->session->set_flashdata('error_msg', 'Gagal mengubah data');
 		}
-		redirect(base_url('Pengawas'));
+		redirect(base_url('pengawas'));
 	}
 
 	public function hasilpemilihan()

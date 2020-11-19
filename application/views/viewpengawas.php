@@ -256,25 +256,22 @@
                   <input type="text" id="edit_nim" name="nim" placeholder="NIM" class="form-control" required readonly value="">
                 </div>
               </div>
-
-              <!--<div class="row form-group">
-                  <div class="col col-md-3"><label for="password" class=" form-control-label">password</label></div>
-                    <div class="col-12 col-md-9">-->
-              <input type="hidden" id="password" name="password" placeholder="password" required readonly value="">
-              <!--</div>
-              </div>-->
-
               <div class="row form-group">
                 <div class="col col-md-3"><label for="edit_nama" class=" form-control-label">Nama Pemilih</label></div>
                 <div class="col-12 col-md-9">
                   <input type="text" id="edit_nama" name="nama" placeholder="Nama" class="form-control" required value="">
                 </div>
               </div>
-
               <div class="row form-group">
                 <div class="col col-md-3"><label for="edit_kelas" class=" form-control-label">kelas</label></div>
                 <div class="col-12 col-md-9">
                   <input type="text" id="edit_kelas" name="kelas" placeholder="kelas" class="form-control" required value="">
+                </div>
+              </div>
+              <div class="row form-group">
+                <div class="col col-md-3"><label for="edit_password" class=" form-control-label">password</label></div>
+                <div class="col-12 col-md-9">
+                  <input type="password" id="edit_password" name="password" placeholder="password" class="form-control" required value="">
                 </div>
               </div>
 
@@ -284,10 +281,10 @@
             <button type="submit" class="btn btn-primary">Tambah</button>
           </div>
           </form>
-        <!-- /.modal-content -->
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
       </div>
-      <!-- /.modal-dialog -->
-    </div>
     </div>
     <!-- /modal Ubah -->
 
@@ -350,51 +347,59 @@
         "info": true,
         "autoWidth": true,
         "responsive": true,
-        "order": [[1, "asc"]],
+        "order": [
+          [1, "asc"]
+        ],
         "processing": true,
-        ajax:`<?= base_url('pengawas/show_all'); ?>`,
-        columns: [
-          {data:null},
-          {data:"nim"},
-          {data:"nama"},
-          {data:"kelas"},
-          {data:null,
+        ajax: `<?= base_url('pengawas/show_all'); ?>`,
+        columns: [{
+            data: null},
+          {data: "nim"},
+          {data: "nama"},
+          {data: "kelas"},
+          {data: null,
             render: function(data, type, row) {
-              if(row.aktivasi == 0) {
+              if (row.aktivasi == 0) {
                 return `<button type="button" class="btn btn-sm btn-danger">Belum Diaktivasi</button>`;
               } else {
                 return `<button type="button" class="btn btn-sm btn-success">Telah Diaktivasi</button>`;
               }
             }
           },
-          {data:null,
+          {data: null,
             render: function(data, type, row) {
-              if(row.suara == 0) {
+              if (row.suara == 0) {
                 return `<button type="button" class="btn btn-sm btn-danger">Belum Memilih</button>`;
               } else {
                 return `<button type="button" class="btn btn-sm btn-success">Telah Memilih</button>`;
               }
             }
           },
-          {data:null,
+          {data: null,
             render: function(data, type, row) {
               const btn_edit = `<a class="btn btn-sm btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${row.id}" href="javascript:void(0);"><i class="fa fa-edit"></i></a>`;
-              if(row.aktivasi == 0) {
+              const btn_reset = `<a class="btn btn-sm btn-danger" id="editdata_btn" data-id="${row.id}" href="javascript:void(0);"><i class="fa fa-edit"></i> Reset Vote</a>`;
+              if (row.aktivasi == 0) {
                 return `
                 ${btn_edit} 
-                <a class="btn btn-sm btn-warning" href="pengawas/edit/${row.id}" title="Absen" href=""><i class="fa fa-lock"></i></a>`;
+                <a class="btn btn-sm btn-warning" href="pengawas/edita/${row.id}" title="Absen" href=""><i class="fa fa-lock"></i></a>
+                ${btn_reset}`;
               } else {
                 return `
                 ${btn_edit} 
-                <a class="btn btn-sm btn-primary" href="pengawas/editbatal/${row.id}" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a>`;
+                <a class="btn btn-sm btn-primary" href="pengawas/editbatal/${row.id}" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a>
+                ${btn_reset}`;
               }
             }
           }
         ]
       });
-      t.on( 'order.dt search.dt', function () {
-        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-          cell.innerHTML = i+1;
+      t.on('order.dt search.dt', function() {
+        t.column(0, {
+          search: 'applied',
+          order: 'applied'
+        }).nodes().each(function(cell, i) {
+          cell.innerHTML = i + 1;
         });
       }).draw(); // digunakan untuk menambah index nomor column
 
@@ -409,7 +414,7 @@
         e.preventDefault();
         const id = $(this).data('id');
         // console.log(id);
-        fetch(`<?= base_url('pengawas/show_detail/'); ?>${id}`, { 
+        fetch(`<?= base_url('pengawas/show_detail/'); ?>${id}`, {
           method: 'GET',
         }).then(function(response) {
           return response.json();
@@ -417,6 +422,7 @@
           document.querySelector('#edit_nim').value = `${result.data.nim}`;
           document.querySelector('#edit_nama').value = `${result.data.nama}`;
           document.querySelector('#edit_kelas').value = `${result.data.kelas}`;
+          document.querySelector('#edit_password').value = `${result.data.password}`;
           document.querySelector('#edit_form').setAttribute('action', `<?= base_url('pengawas/edit/'); ?>${id}`);
         });
       });

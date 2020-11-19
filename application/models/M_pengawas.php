@@ -12,7 +12,7 @@ class M_pengawas extends CI_Model
 	function insert_data()
 	{
 		$field = array(
-			'id' => date("yyyyMMddHHmmss"),
+			'id' => date("YmdHis"),
 			'username' => $this->db->escape_str($this->input->post('username', true)),
 			'password' => $this->db->escape_str($this->input->post('password', true)),
 			'namapengawas' => $this->db->escape_str($this->input->post('namapengawas', true))
