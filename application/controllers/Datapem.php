@@ -1,4 +1,8 @@
 <?php
+@ini_set("output_buffering", "Off");
+@ini_set('implicit_flush', 1);
+@ini_set('zlib.output_compression', 0);
+@ini_set('max_execution_time', 60000);
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Datapem extends CI_Controller
