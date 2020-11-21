@@ -3,9 +3,16 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 class M_pengawas extends CI_Model
 {
+	private $delete_at;
+
+	public function __construct()
+	{
+		$this->delete_at = date('Y-m-d H:i:s');
+	}
+
 	function show_pengawas()
 	{
-		$hasil = $this->db->query("SELECT * FROM operator");
+		$hasil = $this->db->query("SELECT * FROM operator WHERE delete_at IS NULL");
 		return $hasil;
 	}
 
@@ -29,7 +36,7 @@ class M_pengawas extends CI_Model
 	public function deletepengawas($id)
 	{
 		$this->db->where('id', $id);
-		$this->db->delete('operator');
+		$this->db->update('operator', ['delete_at'=> $this->delete_at]);
 
 
 		if ($this->db->affected_rows() > 0) {

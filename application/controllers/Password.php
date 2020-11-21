@@ -2,6 +2,8 @@
 
 class Password extends CI_Controller
 {
+    protected $enc;
+    protected $val;
 
     public function __construct()
     {
@@ -9,18 +11,44 @@ class Password extends CI_Controller
         $this->load->library("l_encrypt");
     }
 
-    public function enc($enc = "")
+    public function setVal($val)
     {
-        $val = $this->input->get('val', true);
-        $encode = new L_encrypt(base64_encode($val), $enc, 256, 'CBC');
-        echo $this->db->escape_str(urlencode($encode->encrypt()));
+        $this->val = $val;
     }
 
-    public function dec($enc = "")
+    public function setEnc($enc)
     {
-        $val = $this->input->get('val', true);
+        $this->enc = $enc;    
+    }
+
+    private function enc()
+    {
+        $val = $this->val;
+        $enc = $this->enc;
+        $encode = new L_encrypt(base64_encode($val), $enc, 256, 'CBC');
+        return $this->db->escape_str(urlencode($encode->encrypt()));
+    }
+
+    public function getEnc() {
+        return $this->enc();
+    }
+
+    private function dec()
+    {
+        $val = $this->val;
+        $enc = $this->enc;
         $decode = new L_encrypt(urldecode($val), $enc, 256, 'CBC');
-        echo $this->db->escape_str(base64_decode($decode->decrypt()));
+        return $this->db->escape_str(base64_decode($decode->decrypt()));
+    }
+
+    public function getDec() {
+        return $this->dec();
+    }
+
+    public function try() {
+        $this->setVal("Google");
+        $this->setEnc("123");
+        echo $this->getEnc();
     }
 
     // cara makainya seperti ini

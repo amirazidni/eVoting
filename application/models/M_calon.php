@@ -12,11 +12,17 @@ class M_calon extends CI_Model
 	public $visi;
 	public $misi;
 	public $foto = "default.jpg";
+	private $delete_at;
+
+	public function __construct()
+	{
+		$this->delete_at = date('Y-m-d H:i:s');
+	}
 
 	function jumlah_calon()
 	{
 
-		$totalcalon = $this->db->query("SELECT * FROM calon");
+		$totalcalon = $this->db->query("SELECT * FROM calon WHERE delete_at IS NULL");
 		if ($totalcalon->num_rows() > 0) {
 			return $totalcalon->num_rows();
 		} else {
@@ -26,11 +32,11 @@ class M_calon extends CI_Model
 
 	function show_calon($where = null)
 	{
-		if($where == null) {
-			$hasil = $this->db->query("SELECT * FROM calon");
+		if ($where == null) {
+			$hasil = $this->db->query("SELECT * FROM calon WHERE delete_at IS NULL");
 			return $hasil;
 		} else {
-			$hasil = $this->db->get_where('calon', ['id' => $where])->row_array();
+			$hasil = $this->db->get_where('calon', ['id' => $where, 'delete_at' => null])->row_array();
 			return $hasil;
 		}
 	}
@@ -65,7 +71,7 @@ class M_calon extends CI_Model
 
 	public function deletecalon($id)
 	{
-		$hasil = $this->db->query("SELECT *  FROM pemilih");
+		$hasil = $this->db->query("SELECT *  FROM pemilih WHERE delete_at IS NULL");
 		foreach ($hasil->result_array() as $i) :
 			$r = $i['id'];
 			$k = $i['suara'];
@@ -75,20 +81,25 @@ class M_calon extends CI_Model
 			};
 		endforeach;
 
-		$get_data = $this->db->select("foto")->from("calon")->where("id", $id)->get()->row();
+		$get_data = $this->db->select("foto")
+			->from("calon")
+			->where("id", $id)
+			->where('delete_at', null)
+			->get()
+			->row();
 
 		unlink("upload/" . $get_data->foto);
 
 		$this->db->where('id', $id);
-		$this->db->delete('calon');
+		$this->db->update('calon', ['delete_at' => $this->delete_at]);
 		// $this->_deleteImage($id);
-		if(file_exists(FCPATH.'/upload/'.$id.'.jpg') || file_exists(FCPATH.'/upload/'.$id.'.jpeg') || file_exists(FCPATH.'/upload/'.$id.'.png') || file_exists(FCPATH.'/upload/'.$id.'.gif')){
-			unlink(FCPATH.'/upload/'.$id.'.jpg');
-			unlink(FCPATH.'/upload/'.$id.'.jpeg');
-			unlink(FCPATH.'/upload/'.$id.'.png');
-			unlink(FCPATH.'/upload/'.$id.'.gif');
+		if (file_exists(FCPATH . '/upload/' . $id . '.jpg') || file_exists(FCPATH . '/upload/' . $id . '.jpeg') || file_exists(FCPATH . '/upload/' . $id . '.png') || file_exists(FCPATH . '/upload/' . $id . '.gif')) {
+			unlink(FCPATH . '/upload/' . $id . '.jpg');
+			unlink(FCPATH . '/upload/' . $id . '.jpeg');
+			unlink(FCPATH . '/upload/' . $id . '.png');
+			unlink(FCPATH . '/upload/' . $id . '.gif');
 		}
-		if($this->db->affected_rows()>0){
+		if ($this->db->affected_rows() > 0) {
 			return true;
 		} else {
 			return false;
@@ -129,7 +140,11 @@ class M_calon extends CI_Model
 		// $this->visi = $post["visi"];
 		// $this->misi = $post["misi"];
 
-		$get_data = $this->db->select("foto")->from("calon")->where("id", $id)->get()->row();
+		$get_data = $this->db->select("foto")
+			->from("calon")
+			->where("id", $id)
+			->get()
+			->row();
 
 		unlink("upload/" . $get_data->foto);
 
@@ -145,11 +160,11 @@ class M_calon extends CI_Model
 	public function pilihcalon($id)
 	{
 
-		$hasil = $this->db->query("SELECT vote  FROM calon where id='$id'");
+		$hasil = $this->db->query("SELECT vote FROM calon where id='$id' AND 'delete_at' IS NULL");
 		foreach ($hasil->result_array() as $i) :
 			$k = $i['vote'];
 			$k = $k + 1;
-			$this->db->query("UPDATE calon set vote='$k' where id='$id'");
+			$this->db->query("UPDATE calon set vote='$k' where id='$id' AND 'delete_at' IS NULL");
 		endforeach;
 
 
@@ -159,7 +174,6 @@ class M_calon extends CI_Model
 		);
 		$this->db->where('nim', $loginnim);
 		$this->db->update('pemilih', $field2);
-
 		if ($this->db->affected_rows() > 0) {
 			return true;
 		} else {

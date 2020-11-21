@@ -45,7 +45,9 @@ class Welcome_admin extends CI_Controller
       'password' => $password
     ];
     $cek = $this->m_login->cek_login("admin", $where)->num_rows();
+    $cek_delete = $this->m_login->cek_login("admin", $where)->row_array();
     $cek1 = $this->m_login->cek_login("operator", $where)->num_rows();
+    $cek_delete1 = $this->m_login->cek_login("operator", $where)->row_array();
     if ($cek > 0) {
       $session = $this->m_login->cek_login('admin', $where)->row_array();
       $session_admin = [
@@ -67,6 +69,8 @@ class Welcome_admin extends CI_Controller
       ];
       $this->session->set_userdata($session_operator);
       redirect(base_url("Pengawas"));
+    } else if($cek_delete['delete_at'] != null || $cek_delete1['delete_at'] == null) {
+      redirect('welcome/login?pesan=hapus');
     } else {
       redirect('welcome/login?pesan=gagal');
     }

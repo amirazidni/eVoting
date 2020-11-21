@@ -2,10 +2,17 @@
 
 class M_pemilih extends CI_Model
 {
+	private $delete_at;
+
+	public function __construct()
+	{
+		$this->delete_at = date('Y-m-d H:i:s');
+	}
+
 	function jumlah_pemilih()
 	{
 
-		$totalpemilih = $this->db->query("SELECT * FROM pemilih");
+		$totalpemilih = $this->db->query("SELECT * FROM pemilih WHERE delete_at IS NULL");
 		if ($totalpemilih->num_rows() > 0) {
 			return $totalpemilih->num_rows();
 		} else {
@@ -15,7 +22,7 @@ class M_pemilih extends CI_Model
 	function suara_masuk()
 	{
 
-		$totalsuara = $this->db->query("SELECT * FROM pemilih where suara not like '0'");
+		$totalsuara = $this->db->query("SELECT * FROM pemilih where suara not like '0' AND delete_at IS NULL");
 		if ($totalsuara->num_rows() > 0) {
 			return $totalsuara->num_rows();
 		} else {
@@ -26,10 +33,10 @@ class M_pemilih extends CI_Model
 	function show_pemilih($where = null)
 	{
 		if($where == null) {
-			$hasil = $this->db->query("SELECT * FROM pemilih");
+			$hasil = $this->db->query("SELECT * FROM pemilih WHERE delete_at IS NULL");
 			return $hasil;
 		} else {
-			$hasil = $this->db->get_where('pemilih', ['id' => $where])->row_array();
+			$hasil = $this->db->get_where('pemilih', ['id' => $where, 'delete_at'=>null])->row_array();
 			return $hasil;
 		}	
 	}
@@ -69,7 +76,7 @@ class M_pemilih extends CI_Model
 		endforeach;
 
 		$this->db->where('id', $id);
-		$this->db->delete('pemilih');
+		$this->db->update('pemilih', ['delete_at'=>$this->delete_at]);
 
 
 		if ($this->db->affected_rows() > 0) {

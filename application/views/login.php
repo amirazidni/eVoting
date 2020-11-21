@@ -20,6 +20,8 @@
     if (isset($_GET['pesan'])) {
       if ($_GET['pesan'] == "gagal") {
         echo "<div class='alert alert-danger'>Login gagal! Username dan password salah.</div>";
+      } else if ($_GET['pesan'] == 'hapus') {
+        echo "<div class='alert alert-danger'>Login gagal! Akun anda sepertinya tidak ada.</div>";
       } else if ($_GET['pesan'] == "logout") {
         echo "<div class='alert alert-danger'>Anda telah logout.</div>";
       } else if ($_GET['pesan'] == "salah") {
