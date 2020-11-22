@@ -37,11 +37,11 @@ class M_pemilih extends CI_Model
 				return $hasil;
 			} else {
 				// Ambil data yang di ketik user pada textbox pencarian
-				$search = preg_replace("/[^a-zA-Z0-9.]/", '', "{$_POST['search']['value']}");
+				$search = preg_replace("/[^a-zA-Z0-9.]/", ' ', "{$_POST['search']['value']}");
 				// Ambil data limit per page
-				$limit = preg_replace("/[^a-zA-Z0-9.]/", '', "{$_POST['length']}");
+				$limit = preg_replace("/[^a-zA-Z0-9.]/", ' ', "{$_POST['length']}");
 				// Ambil data start
-				$start = preg_replace("/[^a-zA-Z0-9.]/", '', "{$_POST['start']}");
+				$start = preg_replace("/[^a-zA-Z0-9.]/", ' ', "{$_POST['start']}");
 
 				$sql = $this->db->get($tables);
 
