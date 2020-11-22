@@ -190,7 +190,7 @@
                   <table id="example1" class="w-100 table table-bordered table-striped">
                     <thead>
                       <tr>
-                        <th>No</th>
+                        <th>ID</th>
                         <th>NIM</th>
                         <th>Nama Pemilih</th>
                         <th>Kelas</th>
@@ -342,49 +342,53 @@
         "autoWidth": true,
         "responsive": true,
         "order": [
-          [1, "asc"]
+          [0, "asc"]
         ],
         "processing": true,
-        ajax: `<?= base_url('pengawas/show_all'); ?>`,
-        columns: [{
-            data: null},
+        "serverSide": true,
+        ajax: {
+          url: `<?= base_url('pengawas/show_all'); ?>`,
+          type: "post",
+        },
+        columns: [
+          {data: 'id'},
           {data: "nim"},
           {data: "nama"},
           {data: "kelas"},
-          {data: null,
+          {data: "aktivasi",
             render: function(data, type, row) {
-              if (row.aktivasi == 0) {
+              if (data == 0) {
                 return `<button type="button" class="btn btn-sm btn-danger">Belum Diaktivasi</button>`;
               } else {
                 return `<button type="button" class="btn btn-sm btn-success">Telah Diaktivasi</button>`;
               }
             }
           },
-          {data: null,
+          {data: "suara",
             render: function(data, type, row) {
-              if (row.suara == 0) {
+              if (data == 0) {
                 return `<button type="button" class="btn btn-sm btn-danger">Belum Memilih</button>`;
               } else {
                 return `<button type="button" class="btn btn-sm btn-success">Telah Memilih</button>`;
               }
             }
           },
-          {data: null,
+          {data: 'id',
             render: function(data, type, row) {
-              const btn_edit = `<a class="btn btn-sm btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${row.id}" href="javascript:void(0);"><i class="fa fa-edit"></i></a>`;
-              const btn_reset = `<a class="btn btn-sm btn-danger" href="<?= base_url('pengawas/resetpilihan/'); ?>${row.id}" onclick="return confirm('Yakin ingin mereset peserta ${row.nim}?');"><i class="fa fa-edit"></i> Reset Vote</a>`;
+              const btn_edit = `<a class="btn btn-sm btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${data}" href="javascript:void(0);"><i class="fa fa-edit"></i></a>`;
+              const btn_reset = `<a class="btn btn-sm btn-danger" href="<?= base_url('pengawas/resetpilihan/'); ?>${data}" onclick="return confirm('Yakin ingin mereset peserta ${row.nim}?');"><i class="fa fa-edit"></i> Reset Vote</a>`;
               if (row.aktivasi == 0) {
                 return `
                 ${btn_edit} 
-                <a class="btn btn-sm btn-warning" href="pengawas/edita/${row.id}" title="Absen" href=""><i class="fa fa-lock"></i></a>
+                <a class="btn btn-sm btn-warning" href="pengawas/edita/${data}" title="Absen" href=""><i class="fa fa-lock"></i></a>
                 ${btn_reset}`;
               } else {
                 return `
                 ${btn_edit} 
-                <a class="btn btn-sm btn-primary" href="pengawas/editbatal/${row.id}" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a>
+                <a class="btn btn-sm btn-primary" href="pengawas/editbatal/${data}" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a>
                 ${btn_reset}`;
               }
-            }
+            }, orderable: false
           }
         ]
       });

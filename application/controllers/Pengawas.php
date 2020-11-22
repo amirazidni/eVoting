@@ -21,9 +21,11 @@ class Pengawas extends CI_Controller
 
 	public function show_all()
 	{
-		$result['data'] = $this->mp->show_pemilih()->result_array();
+		$result = $this->mp->show_pemilih(null, 'pemilih', [
+			'id', 'nim', 'nama', 'kelas', 'suara', 'aktivasi'
+		]);
 		header("Content-type:application/json");
-		echo json_encode($result, true);
+		echo $result;
 	}
 
 	public function show_detail($id)

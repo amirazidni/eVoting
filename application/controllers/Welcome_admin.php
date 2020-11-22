@@ -10,6 +10,7 @@ class Welcome_admin extends CI_Controller
     parent::__construct();
     $this->load->model('m_login');
     $this->load->library('session');
+    $this->load->library('l_password');
     $this->session_id = $this->session->userdata();
   }
 
@@ -40,6 +41,9 @@ class Welcome_admin extends CI_Controller
   {
     $username = $this->db->escape_str($this->input->post('username', true));
     $password = $this->db->escape_str($this->input->post('password', true));
+    $this->l_password->setEnc($username);
+		$this->l_password->setVal($password);
+		$password = $this->l_password->getEnc();
     $where = [
       'username' => $username,
       'password' => $password

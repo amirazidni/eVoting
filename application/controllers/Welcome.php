@@ -11,6 +11,7 @@ class Welcome extends CI_Controller
 		parent::__construct();
 		$this->load->model('M_login');
 		$this->load->library("session");
+		$this->load->library('l_password');
 		$this->data_id = $this->session->userdata();
 	}
 
@@ -41,9 +42,12 @@ class Welcome extends CI_Controller
 	{
 		$username = $this->db->escape_str($this->input->post('username', true));
 		$password = $this->db->escape_str($this->input->post('password', true));
+		$this->l_password->setEnc($username);
+		$this->l_password->setVal($password);
+		$password = $this->l_password->getEnc();
 		$where2 = [
 			'nim' => $username,
-			'password' =>  md5($password)
+			'password' => $password
 		];
 		$cek2 = $this->M_login->cek_login("pemilih", $where2)->num_rows();
 		$cek_delete2 = $this->M_login->cek_login("pemilih", $where2)->row_array();

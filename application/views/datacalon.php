@@ -397,10 +397,10 @@
         "ordering": true,
         "info": true,
         "autoWidth": true,
-        "responsive": true,
         "order": [
-          [1, "asc"]
+          [0, "asc"]
         ],
+        "responsive": true,
         "processing": true,
         ajax: `<?= base_url('datacal/show_all'); ?>`,
         columns: [{
@@ -430,7 +430,8 @@
               return `
               <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${row.id}" href="javascript:void(0)"><i class="fas fa-edit"></i></a>
               <a class="btn btn-sm btn-danger" href="<?= base_url('datacal/delete/')?>${row.id}" onclick="return confirm('Yakin ingin menghapus nomor urut ${row.nomorurut}?');"><i class="fa fa-trash"></i></a>`;
-            }
+            },
+            orderable: false
           }
         ]
       });

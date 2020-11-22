@@ -116,13 +116,13 @@
               </a>
             </li>
             <li class="nav-item">
-                <a href="Dataadmin" class="nav-link">
-                  <i class="nav-icon fas fa-user"></i>
-                  <p>
-                    Admin
-                  </p>
-                </a>
-              </li>
+              <a href="Dataadmin" class="nav-link">
+                <i class="nav-icon fas fa-user"></i>
+                <p>
+                  Admin
+                </p>
+              </a>
+            </li>
             <li class="nav-item">
               <a href="" data-toggle="modal" data-target="#konfirmkeluar" class="nav-link">
                 <i class="nav-icon fas fa-power-off"></i>
@@ -189,7 +189,7 @@
                   <table id="example1" class="w-100 table table-bordered table-striped">
                     <thead>
                       <tr>
-                        <th>No</th>
+                        <th>ID</th>
                         <th>NIM</th>
                         <th>Nama Pemilih</th>
                         <th>Kelas</th>
@@ -241,31 +241,31 @@
             </button>
           </div>
           <div class="modal-body">
-            <?= form_open('', ['id'=>'edit_form']); ?>
-              <div class="row form-group">
-                <div class="col col-md-3"><label for="edit_nim" class=" form-control-label">NIM</label></div>
-                <div class="col-12 col-md-9">
-                  <input type="text" id="edit_nim" name="nim" placeholder="NIM" class="form-control" required readonly value="">
-                </div>
+            <?= form_open('', ['id' => 'edit_form']); ?>
+            <div class="row form-group">
+              <div class="col col-md-3"><label for="edit_nim" class=" form-control-label">NIM</label></div>
+              <div class="col-12 col-md-9">
+                <input type="text" id="edit_nim" name="nim" placeholder="NIM" class="form-control" required readonly value="">
               </div>
-              <div class="row form-group">
-                <div class="col col-md-3"><label for="edit_nama" class=" form-control-label">Nama Pemilih</label></div>
-                <div class="col-12 col-md-9">
-                  <input type="text" id="edit_nama" name="nama" placeholder="Nama" class="form-control" required value="">
-                </div>
+            </div>
+            <div class="row form-group">
+              <div class="col col-md-3"><label for="edit_nama" class=" form-control-label">Nama Pemilih</label></div>
+              <div class="col-12 col-md-9">
+                <input type="text" id="edit_nama" name="nama" placeholder="Nama" class="form-control" required value="">
               </div>
-              <div class="row form-group">
-                <div class="col col-md-3"><label for="edit_kelas" class=" form-control-label">kelas</label></div>
-                <div class="col-12 col-md-9">
-                  <input type="text" id="edit_kelas" name="kelas" placeholder="kelas" class="form-control" required value="">
-                </div>
+            </div>
+            <div class="row form-group">
+              <div class="col col-md-3"><label for="edit_kelas" class=" form-control-label">kelas</label></div>
+              <div class="col-12 col-md-9">
+                <input type="text" id="edit_kelas" name="kelas" placeholder="kelas" class="form-control" required value="">
               </div>
-              <div class="row form-group">
-                <div class="col col-md-3"><label for="edit_password" class=" form-control-label">password</label></div>
-                <div class="col-12 col-md-9">
-                  <input type="password" id="edit_password" name="password" placeholder="password" class="form-control" required value="">
-                </div>
+            </div>
+            <div class="row form-group">
+              <div class="col col-md-3"><label for="edit_password" class=" form-control-label">password</label></div>
+              <div class="col-12 col-md-9">
+                <input type="password" id="edit_password" name="password" placeholder="password" class="form-control" required value="">
               </div>
+            </div>
 
           </div>
           <div class="modal-footer">
@@ -334,7 +334,7 @@
   <!-- import export excel -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const t = $("#example1").DataTable({
+      $("#example1").DataTable({
         "paging": true,
         "lengthChange": true,
         "searching": true,
@@ -343,12 +343,16 @@
         "autoWidth": true,
         "responsive": true,
         "order": [
-          [1, "asc"]
+          [0, "asc"]
         ],
         "processing": true,
-        ajax: `<?= base_url('Datapem/show_all'); ?>`,
-        columns: [{
-            data: null
+        "serverSide": true,
+        "ajax": {
+          url: `<?= base_url('datapem/show_all'); ?>`,
+          type: "POST",
+        },
+        "columns": [{
+            data: 'id'
           },
           {
             data: "nim"
@@ -360,9 +364,9 @@
             data: "kelas"
           },
           {
-            data: null,
+            data: "aktivasi",
             render: function(data, type, row) {
-              if (row.aktivasi == 0) {
+              if (data == 0) {
                 return `<button type="button" class="btn btn-sm btn-danger">Belum Diaktivasi</button>`;
               } else {
                 return `<button type="button" class="btn btn-sm btn-success">Telah Diaktivasi</button>`;
@@ -370,9 +374,9 @@
             }
           },
           {
-            data: null,
+            data: "suara",
             render: function(data, type, row) {
-              if (row.suara == 0) {
+              if (data == 0) {
                 return `<button type="button" class="btn btn-sm btn-danger">Belum Memilih</button>`;
               } else {
                 return `<button type="button" class="btn btn-sm btn-success">Telah Memilih</button>`;
@@ -380,33 +384,26 @@
             }
           },
           {
-            data: null,
+            data: "id",
             render: function(data, type, row) {
-              const btn_edit = `<a class="btn btn-sm btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${row.id}" href="javascript:void(0);"><i class="fa fa-edit"></i></a>`;
-              const btn_hapus = `<a class="btn btn-sm btn-danger" href="<?php echo  base_url('index.php/datapem/delete/'); ?>${row.id}" onclick="return confirm('Yakin ingin menghapus nomor urut ${row.nomorurut}?');"><i class="fa fa-trash"></i></a>`;
+              const btn_edit = `<a class="btn btn-sm btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${data}" href="javascript:void(0);"><i class="fa fa-edit"></i></a>`;
+              const btn_hapus = `<a class="btn btn-sm btn-danger" href="<?php echo  base_url('index.php/datapem/delete/'); ?>${data}" onclick="return confirm('Yakin ingin menghapus nim ${row.nim}?');"><i class="fa fa-trash"></i></a>`;
               if (row.aktivasi == 0) {
                 return `
                 ${btn_edit} 
-                <a class="btn btn-sm btn-warning" href="datapem/edita/${row.id}" title="Absen" href=""><i class="fa fa-lock"></i></a> 
+                <a class="btn btn-sm btn-warning" href="datapem/edita/${data}" title="Absen" href=""><i class="fa fa-lock"></i></a> 
                 ${btn_hapus}`;
               } else {
                 return `
                 ${btn_edit} 
-                <a class="btn btn-sm btn-primary" href="datapem/editbatal/${row.id}" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a> 
+                <a class="btn btn-sm btn-primary" href="datapem/editbatal/${data}" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a> 
                 ${btn_hapus}`;
               }
-            }
+            },
+            orderable: false
           }
         ]
       });
-      t.on('order.dt search.dt', function() {
-        t.column(0, {
-          search: 'applied',
-          order: 'applied'
-        }).nodes().each(function(cell, i) {
-          cell.innerHTML = i + 1;
-        });
-      }).draw(); // digunakan untuk menambah index nomor column
 
       const insertData = document.querySelector('#insert_data');
       const importData = document.querySelector('#import_data');

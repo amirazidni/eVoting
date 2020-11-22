@@ -7,11 +7,11 @@ class M_pemilih extends CI_Model
 	public function __construct()
 	{
 		$this->delete_at = date('Y-m-d H:i:s');
+		$this->load->library('l_password');
 	}
 
 	function jumlah_pemilih()
 	{
-
 		$totalpemilih = $this->db->query("SELECT * FROM pemilih WHERE delete_at IS NULL");
 		if ($totalpemilih->num_rows() > 0) {
 			return $totalpemilih->num_rows();
@@ -21,7 +21,6 @@ class M_pemilih extends CI_Model
 	}
 	function suara_masuk()
 	{
-
 		$totalsuara = $this->db->query("SELECT * FROM pemilih where suara not like '0' AND delete_at IS NULL");
 		if ($totalsuara->num_rows() > 0) {
 			return $totalsuara->num_rows();
@@ -30,23 +29,62 @@ class M_pemilih extends CI_Model
 		}
 	}
 
-	function show_pemilih($where = null)
+	function show_pemilih($where = null, $tables = null, $cari = null)
 	{
-		if($where == null) {
-			$hasil = $this->db->query("SELECT * FROM pemilih WHERE delete_at IS NULL");
-			return $hasil;
+		if ($where == null) {
+			if ($tables == null && $cari == null) {
+				$hasil = $this->db->query("SELECT * FROM pemilih WHERE delete_at IS NULL");
+				return $hasil;
+			} else {
+				// Ambil data yang di ketik user pada textbox pencarian
+				$search = preg_replace("/[^a-zA-Z0-9.]/", '', "{$_POST['search']['value']}");
+				// Ambil data limit per page
+				$limit = preg_replace("/[^a-zA-Z0-9.]/", '', "{$_POST['length']}");
+				// Ambil data start
+				$start = preg_replace("/[^a-zA-Z0-9.]/", '', "{$_POST['start']}");
+
+				$sql = $this->db->get($tables);
+
+				$sql_count = $sql->num_rows();
+
+				$query = $tables;
+				$cari = implode(" LIKE '%" . $search . "%' OR ", $cari) . " LIKE '%" . $search . "%'";
+
+				// Untuk mengambil nama field yg menjadi acuan untuk sorting
+				$order_field = $_POST['order'][0]['column'];
+
+				// Untuk menentukan order by "ASC" atau "DESC"
+				$order_ascdesc = $_POST['order'][0]['dir'];
+				$order = " ORDER BY " . $_POST['columns'][$order_field]['data'] . " " . $order_ascdesc;
+
+				$sql_data = $this->db->query("SELECT * FROM " . $query . " WHERE (" . $cari . ")" . $order . " LIMIT " . $limit . " OFFSET " . $start);
+				$sql_filter = $this->db->query("SELECT * FROM " . $query);
+				$sql_filter_count = $sql_filter->num_rows();
+				$data = $sql_data->result_array();
+
+				$callback = array(
+					'draw' => $_POST['draw'], // Ini dari datatablenya    
+					'recordsTotal' => $sql_count,
+					'recordsFiltered' => $sql_filter_count,
+					'data' => $data
+				);
+				return json_encode($callback, true); // Convert array $callback ke json
+			}
 		} else {
-			$hasil = $this->db->get_where('pemilih', ['id' => $where, 'delete_at'=>null])->row_array();
+			$hasil = $this->db->get_where('pemilih', ['id' => $where, 'delete_at' => null])->row_array();
 			return $hasil;
-		}	
+		}
 	}
 
 	function insert_data()
 	{
+		$this->l_password->setEnc($this->db->escape_str($this->input->post('nim', true)));
+		$this->l_password->setVal($this->db->escape_str($this->input->post('password', true)));
+		$password = $this->l_password->getEnc();
 		$field = array(
 			'id' => date("YmdHis"),
 			'nim' => $this->db->escape_str($this->input->post('nim', true)),
-			'password' => md5($this->db->escape_str($this->input->post('password', true))),
+			'password' => $password,
 			'nama' => $this->db->escape_str($this->input->post('nama', true)),
 			'kelas' => $this->db->escape_str($this->input->post('kelas', true)),
 			'suara' => '0',
@@ -76,7 +114,7 @@ class M_pemilih extends CI_Model
 		endforeach;
 
 		$this->db->where('id', $id);
-		$this->db->update('pemilih', ['delete_at'=>$this->delete_at]);
+		$this->db->update('pemilih', ['delete_at' => $this->delete_at]);
 
 
 		if ($this->db->affected_rows() > 0) {
@@ -89,11 +127,15 @@ class M_pemilih extends CI_Model
 	// untuk update pemilih
 	public function editpemilih($id)
 	{
+		$row = $this->db->get_where('pemilih', ['id' => $id])->row_array();
+		$this->l_password->setEnc($row['nim']);
+		$this->l_password->setVal($this->db->escape_str($this->input->post('password', true)));
+		$password = $this->l_password->getEnc();
 		$this->db->where('id', $id);
 		$field = array(
 			'nama' => $this->db->escape_str($this->input->post('nama', true)),
 			'kelas' => $this->db->escape_str($this->input->post('kelas', true)),
-			'password' => md5($this->db->escape_str($this->input->post('password', true))),
+			'password' => $password,
 		);
 		$this->db->update('pemilih', $field);
 

@@ -7,12 +7,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Datapem extends CI_Controller
 {
+	private $pass;
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->model('M_pemilih', 'mp');
 		$this->load->library("l_session");
+		$this->load->library('l_password');
 		if($this->l_session->admin()) {
 			redirect('welcome');
 		}
@@ -25,9 +27,11 @@ class Datapem extends CI_Controller
 
 	public function show_all()
 	{
-		$result['data'] = $this->mp->show_pemilih()->result_array();
+		$result = $this->mp->show_pemilih(null, 'pemilih', [
+			'id', 'nim', 'nama', 'kelas', 'suara', 'aktivasi'
+		]);
 		header("Content-type:application/json");
-		echo json_encode($result, true);
+		echo $result;
 	}
 
 	public function show_detail($id)
@@ -55,10 +59,13 @@ class Datapem extends CI_Controller
 			$interval = date("YmdHis");
 		}
 		foreach ($data as $d) {
+			$this->l_password->setEnc($d['nim']);
+			$this->l_password->setVal($this->db->escape_str($this->security->xss_clean($d['password'])));
+			$password = $this->l_password->getEnc();
 			$object = [
 				'id' => $this->db->escape_str($this->security->xss_clean($interval++)),
 				'nim' => $this->db->escape_str($this->security->xss_clean($d['nim'])),
-				'password' => $this->db->escape_str($this->security->xss_clean(md5($d['password']))),
+				'password' => $password,
 				'nama' => $this->db->escape_str($this->security->xss_clean($d['nama'])),
 				'kelas' => $this->db->escape_str($this->security->xss_clean($d['kelas'])),
 				'suara' => $this->db->escape_str($this->security->xss_clean(0)),

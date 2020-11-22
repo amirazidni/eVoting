@@ -8,6 +8,7 @@ class M_pengawas extends CI_Model
 	public function __construct()
 	{
 		$this->delete_at = date('Y-m-d H:i:s');
+		$this->load->library('l_password');
 	}
 
 	function show_pengawas()
@@ -18,10 +19,13 @@ class M_pengawas extends CI_Model
 
 	function insert_data()
 	{
+		$this->l_password->setEnc($this->db->escape_str($this->input->post('username', true)));
+		$this->l_password->setVal($this->db->escape_str($this->input->post('password', true)));
+		$password = $this->l_password->getEnc();
 		$field = array(
 			'id' => date("YmdHis"),
 			'username' => $this->db->escape_str($this->input->post('username', true)),
-			'password' => $this->db->escape_str($this->input->post('password', true)),
+			'password' => $password,
 			'namapengawas' => $this->db->escape_str($this->input->post('namapengawas', true))
 
 		);
@@ -48,10 +52,13 @@ class M_pengawas extends CI_Model
 
 	public function editpengawas($id)
 	{
+		$this->l_password->setEnc($this->db->escape_str($this->input->post('username', true)));
+		$this->l_password->setVal($this->db->escape_str($this->input->post('password', true)));
+		$password = $this->l_password->getEnc();
 		$this->db->where('id', $id);
 		$field = array(
 			'username' => $this->db->escape_str($this->input->post('username', true)),
-			'password' => $this->db->escape_str($this->input->post('password', true)),
+			'password' => $password,
 			'namapengawas' => $this->db->escape_str($this->input->post('namapengawas', true))
 
 		);
