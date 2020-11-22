@@ -292,7 +292,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-            <form action="<?= site_url('Welcome/logout'); ?>">
+            <form action="<?= site_url('welcome_admin/logout'); ?>">
               <input type="submit" class="btn btn-primary" value="Ya">
             </form>
           </div>

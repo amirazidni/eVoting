@@ -9,14 +9,21 @@ class Datapeng extends CI_Controller
 		$this->load->model('M_pengawas', 'mp');
 		$this->load->library("l_session");
 		if ($this->l_session->admin()) {
-			redirect('welcome');
+			redirect('welcome_admin');
 		}
 	}
 
 	public function index()
 	{
-		$x['data']	=	$this->mp->show_pengawas();
+		$x = [
+			'data' => $this->mp->show_pengawas()->result_array(),
+			'hak_akses' => [
+				1 => 'operator',
+				'pengawas'
+			]
+		];
 		$this->load->view('datapengawas', $x);
+		// echo json_encode($x, true);
 	}
 
 	public function insert()

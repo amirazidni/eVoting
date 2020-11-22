@@ -74,9 +74,15 @@ class Welcome_admin extends CI_Controller
       $this->session->set_userdata($session_operator);
       redirect(base_url("Pengawas"));
     } else if($cek_delete['delete_at'] != null || $cek_delete1['delete_at'] == null) {
-      redirect('welcome/login?pesan=hapus');
+      redirect('welcome_admin/login?pesan=hapus');
     } else {
-      redirect('welcome/login?pesan=gagal');
+      redirect('welcome_admin/login?pesan=gagal');
     }
   }
+
+  public function logout()
+	{
+		$this->session->sess_destroy();
+		redirect('welcome_admin/login?pesan=logout');
+	}
 }

@@ -10,7 +10,7 @@ class Datacal extends CI_Controller
 		$this->load->model('M_calon', 'mc');
 		$this->load->library("l_session");
 		if($this->l_session->admin()) {
-			redirect('welcome');
+			redirect('welcome_admin');
 		}
 	}
 

@@ -7,8 +7,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Datapem extends CI_Controller
 {
-	private $pass;
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -16,7 +14,7 @@ class Datapem extends CI_Controller
 		$this->load->library("l_session");
 		$this->load->library('l_password');
 		if($this->l_session->admin()) {
-			redirect('welcome');
+			redirect('welcome_admin');
 		}
 	}
 

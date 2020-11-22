@@ -33,9 +33,18 @@ class L_session
     }
   }
 
-  public function pegawai()
+  public function pengawas()
   {
-    if ($this->data_id["status"] != "loginpengawas") {
+    if (
+      $this->data_id["status"] != "loginpengawas") {
+      return true;
+    }
+  }
+
+  public function pengawas2()
+  {
+    if (
+      $this->data_id["status"] != "loginoperator") {
       return true;
     }
   }

@@ -187,21 +187,24 @@
                         <th>No</th>
                         <th>Username</th>
                         <th>Nama Pengawas</th>
+                        <th>Level</th>
                         <th>Aksi</th>
 
                       </tr>
                     </thead>
                     <tbody>
                       <?php $no = 1;
-                      foreach ($data->result_array() as $i) :
+                      foreach ($data as $i) :
                         $id = $i['id'];
                         $username = $i['username'];
                         $namapengawas = $i['namapengawas'];
+                        $level = $i['level'];
                       ?>
                         <tr>
                           <td><?php echo "$no" ?></td>
                           <td><?php echo $username; ?> </td>
                           <td><?php echo $namapengawas; ?> </td>
+                          <td><?php echo $level; ?></td>
                           <td>
 
                             <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editdata<?php echo $id; ?>" href=""><i class="fa fa-edit"></i></a>
@@ -226,14 +229,13 @@
         <!-- /.container-fluid -->
         <!--Modal tambah-->
         <div class="modal fade" id="tambahdata" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" style="display: none;" aria-hidden="true">
-          <div class="modal-dialog modal-sm" role="document">
+          <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="smallmodalLabel"></h5>
+                <h5 class="modal-title" id="smallmodalLabel">Pengawas</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">×</span>
                 </button>
-                <h2><i class="fa fa-plus-circle"></i>&nbsp; Operator</h2>
               </div>
 
               <form action="datapeng/insert" method="post">
@@ -254,6 +256,17 @@
                     <div class="col-12 col-md-9">
                       <input type="text" id="namapengawas" name="namapengawas" class="form-control"></div>
                   </div>
+                  <div class="row form-group">
+                    <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Level Pengawas</label></div>
+                    <div class="col-12 col-md-9">
+                      <select id="input_apahayo" class="form-control" style="width: 100%;" name="level">
+                        <option selected="selected" value="">Pilihan...</option>
+                        <?php foreach($hak_akses as $j => $k) {?>
+                        <option value="<?= $k; ?>"><?= $k; ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                  </div>
 
                 </div>
 
@@ -271,22 +284,21 @@
         <!--Modal Edit-->
 
         <?php
-        foreach ($data->result_array() as $i) :
+        foreach ($data as $i) :
           $id = $i['id'];
           $username = $i['username'];
           $password = $i['password'];
           $namapengawas = $i['namapengawas'];
-
+          $level = $i['level'];
         ?>
           <div class="modal fade" id="editdata<?php echo $id; ?>" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="smallmodalLabel"></h5>
+                  <h5 class="modal-title" id="smallmodalLabel">Pengawas</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                   </button>
-                  <h2><i class="fa fa-pencil"></i>&nbsp; Pengawas</h2>
                 </div>
 
 
@@ -309,7 +321,17 @@
                       <div class="col-12 col-md-9">
                         <input type="text" id="namapengawas" name="namapengawas" placeholder="NAMA" class="form-control" value="<?php echo $namapengawas; ?>"></div>
                     </div>
-
+                    <div class="row form-group">
+                      <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Level Pengawas</label></div>
+                      <div class="col-12 col-md-9">
+                        <select id="input_apahayo" class="form-control" style="width: 100%;" name="level">
+                          <option selected="selected" value="">Pilihan...</option>
+                          <?php foreach($hak_akses as $j => $k) {?>
+                          <option <?php if($k == $level){echo'selected="selected"';} ?> value="<?= $k; ?>"><?= $k; ?></option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                    </div>
 
                   </div>
 
@@ -334,7 +356,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-                <form action="<?php echo base_url('Welcome/logout'); ?>">
+                <form action="<?php echo base_url('welcome_admin/logout'); ?>">
                   <input type="submit" class="btn btn-primary" value="Ya">
                 </form>
               </div>

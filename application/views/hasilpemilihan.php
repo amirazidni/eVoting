@@ -270,7 +270,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-          <form action="<?php echo base_url('index.php/Welcome/logout'); ?>">
+          <form action="<?php echo base_url('index.php/welcome_admin/logout'); ?>">
             <input type="submit" class="btn btn-primary" value="Ya">
           </form>
         </div>

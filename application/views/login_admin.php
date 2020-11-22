@@ -45,7 +45,7 @@
 
         <?= form_open(base_url('welcome_admin/aksi_login')); ?>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Input NIM" name="username" required>
+          <input type="text" class="form-control" placeholder="Username" name="username" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
