@@ -538,12 +538,19 @@
                   method: 'POST',
                   body: urlencoded,
                 }).then(function(response) {
-                  return response.json();
+                  if(response.ok) {
+                    return response.json();
+                  }
+                  throw new Error('Maaf sepertinya ada kesalahan umum!');
                 }).then(function(result) {
                   btnLoading.innerText = 'Upload Sekarang';
                   btnLoading.setAttribute('disable', false);
                   alert(result);
                   window.location.reload();
+                }).catch(function (error) {
+                  btnLoading.innerText = 'Upload Sekarang';
+                  btnLoading.setAttribute('disable', false);
+                  alert(error);
                 });
               }
             } else {
