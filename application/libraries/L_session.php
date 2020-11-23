@@ -36,7 +36,7 @@ class L_session
   public function pengawas()
   {
     if (
-      $this->data_id["status"] != "loginpengawas") {
+      $this->data_id["status"] != "loginoperator") {
       return true;
     }
   }
@@ -44,7 +44,7 @@ class L_session
   public function pengawas2()
   {
     if (
-      $this->data_id["status"] != "loginoperator") {
+      $this->data_id["status"] != "loginpengawas") {
       return true;
     }
   }

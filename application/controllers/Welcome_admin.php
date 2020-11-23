@@ -23,8 +23,11 @@ class Welcome_admin extends CI_Controller
       case "loginadmin":
         redirect("dasbor");
         break;
-      case "loginpengawas":
+      case "loginoperator":
         redirect("pengawas");
+        break;
+      case "loginpengawas":
+        redirect("pengawas2");
         break;
       default:
         redirect("welcome_admin/login");
@@ -65,14 +68,25 @@ class Welcome_admin extends CI_Controller
       redirect(base_url("Dasbor"));
     } else if ($cek1 > 0) {
       $session = $this->m_login->cek_login('operator', $where)->row_array();
-      $session_operator = [
-        'id' => date("YmdHis") + $session['id'],
-        'username' => $session['username'],
-        'nama' => $session['namapengawas'],
-        'status' => "loginpengawas",
-      ];
-      $this->session->set_userdata($session_operator);
-      redirect(base_url("Pengawas"));
+      if($session['level'] == 'operator') {
+        $session_operator = [
+          'id' => date("YmdHis") + $session['id'],
+          'username' => $session['username'],
+          'nama' => $session['namapengawas'],
+          'status' => "loginoperator",
+        ];
+        $this->session->set_userdata($session_operator);
+        redirect(base_url("pengawas"));
+      } else if($session['level'] == 'pengawas') {
+        $session_operator = [
+          'id' => date("YmdHis") + $session['id'],
+          'username' => $session['username'],
+          'nama' => $session['namapengawas'],
+          'status' => "loginpengawas",
+        ];
+        $this->session->set_userdata($session_operator);
+        redirect(base_url("pengawas2"));
+      }
     } else if($cek_delete['delete_at'] != null || $cek_delete1['delete_at'] == null) {
       redirect('welcome_admin/login?pesan=hapus');
     } else {

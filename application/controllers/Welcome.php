@@ -24,8 +24,11 @@ class Welcome extends CI_Controller
 			case "loginadmin":
 				redirect("dasbor");
 				break;
-			case "loginpengawas":
+			case "loginoperator":
 				redirect("pengawas");
+				break;
+			case "loginpengawas":
+				redirect("pengawas2");
 				break;
 			default:
 				redirect("welcome/login");

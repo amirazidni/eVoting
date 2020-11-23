@@ -2,7 +2,8 @@
 @ini_set("output_buffering", "Off");
 @ini_set('implicit_flush', 1);
 @ini_set('zlib.output_compression', 0);
-@ini_set('max_execution_time', 60000); // 60 detik
+$time = 60000*60; // 1jam
+@ini_set('max_execution_time', $time); // saya rubah eksekusi menjadi time PHP jadi 1jam lebih lama dari sebelumnya
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Datapem extends CI_Controller

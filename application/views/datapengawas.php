@@ -114,13 +114,13 @@
               </a>
             </li>
             <li class="nav-item">
-                <a href="Dataadmin" class="nav-link">
-                  <i class="nav-icon fas fa-user"></i>
-                  <p>
-                    Admin
-                  </p>
-                </a>
-              </li>
+              <a href="Dataadmin" class="nav-link">
+                <i class="nav-icon fas fa-user"></i>
+                <p>
+                  Admin
+                </p>
+              </a>
+            </li>
             <li class="nav-item">
               <a href="" data-toggle="modal" data-target="#konfirmkeluar" class="nav-link">
                 <i class="nav-icon fas fa-power-off"></i>
@@ -261,8 +261,8 @@
                     <div class="col-12 col-md-9">
                       <select id="input_apahayo" class="form-control" style="width: 100%;" name="level">
                         <option selected="selected" value="">Pilihan...</option>
-                        <?php foreach($hak_akses as $j => $k) {?>
-                        <option value="<?= $k; ?>"><?= $k; ?></option>
+                        <?php foreach ($hak_akses as $j => $k) { ?>
+                          <option value="<?= $k; ?>"><?= $k; ?></option>
                         <?php } ?>
                       </select>
                     </div>
@@ -326,8 +326,10 @@
                       <div class="col-12 col-md-9">
                         <select id="input_apahayo" class="form-control" style="width: 100%;" name="level">
                           <option selected="selected" value="">Pilihan...</option>
-                          <?php foreach($hak_akses as $j => $k) {?>
-                          <option <?php if($k == $level){echo'selected="selected"';} ?> value="<?= $k; ?>"><?= $k; ?></option>
+                          <?php foreach ($hak_akses as $j => $k) { ?>
+                            <option <?php if ($k == $level) {
+                                      echo 'selected="selected"';
+                                    } ?> value="<?= $k; ?>"><?= $k; ?></option>
                           <?php } ?>
                         </select>
                       </div>

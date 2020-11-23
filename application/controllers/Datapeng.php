@@ -23,7 +23,6 @@ class Datapeng extends CI_Controller
 			]
 		];
 		$this->load->view('datapengawas', $x);
-		// echo json_encode($x, true);
 	}
 
 	public function insert()
