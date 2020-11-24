@@ -14,6 +14,10 @@ class Migration_Vote extends CI_Migration
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
+            'ipAddress' => array(
+                'type' => 'varchar',
+                'constraint' => 25
+            ),
             'deviceToken' => array(
                 'type' => 'tinytext',
                 'index' => true
@@ -42,8 +46,13 @@ class Migration_Vote extends CI_Migration
                 'type' => 'text',
                 'null' => TRUE,
             ),
-            'createdAt datetime default current_timestamp',
-            'updatedAt datetime default current_timestamp'
+            'status' => array(
+                'type' => 'varchar',
+                'constraint' => 15,
+                'null' => false
+            ),
+            'createdAt datetime not null default current_timestamp',
+            'updatedAt datetime not null default current_timestamp on update current_timestamp'
         ));
         $this->dbforge->add_key('id', TRUE);
         $this->dbforge->create_table('tbl_vote');
