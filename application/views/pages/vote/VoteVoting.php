@@ -9,6 +9,7 @@
 
     .scale:hover {
         transform: scale(1.1);
+        border: 3px solid rgba(100, 100, 200, .75);
     }
 </style>
 
