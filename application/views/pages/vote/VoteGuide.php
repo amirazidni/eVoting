@@ -3,7 +3,7 @@
         <h4 class="card-title text-center">Panduan E-Voting</h4>
         <div class="row no-gutters">
             <div class="col-md-5 col-12">
-                <img style="max-width: 360px; max-height: 360px;" class="rounded mx-auto d-block" src="<?= base_url('assets/images/step.png') ?>" class="card-img" alt="Image Guide">
+                <img style="max-width: 360px; max-height: 360px;" class="card-img rounded mx-auto d-block" src="<?= base_url('assets/images/step.png') ?>" alt="Image Guide">
             </div>
             <div class="col-md-7 col-12">
                 <div class="card-body">
@@ -13,10 +13,9 @@
                     <p class="card-text">4. Jika bingung langsung tanyakan ke operator kami</p>
                     <p class="card-text">5. Jika akun milikmu sudah terpakai oleh orang lain segera hubungi Tim Operator</p>
                     <p class="card-text"><b>6. Ikuti aturan yang berlaku dan jangan merugikan orang lain!</b></p>
+                    <a href="<?= base_url('voter/vote/1'); ?>" class="btn btn-primary px-4 py-2">Selanjutnya</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<button class="btn btn-large btn-primary" style="position: fixed; bottom: 10%; right: 3.5%;" type="button">Hubungi Operator</button>

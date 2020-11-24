@@ -1,12 +1,9 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Vote extends CI_Controller
+class Voter extends CI_Controller
 {
-    public function index(int $index)
+    public function vote(int $index)
     {
-        if (!$index) {
-            $index = 0;
-        }
         switch ($index) {
             case 0:
                 $this->guide();
@@ -41,43 +38,31 @@ class Vote extends CI_Controller
 
     private function captcha()
     {
-        // $this->load->helper('captcha');
-        // $config = array(
-        //     'img_url' => base_url() . 'image_for_captcha/',
-        //     'img_path' => 'image_for_captcha/',
-        //     'img_height' => 45,
-        //     'word_length' => 5,
-        //     'img_width' => '45',
-        //     'font_size' => 10
-        // );
-        // $captcha = create_captcha($config);
-
-        // var_dump($captcha);
-
-        // $vals = array(
-        //     'word'          => 'Random word',
-        //     'img_path'      => './assets/captcha/',
-        //     'img_url'       => base_url('assets/captcha/'),
-        //     'img_width'     => '200',
-        //     'img_height'    => 50,
-        //     'expiration'    => 7200,
-        //     'word_length'   => strlen('Random word'),
-        //     'font_size'     => 20,
-        //     'color'        => array(
-        //         'background' => array(255, 255, 255),
-        //         'border' => array(255, 255, 255),
-        //         'text' => array(0, 0, 0),
-        //         'grid' => array(255, 40, 40)
-        //     )
-        // );
-
-        // $cap = create_captcha($vals);
-        // var_dump($cap);
+        $this->load->helper('captcha');
+        $vals = array(
+            'word'          => 'Randomword',
+            'img_path'      => './assets/captcha/',
+            'img_url'       => base_url('assets/captcha/'),
+            'img_width'     => '300',
+            'img_height'    => 100,
+            'expiration'    => 4200,
+            'word_length'   => 12,
+            'font_size'     => 20,
+            'color'        => array(
+                'background' => array(255, 255, 255),
+                'border' => array(255, 255, 255),
+                'text' => array(0, 0, 0),
+                'grid' => array(255, 40, 40)
+            )
+        );
+        $cap = create_captcha($vals);
         $this->load->view('pages/vote/Header');
         $this->load->view('pages/vote/VoteStepper', [
             'step' => 1
         ]);
-        $this->load->view('pages/vote/VoteCaptcha');
+        $this->load->view('pages/vote/VoteCaptcha', [
+            'captcha' => $cap
+        ]);
         $this->load->view('pages/vote/Footer');
     }
 
@@ -98,7 +83,7 @@ class Vote extends CI_Controller
             'step' => 3
         ]);
         $this->load->view('pages/vote/VotePhoto');
-        $this->load->view('pages/vote/Footer');
+        $this->load->view('pages/vote/FooterPhoto');
     }
 
     private function voting()
