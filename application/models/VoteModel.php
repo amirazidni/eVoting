@@ -1,6 +1,10 @@
 <?php
 
-class M_calon extends CI_Model
+class VoteModel extends CI_Model
 {
     private $table = 'tbl_vote';
+
+    public function get(string $ip, string $device)
+    {
+    }
 }

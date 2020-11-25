@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+
+// Cookie
+// ini_set('session.cookie_samesite', 'Strict');
+// ini_set('session.cookie_secure', TRUE);
+
 // Migration
 $config['migration_version'] = 001;
 

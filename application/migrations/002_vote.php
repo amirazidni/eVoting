@@ -49,7 +49,6 @@ class Migration_Vote extends CI_Migration
             'status' => array(
                 'type' => 'varchar',
                 'constraint' => 15,
-                'null' => false
             ),
             'createdAt datetime not null default current_timestamp',
             'updatedAt datetime not null default current_timestamp on update current_timestamp'

@@ -2,8 +2,43 @@
 
 class Voter extends CI_Controller
 {
-    public function vote(int $index)
+    private $deviceCookieName = '_SYS_DEVICE_';
+
+    public function __construct()
     {
+        parent::__construct();
+        $this->load->model('VoteModel', 'voteModel');
+    }
+
+    public function vote(int $index = 0)
+    {
+        // $cookie = array(
+        //     'name'   => 'remember_me',
+        //     'value'  => 'test',
+        //     'expire' => '300',
+        //     'secure' => false, // Set true when use HTTPS
+        //     'httponly' => true
+        // );
+        // $this->input->set_cookie($cookie);
+
+        // print_r("Cookie");
+        // print_r($this->input->cookie('remember_me'));
+
+        // $cookie_name = "testing";
+        // $cookie_value = "John";
+        // setcookie($cookie_name, $cookie_value, [
+        //     'expires' => time() + 86400,
+        //     'path' => '/',
+        //     'httponly' => true,
+        //     'samesite' => 'Strict',
+        //     'secure' => false,
+        //     'domain' => '',
+        // ]);
+
+        print_r("IP Address");
+        print_r($this->input->ip_address());
+        print_r($_COOKIE['testing']);
+
         switch ($index) {
             case 0:
                 $this->guide();
@@ -26,6 +61,14 @@ class Voter extends CI_Controller
         }
     }
 
+    private function setupDevice()
+    {
+        $ip = $this->input->ip_address();
+        $device = $_COOKIE[$this->deviceCookieName];
+        $votes = $this->voteModel->get($device, $ip);
+    }
+
+    // VIEW //
     private function guide()
     {
         $this->load->view('pages/vote/Header');
