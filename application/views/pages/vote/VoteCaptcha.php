@@ -9,10 +9,19 @@
             </div>
             <div class="col-12">
                 <div class="card-body">
-                    <form action="<?= base_url('voter/vote/2'); ?>" method="post" id="form">
+                    <form action="<?= base_url('voter/vote'); ?>" method="post" id="form">
                         <div class="mx-auto form-group" style="width: 320px;">
-                            <input class="form-control" name="captcha">
+                            <input class="form-control" name="captcha" required>
                         </div>
+                        <?php
+                        if ($error) {
+                        ?>
+                            <div class="alert alert-danger mx-auto" role="alert" style="width: 320px;">
+                                <?= $error; ?>
+                            </div>
+                        <?php
+                        }
+                        ?>
                         <div style="text-align: center;">
                             <button class="btn btn-primary px-4 py-2" type="submit">Selanjutnya</button>
                         </div>

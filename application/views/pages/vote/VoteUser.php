@@ -7,18 +7,18 @@
         </div>
         <div class="col-12">
             <div class="card-body">
-                <form action="<?= base_url('voter/vote/3'); ?>" method="post" id="form">
+                <form action="<?= base_url('voter/vote'); ?>" method="post" id="form">
                     <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username">
+                        <label for="nim">NIM</label>
+                        <input type="text" class="form-control" name="nim" id="nim" required>
                     </div>
                     <div class="form-group">
                         <label for="phone">No. WA</label>
-                        <input type="tel" class="form-control" id="phone">
+                        <input type="tel" class="form-control" name="phone" id="phone" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password">
+                        <input type="password" class="form-control" name="password" id="password" required>
                     </div>
                     <div>
                         <button class="btn btn-primary px-4 py-2" type="submit">Login</button>

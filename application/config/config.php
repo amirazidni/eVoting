@@ -6,6 +6,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 // ini_set('session.cookie_samesite', 'Strict');
 // ini_set('session.cookie_secure', TRUE);
 
+$config['upload_path']          = './uploads/';
+$config['allowed_types']        = 'gif|jpg|png';
+
 // Migration
 $config['migration_version'] = 001;
 

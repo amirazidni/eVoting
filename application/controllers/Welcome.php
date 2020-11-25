@@ -45,9 +45,12 @@ class Welcome extends CI_Controller
 	{
 		$username = $this->db->escape_str($this->input->post('username', true));
 		$password = $this->db->escape_str($this->input->post('password', true));
+
 		$this->l_password->setEnc($username);
 		$this->l_password->setVal($password);
+
 		$password = $this->l_password->getEnc();
+
 		$where2 = [
 			'nim' => $username,
 			'password' => $password
@@ -78,7 +81,7 @@ class Welcome extends CI_Controller
 					redirect("welcome/login?pesan=gagal");
 				}
 			endforeach;
-		} else if($cek_delete2['delete_at'] == null) {
+		} else if ($cek_delete2['delete_at'] == null) {
 			redirect('welcome/login?pesan=hapus');
 		} else {
 			redirect('welcome/login?pesan=gagal');
