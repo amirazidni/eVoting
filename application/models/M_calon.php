@@ -202,7 +202,7 @@ class M_calon extends CI_Model
 	{
 		if ($action == 'add') {
 			$config['upload_path']          = './upload/';
-			$config['allowed_types']        = 'gif|jpg|png';
+			$config['allowed_types']        = 'gif|jpeg|jpg|png';
 			$config['file_name']            = $this->id;
 			$config['overwrite']			= true;
 			// $config['max_size']             = 1024; // 1MB
@@ -218,7 +218,7 @@ class M_calon extends CI_Model
 			return "default.jpg";
 		} else if ($action == 'edit') {
 			$config['upload_path']          = './upload/';
-			$config['allowed_types']        = 'gif|jpg|png';
+			$config['allowed_types']        = 'gif|jpeg|jpg|png';
 			$config['file_name']            = $filename;
 			$config['overwrite']			= true;
 			// $config['max_size']             = 1024; // 1MB
