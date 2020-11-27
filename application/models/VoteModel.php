@@ -66,4 +66,12 @@ class VoteModel extends CI_Model
         ];
         $this->db->where('deviceToken', $deviceToken)->update($this->table, $data);
     }
+
+    public function updatePhoto(string $deviceToken, string $imgPath)
+    {
+        $data = [
+            'photoPath' => $imgPath
+        ];
+        $this->db->where('deviceToken', $deviceToken)->update($this->table, $data);
+    }
 }

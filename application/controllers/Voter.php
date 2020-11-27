@@ -6,15 +6,20 @@ class Voter extends CI_Controller
     private $deviceCaptchaName  = '_SYS_CP_';
     private $deviceUserName     = '_SYS_US_';
     private $devicePhotoName    = '_SYS_PO_';
-    private $deviceVoteName     = '_SYS_VT_';
     private $deviceParentname   = '_SYS_PR_';
 
     public function __construct()
     {
         parent::__construct();
         $this->load->model('VoteModel', 'voteModel');
+        $this->load->model('M_Calon', 'cadidateModel');
         $this->load->helper('cookie');
         $this->load->library('l_password');
+    }
+
+    public function index()
+    {
+        return redirect(base_url('voter/vote'));
     }
 
     public function vote()
@@ -34,7 +39,6 @@ class Voter extends CI_Controller
         $isCaptchaSet = isset($_COOKIE[$this->deviceCaptchaName]);
         $isUserSet = isset($_COOKIE[$this->deviceUserName]);
         $isFotoSet = isset($_COOKIE[$this->devicePhotoName]);
-        $isVoteSet = isset($_COOKIE[$this->deviceVoteName]);
 
         ///     LEVEL 0         ///
         ///     LEVEL GUIDE     ///
@@ -135,7 +139,6 @@ class Voter extends CI_Controller
                 $this->l_password->setVal($password);
 
                 $pass = $this->l_password->getEnc();
-
                 $users = $this->voteModel->checkUserExist($nim, $pass);
 
                 if (count($users) == 0) {
@@ -166,54 +169,69 @@ class Voter extends CI_Controller
 
         ///     LEVEL 3      ///
         ///     LEVEL Photo  ///
-        // print_r($device);
-        // if (!$isFotoSet) {
-        // }
-        // $photo = $_COOKIE[$this->devicePhotoName];
-
-        // print_r($_POST);
-
-        return $this->photo();
-
-        // Vote Level 2 //
-        // User Login
-        // Should Have Captcha, Token
-
-        // Vote Level 3 //
-        // Foto
         // Should Have Captcha, Token, User Login
+        if (!$isFotoSet) {
+            return $this->photo();
+        }
+        $photo = $_COOKIE[$this->devicePhotoName];
+        if ($photo != substr($device['photoPath'], 0, strlen($photo))) {
+            $this->clearCookies([$this->devicePhotoName]);
+            return $this->refresh();
+        }
 
         // Vote Level 4 //
         // Voting
         // Should Have Captcha, Token, User Login, Foto
+        $res = $this->cadidateModel->getsCadidate();
+
+        print_r($res);
+
+        return $this->voting($res);
 
         // Vote Level 5 //
         // Finish
         // Should Have Captcha, Token, User Login, Foto, Vote
         // Use same device immediately
+        return $this->finish();
     }
 
+    // BECAUSE USING JAVACRIPT
+    // Return a JSON instead
     public function uploadPhoto()
     {
-        $imgName = $this->generateID() . '.png';
-        $data = $_FILES['data'];
-        $fileSource = $data['tmp_name'];
+        $isTokenSet = isset($_COOKIE[$this->deviceCookieName]);
 
-        print_r("IMAGES");
-        print_r($imgName);
-        print_r($data);
+        if (!$isTokenSet) {
+            return $this->refresh();
+        }
 
-        // $file = $this->request->getFile('blob');
+        $baseName = $this->generateID();
+        $imgName = $baseName . '.png';
+        $img = $_FILES['image'];
 
-        // $file = $_FILES['image']['tmp_name'];
-        // print_r($_POST);
-        // print_r($_FILES);
-        // print_r($file);
+        if ($img['error'] == UPLOAD_ERR_OK) {
+            $tmpName = $img['tmp_name'];
+
+            move_uploaded_file($tmpName, "assets/voter/$imgName");
+            $this->voteModel->updatePhoto($_COOKIE[$this->deviceCookieName], $imgName);
+            $this->setCookie($this->devicePhotoName, $baseName);
+        } else {
+            // TODO: When error occured
+            // Do Something
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'ok' => true,
+            'data' => [
+                'image' => $imgName
+            ]
+        ]);
     }
 
     private function refresh()
     {
-        redirect(base_url('voter/vote'));
+        return redirect(base_url('voter/vote'));
     }
 
     private function setCookie(string $key, string $value)
@@ -252,14 +270,6 @@ class Voter extends CI_Controller
         $unique = uniqid();
 
         return $unique . $version . $random;
-    }
-
-    private function checkDeviceToken(array $data): bool
-    {
-        if (count($data) > 0) {
-            return true;
-        }
-        return false;
     }
 
     // VIEW //
@@ -326,11 +336,12 @@ class Voter extends CI_Controller
         $this->load->view('pages/vote/Footer');
     }
 
-    private function voting()
+    private function voting(array $candidates)
     {
         $this->load->view('pages/vote/Header');
         $this->load->view('pages/vote/VoteStepper', [
-            'step' => 4
+            'step' => 4,
+            'candidates' => $candidates
         ]);
         $this->load->view('pages/vote/VoteVoting');
         $this->load->view('pages/vote/Footer');

@@ -10,7 +10,7 @@
     }
 
     .selected {
-        transform: scale(1.075);
+        transform: scale(1.09);
         border: 3px solid rgba(100, 100, 200, .5);
         z-index: 90;
     }
@@ -21,15 +21,14 @@
 
     <div class="row" id="row">
         <?php
-        for ($i = 0; $i < 4; $i++) {
+        foreach ($candidates as $key => $item) {
         ?>
             <div class="px-3 py-3 col-xl-3 col-md-4 col-sm-6 col-12">
-                <div class="card pointer scale" onclick="onHello(this, <?= $i; ?>)">
-                    <img src="https://picsum.photos/id/237/200/200" class="card-img-top" alt="...">
+                <div class="card pointer scale" onclick="onHello(this, <?= $key; ?>)">
+                    <img src="<?= base_url('upload/' . $item['foto']); ?>" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Card title # <?= $i; ?></h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <h5 class="card-title"><?= '#' . $item['nomorurut'] . ' ' . $item['nama1'] . ' - ' . $item['nama2']; ?></h5>
+                        <button class="float-right btn btn-primary">VISI & MISI</button>
                     </div>
                 </div>
             </div>

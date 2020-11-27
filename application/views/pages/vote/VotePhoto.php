@@ -110,7 +110,7 @@
 
         // Create a FormData and append the file with "image" as parameter name
         let formData = new FormData()
-        formData.append("data", blob)
+        formData.append("image", blob)
 
         $.ajax({
             url: 'uploadPhoto',
@@ -119,19 +119,11 @@
             contentType: false,
             processData: false,
             error: function(err) {
-                console.log("Error")
-                console.error(err);
+                // TODO: DO SOMETHING WHEN SOMETHING GOES WRONG
             },
             success: function(data) {
-                console.log("Data")
-                console.log(data)
+                location.reload()
             },
-            complete: function() {
-                console.log("Request finished.");
-            }
-        }).done((d) => {
-            console.log("DONE")
-            console.log(d)
         })
     }
 </script>

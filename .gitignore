@@ -29,4 +29,5 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
-assets/captcha/
+assets/captcha/*
+assets/voter/*
