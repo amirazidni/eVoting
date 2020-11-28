@@ -12,9 +12,15 @@
 						<thead>
 							<tr>
 								<th>ID</th>
+								<th>Ip Address</th>
 								<th>NIM</th>
 								<th>Nama Pemilih</th>
 								<th>Kelas</th>
+								<th>ID Suara</th>
+								<th>Activasi</th>
+								<th>No. Telp</th>
+								<th>Status</th>
+								<th>Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
