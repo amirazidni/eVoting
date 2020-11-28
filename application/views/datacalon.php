@@ -120,13 +120,13 @@
               </a>
             </li>
             <li class="nav-item">
-                <a href="Dataadmin" class="nav-link">
-                  <i class="nav-icon fas fa-user"></i>
-                  <p>
-                    Admin
-                  </p>
-                </a>
-              </li>
+              <a href="datarekap" class="nav-link">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>
+                  Rekap Data
+                </p>
+              </a>
+            </li>
             <li class="nav-item">
               <a href="" data-toggle="modal" data-target="#konfirmkeluar" class="nav-link">
                 <i class="nav-icon fas fa-power-off"></i>
