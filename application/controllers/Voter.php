@@ -182,11 +182,20 @@ class Voter extends CI_Controller
         // Vote Level 4 //
         // Voting
         // Should Have Captcha, Token, User Login, Foto
-        $res = $this->cadidateModel->getsCadidate();
+        $vote = $device['vote'];
+        if (!$vote) {
+            $isVoting = isset($_POST['voteId']);
 
-        print_r($res);
+            if ($isVoting) {
+                $voting = $_POST['voteId'];
 
-        return $this->voting($res);
+                $this->voteModel->setVote($deviceToken, $voting);
+                return $this->refresh();
+            }
+
+            $res = $this->cadidateModel->getsCadidate();
+            return $this->voting($res);
+        }
 
         // Vote Level 5 //
         // Finish
@@ -350,9 +359,6 @@ class Voter extends CI_Controller
     private function finish()
     {
         $this->load->view('pages/vote/Header');
-        $this->load->view('pages/vote/VoteStepper', [
-            'step' => 5
-        ]);
         $this->load->view('pages/vote/VoteFinish');
         $this->load->view('pages/vote/Footer');
     }

@@ -3,7 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Dasbor extends CI_Controller
 {
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -25,6 +24,7 @@ class Dasbor extends CI_Controller
 
 		$this->load->view('dashboard', $data);
 	}
+
 	function update_realtime()
 	{
 		$pemilih = $this->mp->jumlah_pemilih();

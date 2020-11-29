@@ -74,4 +74,10 @@ class VoteModel extends CI_Model
         ];
         $this->db->where('deviceToken', $deviceToken)->update($this->table, $data);
     }
+
+    public function setVote(string $deviceToken, string $voteId)
+    {
+        $data = ['vote' => $voteId];
+        $this->db->where('deviceToken', $deviceToken)->update($this->table, $data);
+    }
 }
