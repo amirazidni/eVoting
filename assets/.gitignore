@@ -24,6 +24,9 @@ bower_components/
 /plugins/*/*.html
 /plugins/*/package.json
 
+// Ignore Voter's Photo
+assets/voter/*
+
 
 // Docs
 Gemfile.lock
