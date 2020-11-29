@@ -201,7 +201,7 @@ class Voter extends CI_Controller
         // Finish
         // Should Have Captcha, Token, User Login, Foto, Vote
         // Use same device immediately
-        return $this->finish();
+        return $this->finish($device);
     }
 
     // BECAUSE USING JAVACRIPT
@@ -356,10 +356,11 @@ class Voter extends CI_Controller
         $this->load->view('pages/vote/Footer');
     }
 
-    private function finish()
+    private function finish(array $device)
     {
         $this->load->view('pages/vote/Header');
-        $this->load->view('pages/vote/VoteFinish');
-        $this->load->view('pages/vote/Footer');
+        $this->load->view('pages/vote/VoteFinish', [
+            'device' => $device
+        ]);
     }
 }
