@@ -5,7 +5,8 @@
         <p class="card-text">Kamu sudah melakukan voting pada waktu <?= $device['createdAt']; ?> dan berakhir pada <?= $device['updatedAt']; ?></p>
         <p class="card-text">Dan jika itu bukan anda WA Operator kami untuk melakukan verifikasi!.</p>
         <!-- <a href="#" class="card-link">Card link</a> -->
-        <a href="#" class="card-link">WA Operator</a>
+        <a href="#" class="btn btn-primary">WA Operator</a>
+        <a href="#" class="btn btn-warning">Lakukan Voting Lain</a>
     </div>
 </div>
 
