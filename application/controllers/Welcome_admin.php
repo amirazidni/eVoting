@@ -58,7 +58,7 @@ class Welcome_admin extends CI_Controller
     if ($cek > 0) {
       $session = $this->m_login->cek_login('admin', $where)->row_array();
       $session_admin = [
-        'id' => date("YmdHis") + $session['id'],
+        'id' => $session['id'],
         'username' => $session['username'],
         'nama' => $session['nama'],
         'email' => $session['email'],
@@ -70,7 +70,7 @@ class Welcome_admin extends CI_Controller
       $session = $this->m_login->cek_login('operator', $where)->row_array();
       if($session['level'] == 'operator') {
         $session_operator = [
-          'id' => date("YmdHis") + $session['id'],
+          'id' => $session['id'],
           'username' => $session['username'],
           'nama' => $session['namapengawas'],
           'status' => "loginoperator",
@@ -79,7 +79,7 @@ class Welcome_admin extends CI_Controller
         redirect(base_url("pengawas"));
       } else if($session['level'] == 'pengawas') {
         $session_operator = [
-          'id' => date("YmdHis") + $session['id'],
+          'id' => $session['id'],
           'username' => $session['username'],
           'nama' => $session['namapengawas'],
           'status' => "loginpengawas",
