@@ -1,12 +1,19 @@
-<div class="card mx-auto mt-5" style="width: 480px;">
-    <div class="card-body">
-        <h5 class="card-title">Voting Finish</h5>
-        <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> -->
-        <p class="card-text">Kamu sudah melakukan voting pada waktu <?= $device['createdAt']; ?> dan berakhir pada <?= $device['updatedAt']; ?></p>
-        <p class="card-text">Dan jika itu bukan anda WA Operator kami untuk melakukan verifikasi!.</p>
-        <!-- <a href="#" class="card-link">Card link</a> -->
-        <a href="#" class="btn btn-primary">WA Operator</a>
-        <a href="#" class="btn btn-warning">Lakukan Voting Lain</a>
+<div class="px-5">
+    <div class="card mx-auto mt-5 px-2 pt-3 pb-5">
+        <h3 class="card-title text-center mb-5">Voting Finish</h3>
+        <div class="row no-gutters">
+            <div class="col-md-5 col-12">
+                <img style="max-width: 360px; max-height: 360px;" class="card-img rounded mx-auto d-block" src="<?= base_url('assets/images/finish.svg') ?>" alt="Image Guide">
+            </div>
+            <div class="col-md-7 col-12">
+                <div class="card-body">
+                    <p class="card-text">Kamu sudah melakukan voting pada waktu <?= $device['createdAt']; ?> dan berakhir pada <?= $device['updatedAt']; ?></p>
+                    <p class="card-text">Dan jika itu bukan anda WA Operator kami untuk melakukan verifikasi!.</p>
+                    <a href="#" class="btn btn-primary">WA Operator</a>
+                    <a href="#" class="btn btn-warning">Lakukan Voting Lain</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

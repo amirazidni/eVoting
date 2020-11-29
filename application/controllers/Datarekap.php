@@ -29,7 +29,7 @@ class Datarekap extends CI_Controller
       if ($data == "select") {
         $this->select();
       } else if ($data == "update") {
-        $this->update(); 
+        $this->update();
       }
     } else {
       redirect('welcome_admin');
@@ -64,7 +64,6 @@ class Datarekap extends CI_Controller
 
   private function update()
   {
-    
   }
 
   private function db_select_all($query, $cari)
