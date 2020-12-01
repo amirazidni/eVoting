@@ -382,6 +382,7 @@ class Voter extends CI_Controller
         return $this->refresh();
     }
 
+    // UPLOAD IMAGE FROM DESKTOP BROWSER //
     // BECAUSE USING JAVACRIPT
     // Return a JSON instead
     public function uploadPhoto()
@@ -417,6 +418,31 @@ class Voter extends CI_Controller
                 'image' => $imgName
             ]
         ]);
+    }
+
+    // UPLOAD IMAGE FROM MOBILE BROWSER //
+    public function uploadPhotoMobile()
+    {
+        $isTokenSet = isset($_COOKIE[$this->deviceCookieName]);
+
+        if (!$isTokenSet) {
+            return $this->refresh();
+        }
+
+        $baseName = $this->generateID();
+        $imgName = $baseName . '.png';
+        $img = $_FILES['image'];
+
+        if ($img['error'] == UPLOAD_ERR_OK) {
+            $tmpName = $img['tmp_name'];
+
+            move_uploaded_file($tmpName, "assets/voter/$imgName");
+
+            $this->voteModel->updatePhoto($_COOKIE[$this->deviceCookieName], $imgName);
+            $this->setCookie($this->devicePhotoName, $baseName);
+        }
+
+        $this->refresh();
     }
 
     private function getComitteeName(string $comitteeCode): string
@@ -542,9 +568,11 @@ class Voter extends CI_Controller
 
     private function photo(string $comitteeName)
     {
+        $this->load->library('user_agent');
         $this->load->view('pages/vote/VotePhoto', [
             'step' => 3,
-            'comitteeName' => $comitteeName
+            'comitteeName' => $comitteeName,
+            'isMobile' => $this->agent->is_mobile()
         ]);
     }
 

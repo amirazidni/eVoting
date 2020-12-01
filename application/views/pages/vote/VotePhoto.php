@@ -7,6 +7,7 @@
     }
 </style>
 
+
 <div class="card mx-auto mb-3 mt-3 pt-2" style="max-width: 800px;">
     <h4 class="card-title text-center">Foto kamu atau kartu KTM mu</h4>
     <div class="card-body" id="body-inform">
@@ -15,16 +16,33 @@
         <p class="text-center mb-0">Foto yang rusak saat rekapitulasi berkemungkinan tidak dihitung</p>
         <p class="text-center mt-3"><b>Jangan lupa untuk mengaktifkan dan mengizinkan akses kamera!</b></p>
         <p class="text-center mt-3"><b>Refresh jika kamera tidak juga muncul!</b></p>
-        <button class="btn btn-primary mx-auto px-5 d-block mt-3" onclick="agreeCaptureImage()">Setuju</button>
+
+        <?php
+        if (!$isMobile) {
+        ?>
+            <button class="btn btn-primary mx-auto px-5 d-block mt-3" onclick="agreeCaptureImage()">Setuju</button>
+        <?php
+        }
+        ?>
     </div>
+
+    <?php
+    if ($isMobile) {
+    ?>
+        <img style="width: 100%;" class="px-4" id="imgVoter">
+        <form action="<?= base_url('voter/uploadPhotoMobile'); ?>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+            <input accept="image/*" id="captureImageMobileId" type="file" name="image" capture="camera" hidden />
+            <button type="button" class="btn btn-primary mx-auto d-block mt-3 mb-3" onclick="captureImageMobile()">Ambil Foto</button>
+            <button class="btn hidden btn-success mx-auto d-block mt-3 mb-3" id="submitPhotoMobileId">Submit Foto</button>
+        </form>
+    <?php
+    }
+    ?>
+
     <video class="px-4 hidden" autoplay="true" id="video-webcam">
         Browser yang anda gunakan tidak support. Update terlebih dahulu browsermu!.
     </video>
-    <button class="btn hidden btn-primary mx-auto d-block mt-3 mb-3" id="button-video-webcam" onclick="captureImage()">Ambil Foto Sekarang</button>
-    <!-- <form id="form-photo" action="<?= base_url('voter/uploadPhoto'); ?>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-        <input type="text" id="filename" name="filename" />
-        <button class="btn hidden btn-primary mx-auto d-block mt-3 mb-3" id="button-video-webcam">Ambil Foto Sekarang</button>
-    </form> -->
+    <button class="btn hidden btn-success mx-auto d-block mt-3 mb-3" id="button-video-webcam" onclick="captureImage()">Submit Foto</button>
 </div>
 
 
@@ -54,9 +72,25 @@
 
 <script>
     $("#form-photo").submit(function(e) {
-        e.preventDefault();
-        captureImage();
-    });
+        e.preventDefault()
+        captureImage()
+    })
+
+    <?php
+    if ($isMobile) {
+    ?>
+        $('#captureImageMobileId').change(() => {
+            $('#body-inform').addClass('hidden')
+            $('#submitPhotoMobileId').removeClass('hidden')
+            document.getElementById('imgVoter').src = window.URL.createObjectURL(this.event.target.files[0])
+        })
+    <?php
+    }
+    ?>
+
+    function captureImageMobile() {
+        $('#captureImageMobileId').click()
+    }
 
     function agreeCaptureImage() {
         let videos = $('#video-webcam')
@@ -148,7 +182,6 @@
                 $('#errorUpload').modal('show')
             },
             success: function(data) {
-                data = JSON.parse(data)
                 if (!data['ok']) {
                     $('#errorUpload').modal('show')
                 } else {
