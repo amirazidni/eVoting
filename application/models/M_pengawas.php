@@ -12,6 +12,12 @@ class M_pengawas extends CI_Model
 		$this->load->library('l_password');
 	}
 
+	public function getOperator(string $id)
+	{
+		$res = $this->db->where('id', $id)->from($this->table)->get();
+		return $res->result_array();
+	}
+
 	public function getOperators()
 	{
 		$res = $this->db->where('level', 'operator')->from($this->table)->get();

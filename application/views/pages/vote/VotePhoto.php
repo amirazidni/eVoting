@@ -14,6 +14,7 @@
         <p class="text-center mb-0">Pastikan foto yang diambil tidak rusak dan jelas</p>
         <p class="text-center mb-0">Foto yang rusak saat rekapitulasi berkemungkinan tidak dihitung</p>
         <p class="text-center mt-3"><b>Jangan lupa untuk mengaktifkan dan mengizinkan akses kamera!</b></p>
+        <p class="text-center mt-3"><b>Refresh jika kamera tidak juga muncul!</b></p>
         <button class="btn btn-primary mx-auto px-5 d-block mt-3" onclick="agreeCaptureImage()">Setuju</button>
     </div>
     <video class="px-4 hidden" autoplay="true" id="video-webcam">

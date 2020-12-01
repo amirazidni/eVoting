@@ -128,7 +128,6 @@ class Voter extends CI_Controller
             return $this->guide($comitteeName);
         }
 
-
         ///     LEVEL 1           ///
         ///     LEVEL CAPTCHA     ///
         // Is Captcha Exist
@@ -364,12 +363,23 @@ class Voter extends CI_Controller
             return;
         }
 
-        $devices = $this->voteModel->getByToken($_COOKIE[$this->deviceCookieName]);
-        $device = $devices[0];
-
+        $device = $this->voteModel->getByToken($_COOKIE[$this->deviceCookieName])[0];
+        $operator = $this->operatorModel->getOperator($device['operatorId'])[0];
         $text = "Halo akun saya sudah digunakan untuk voting oleh orang lain.%0ANomor saya : " . $device['phone'];
-        // echo $text;
-        redirect("https://api.whatsapp.com/send?phone=+6283862458966&text=$text");
+
+        redirect("https://api.whatsapp.com/send?phone=" . $operator['phone'] . "&text=$text");
+    }
+
+    public function reGuide()
+    {
+        $isParentSet = isset($_COOKIE[$this->deviceParentname]);
+        $isTokenSet = isset($_COOKIE[$this->deviceCookieName]);
+
+        if ($isParentSet && $isTokenSet) {
+            $deviceToken = $_COOKIE[$this->deviceCookieName];
+            $this->voteModel->setGuided($deviceToken, false);
+        }
+        return $this->refresh();
     }
 
     // BECAUSE USING JAVACRIPT
