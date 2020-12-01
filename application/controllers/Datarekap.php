@@ -55,7 +55,7 @@ class Datarekap extends CI_Controller
       pemilih.kelas, 
       pemilih.suara, 
       pemilih.aktivasi 
-    FROM tbl_vote JOIN pemilih ON tbl_vote.userId = pemilih.id";
+    FROM tbl_vote LEFT JOIN pemilih ON tbl_vote.userId = pemilih.id";
     $search = ['ipAddress', 'userId', 'phone', 'status', 'recap', 'nama', 'nim', 'kelas'];
     $data = $this->db_select_all($query, $search);
     header('Content-type: application/json');

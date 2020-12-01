@@ -1,3 +1,23 @@
+<?php $this->load->view('pages/vote/Header'); ?>
+<?php $this->load->view('pages/vote/VoteStepper'); ?>
+
+<?php
+
+if ($error) {
+?>
+
+    <div class="alert alert-danger" style="margin-left: 10%; margin-right: 10%" role="alert">
+        <h4 class="alert-heading">Error!</h4>
+        <p class="mt-3"><?= $error; ?></p>
+        <hr>
+        <p class="mb-0">Untuk mengubungi operator, tekan button yang ada di bawah sebelah kanan layar.</p>
+    </div>
+
+<?php
+}
+
+?>
+
 <div class="card mx-auto mb-3 mt-3 pt-2 pb-4" style="max-width: 480px;">
     <h4 class="card-title text-center">Masukan User dan Password</h4>
     <div class="row no-gutters">
@@ -28,3 +48,5 @@
         </div>
     </div>
 </div>
+
+<?php $this->load->view('pages/vote/Footer'); ?>

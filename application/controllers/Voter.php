@@ -2,19 +2,31 @@
 
 class Voter extends CI_Controller
 {
+    private $deviceParentname   = '_SYS_PR_';
     private $deviceCookieName   = '_SYS_DV_';
+
     private $deviceCaptchaName  = '_SYS_CP_';
     private $deviceUserName     = '_SYS_US_';
     private $devicePhotoName    = '_SYS_PO_';
-    private $deviceParentname   = '_SYS_PR_';
 
     public function __construct()
     {
         parent::__construct();
+
+        // Models
         $this->load->model('VoteModel', 'voteModel');
         $this->load->model('M_Calon', 'cadidateModel');
+        $this->load->model('ComitteeModel', 'comitteeModel');
+        $this->load->model('M_pengawas', 'operatorModel');
+
+        // Helper
         $this->load->helper('cookie');
+
+        // Library
         $this->load->library('l_password');
+
+        // Drivers
+        $this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
     }
 
     public function index()
@@ -24,14 +36,6 @@ class Voter extends CI_Controller
 
     public function vote()
     {
-        // Setup //
-        // Check Token
-        // Check Captcha
-        // Check User Login
-        // Check Foto
-        // Check Vote
-        // User Vote Action (re-choose)
-
         // CREATE REVERSE CHECKING ENGINEER //
         // $index = 0;
         $isParentSet = isset($_COOKIE[$this->deviceParentname]);
@@ -42,14 +46,13 @@ class Voter extends CI_Controller
 
         ///     LEVEL 0         ///
         ///     LEVEL GUIDE     ///
-        // If Parent Token Exist
+        // If Parent Not Token Exist
         if (!$isParentSet) {
             $this->clearCookies([
                 $this->deviceCookieName,
                 $this->deviceCaptchaName,
                 $this->deviceUserName,
-                $this->devicePhotoName,
-                $this->deviceVoteName
+                $this->devicePhotoName
             ]);
             $deviceToken = $this->generateID();
             $ip = $this->input->ip_address();
@@ -59,7 +62,7 @@ class Voter extends CI_Controller
             $this->setCookie($this->deviceParentname, $parentToken);
             $this->voteModel->insertDeviceToken($ip, $parentToken, $deviceToken);
 
-            return $this->guide();
+            return $this->refresh();
         }
 
         // Check if Parents Exist in database
@@ -77,23 +80,58 @@ class Voter extends CI_Controller
             $ip = $this->input->ip_address();
             $this->setCookie($this->deviceCookieName, $deviceToken);
             $this->voteModel->insertDeviceToken($ip, $parentToken, $deviceToken);
-            return $this->guide();
+            return $this->refresh();
         }
 
         // Check if Device Exist in database
         $deviceToken = $_COOKIE[$this->deviceCookieName];
         $devices = $this->voteModel->getByToken($deviceToken);
+        $device = $devices[0];
 
         if (count($devices) == 0) {
             $this->clearCookies([$this->deviceCookieName]);
             return $this->refresh();
         }
 
+        // Set Comittee Name
+        $comitteeName = '';
+        if (isset($device['comitteeCode'])) {
+            $comitteeName = $this->getComitteeName($device['comitteeCode']);
+        }
+
+        // Set Operator
+        if (!isset($device['operatorId'])) {
+            $operators = $this->operatorModel->getOperators();
+            $index = $this->getCache('operatorIndex');
+
+            if ($index == (count($operators) - 1)) {
+                $index = 0;
+                $this->setCache('operatorIndex', $index);
+            } else {
+                $this->cache->increment('operatorIndex');
+            }
+
+            $operator = $operators[$index];
+
+            $this->voteModel->setOperatorId($deviceToken, $operator['id']);
+        }
+
+        // render guide if not isGuided
+        if (!$device['isGuided']) {
+            $isGuided = isset($_POST['guided']);
+
+            if ($isGuided) {
+                $this->voteModel->setGuided($deviceToken, true);
+                return $this->refresh();
+            }
+
+            return $this->guide($comitteeName);
+        }
+
 
         ///     LEVEL 1           ///
         ///     LEVEL CAPTCHA     ///
         // Is Captcha Exist
-        $device = $devices[0];
         if (!$isCaptchaSet) {
             // Also Check is he submitting captcha
             $isCaptchaPost = isset($_POST['captcha']);
@@ -112,7 +150,7 @@ class Voter extends CI_Controller
 
             $newCaptcha = base_convert(rand(), 10, 36);
             $this->voteModel->insertCaptchaToken($deviceToken, $newCaptcha);
-            return $this->captcha($newCaptcha, $error);
+            return $this->captcha($newCaptcha, $comitteeName, $error);
         }
 
         $captcha = $_COOKIE[$this->deviceCaptchaName];
@@ -142,15 +180,19 @@ class Voter extends CI_Controller
                 $users = $this->voteModel->checkUserExist($nim, $pass);
 
                 if (count($users) == 0) {
-                    return $this->user("User belum terdaftar");
+                    return $this->user($comitteeName, "User belum terdaftar");
                 }
 
                 $user = $users[0];
-                $usersVoted = $this->voteModel->checkUserVoted($user['id']);
+                if (!$device['isVerify']) {
+                    $usersVoted = $this->voteModel->checkUserVoted($user['id']);
 
-                // TODO: Check if User really voted
-                if (count($usersVoted) > 0) {
-                    return $this->user("User sudah melakukan voting.\n Hubungi Operator jika merasa belum pernah melakukan voting");
+                    if (count($usersVoted) > 0) {
+
+                        $this->voteModel->setPhone($deviceToken, $phone);
+
+                        return $this->user($comitteeName, "User sudah melakukan voting.\n Hubungi Operator jika merasa belum pernah melakukan voting!.");
+                    }
                 }
 
                 $this->voteModel->insertUser($deviceToken, $user['id'], $phone);
@@ -158,7 +200,7 @@ class Voter extends CI_Controller
                 return $this->refresh();
             }
 
-            return $this->user();
+            return $this->user($comitteeName);
         }
 
         $userId = $_COOKIE[$this->deviceUserName];
@@ -171,7 +213,7 @@ class Voter extends CI_Controller
         ///     LEVEL Photo  ///
         // Should Have Captcha, Token, User Login
         if (!$isFotoSet) {
-            return $this->photo();
+            return $this->photo($comitteeName);
         }
         $photo = $_COOKIE[$this->devicePhotoName];
         if ($photo != substr($device['photoPath'], 0, strlen($photo))) {
@@ -194,7 +236,7 @@ class Voter extends CI_Controller
             }
 
             $res = $this->cadidateModel->getsCadidate();
-            return $this->voting($res);
+            return $this->voting($res, $comitteeName);
         }
 
         // Vote Level 5 //
@@ -202,6 +244,132 @@ class Voter extends CI_Controller
         // Should Have Captcha, Token, User Login, Foto, Vote
         // Use same device immediately
         return $this->finish($device);
+    }
+
+    public function newVote()
+    {
+        $this->clearCookies([
+            $this->deviceCaptchaName,
+            $this->devicePhotoName,
+            $this->deviceUserName
+        ]);
+
+        $deviceToken = $this->generateID();
+        $parentToken = $_COOKIE[$this->deviceParentname];
+        $ip = $this->input->ip_address();
+
+        $this->setCookie($this->deviceCookieName, $deviceToken);
+        $this->voteModel->insertDeviceToken($ip, $parentToken, $deviceToken);
+
+        return $this->refresh();
+    }
+
+    public function voteWithComittee(string $param = '')
+    {
+        $comitteeKey = $this->cache->get('comitteeKey');
+        if (!$comitteeKey) {
+            $file = fopen('comittee_key', 'r');
+            $content = fread($file, filesize('comittee_key'));
+            fclose($file);
+
+            $comitteeKey = $content;
+            $this->setCache('comitteeKey', $content);
+        }
+
+        if ($param != $comitteeKey) {
+            return $this->load->view('pages/ErrorComittee', [
+                'error' => 'Different Param Key'
+            ]);
+        }
+
+        $isKey = isset($_GET['key']);
+        if (!$isKey) {
+            return $this->load->view('pages/ErrorComittee', [
+                'error' => 'Key Value is not setted'
+            ]);
+        }
+
+        $comitteeCode = $_GET['key'];
+        $comittee = $this->comitteeModel->getByKey($comitteeCode);
+        if (count($comittee) == 0) {
+            return $this->load->view('pages/ErrorComittee', [
+                'error' => 'Key Value is wrong'
+            ]);
+        }
+
+        $comittee = $comittee[0];
+        $ip = $this->input->ip_address();
+        if (!$comittee['registerIp']) {
+            $this->clearCookies([
+                $this->deviceCaptchaName,
+                $this->deviceUserName,
+                $this->devicePhotoName
+            ]);
+
+            $parentToken = $this->generateID();
+            $deviceToken = $this->generateID();
+
+            $this->setCookie($this->deviceCookieName, $deviceToken);
+            $this->setCookie($this->deviceParentname, $parentToken);
+
+            $this->comitteeModel->registerIp($comitteeCode, $ip);
+            $this->voteModel->insertDeviceTokenWithComittee($ip, $parentToken, $deviceToken, $comitteeCode);
+
+            return $this->refresh();
+        }
+
+        if ($comittee['registerIp'] == $ip) {
+            // Clear Some Cookie
+            // And Add Comittee Code
+            $this->clearCookies([
+                $this->deviceCaptchaName,
+                $this->deviceUserName,
+                $this->devicePhotoName
+            ]);
+
+            $isParentSet = isset($_COOKIE[$this->deviceParentname]);
+
+            $parentToken = '';
+            $deviceToken = '';
+
+            if ($isParentSet) {
+                $parentToken = $_COOKIE[$this->deviceParentname];
+                $deviceToken = $this->generateID();
+
+                $this->setCookie($this->deviceCookieName, $deviceToken);
+            } else {
+                $deviceToken = $this->generateID();
+                $parentToken = $this->generateID();
+
+                $this->setCookie($this->deviceCookieName, $deviceToken);
+                $this->setCookie($this->deviceParentname, $parentToken);
+            }
+
+            $this->voteModel->insertDeviceTokenWithComittee($ip, $parentToken, $deviceToken, $comitteeCode);
+
+            return $this->refresh();
+        }
+
+        return $this->load->view('pages/ErrorComittee', [
+            'error' => 'Key Value already registered with different device'
+        ]);
+    }
+
+    public function comitteeMessage()
+    {
+        $isTokenSet = isset($_COOKIE[$this->deviceCookieName]);
+
+        if (!$isTokenSet) {
+            echo ("<p style='text-align: center; margin-top: 42px;'>Error: cannot call operator</p>");
+            return;
+        }
+
+        $devices = $this->voteModel->getByToken($_COOKIE[$this->deviceCookieName]);
+        $device = $devices[0];
+
+        $text = "Halo akun saya sudah digunakan untuk voting oleh orang lain.%0ANomor saya : " . $device['phone'];
+        // echo $text;
+        redirect("https://api.whatsapp.com/send?phone=+6283862458966&text=$text");
     }
 
     // BECAUSE USING JAVACRIPT
@@ -218,6 +386,8 @@ class Voter extends CI_Controller
         $imgName = $baseName . '.png';
         $img = $_FILES['image'];
 
+        header('Content-Type: application/json');
+
         if ($img['error'] == UPLOAD_ERR_OK) {
             $tmpName = $img['tmp_name'];
 
@@ -225,11 +395,12 @@ class Voter extends CI_Controller
             $this->voteModel->updatePhoto($_COOKIE[$this->deviceCookieName], $imgName);
             $this->setCookie($this->devicePhotoName, $baseName);
         } else {
-            // TODO: When error occured
-            // Do Something
+            echo json_encode([
+                'ok' => false,
+                'message' => 'Error when uploading photo.'
+            ]);
         }
 
-        header('Content-Type: application/json');
         echo json_encode([
             'ok' => true,
             'data' => [
@@ -238,9 +409,38 @@ class Voter extends CI_Controller
         ]);
     }
 
+    private function getComitteeName(string $comitteeCode): string
+    {
+        if (!$comitteeCode) {
+            return '';
+        }
+
+        $cachedComitteeName = $this->getCache($comitteeCode);
+        if ($cachedComitteeName) {
+            return $cachedComitteeName;
+        }
+
+        $res = $this->comitteeModel->getByKey($comitteeCode);
+        $newComitteeName = $res[0]['comitteeName'];
+
+        $this->setCache($comitteeCode, $newComitteeName);
+
+        return $newComitteeName;
+    }
+
     private function refresh()
     {
         return redirect(base_url('voter/vote'));
+    }
+
+    private function getCache(string $key)
+    {
+        return $this->cache->get($key);
+    }
+
+    private function setCache(string $key, string $value, int $time = 60 * 60 * 24 * 7)
+    {
+        $this->cache->save($key, $value, $time);
     }
 
     private function setCookie(string $key, string $value)
@@ -258,7 +458,9 @@ class Voter extends CI_Controller
     private function clearCookies(array $cookies)
     {
         foreach ($cookies as $key => $item) {
-            delete_cookie($item);
+            if (isset($_COOKIE[$item])) {
+                delete_cookie($item);
+            }
         }
     }
 
@@ -282,17 +484,15 @@ class Voter extends CI_Controller
     }
 
     // VIEW //
-    private function guide()
+    private function guide(string $comitteeName)
     {
-        $this->load->view('pages/vote/Header');
-        $this->load->view('pages/vote/VoteStepper', [
-            'step' => 0
+        $this->load->view('pages/vote/VoteGuide', [
+            'step' => 0,
+            'comitteeName' => $comitteeName
         ]);
-        $this->load->view('pages/vote/VoteGuide');
-        $this->load->view('pages/vote/Footer');
     }
 
-    private function captcha(string $captcha, string $error)
+    private function captcha(string $captcha, string $comitteeName, string $error)
     {
         $this->load->helper('captcha');
         $vals = array(
@@ -312,53 +512,43 @@ class Voter extends CI_Controller
             )
         );
         $cap = create_captcha($vals);
-        $this->load->view('pages/vote/Header');
-        $this->load->view('pages/vote/VoteStepper', [
-            'step' => 1
-        ]);
+
         $this->load->view('pages/vote/VoteCaptcha', [
             'captcha' => $cap,
-            'error' => $error
+            'error' => $error,
+            'step' => 1,
+            'comitteeName' => $comitteeName
         ]);
-        $this->load->view('pages/vote/Footer');
     }
 
-    private function user(string $error = "")
+    private function user(string $comitteeName, string $error = "")
     {
-        $this->load->view('pages/vote/Header');
-        $this->load->view('pages/vote/VoteStepper', [
-            'step' => 2
-        ]);
         $this->load->view('pages/vote/VoteUser', [
-            "error" => $error
+            "error" => $error,
+            'step' => 2,
+            'comitteeName' => $comitteeName
         ]);
-        $this->load->view('pages/vote/Footer');
     }
 
-    private function photo()
+    private function photo(string $comitteeName)
     {
-        $this->load->view('pages/vote/Header');
-        $this->load->view('pages/vote/VoteStepper', [
-            'step' => 3
+        $this->load->view('pages/vote/VotePhoto', [
+            'step' => 3,
+            'comitteeName' => $comitteeName
         ]);
-        $this->load->view('pages/vote/VotePhoto');
-        $this->load->view('pages/vote/Footer');
     }
 
-    private function voting(array $candidates)
+    private function voting(array $candidates, string $comitteeName)
     {
-        $this->load->view('pages/vote/Header');
-        $this->load->view('pages/vote/VoteStepper', [
+        $this->load->view('pages/vote/VoteVoting', [
             'step' => 4,
-            'candidates' => $candidates
+            'candidates' => $candidates,
+            'comitteeName' => $comitteeName
         ]);
-        $this->load->view('pages/vote/VoteVoting');
-        $this->load->view('pages/vote/Footer');
     }
 
     private function finish(array $device)
     {
-        $this->load->view('pages/vote/Header');
         $this->load->view('pages/vote/VoteFinish', [
             'device' => $device
         ]);

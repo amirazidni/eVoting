@@ -1,3 +1,6 @@
+<?php $this->load->view('pages/vote/Header'); ?>
+<?php $this->load->view('pages/vote/VoteStepper'); ?>
+
 <div style="margin-left: 24px; margin-right: 24px;">
     <div class="card mb-3 mt-3 pt-2 pb-4">
         <h4 class="card-title text-center">Masukan Captcha</h4>
@@ -31,3 +34,5 @@
         </div>
     </div>
 </div>
+
+<?php $this->load->view('pages/vote/Footer'); ?>

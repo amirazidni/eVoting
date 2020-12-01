@@ -1,3 +1,6 @@
+<?php $this->load->view('pages/vote/Header'); ?>
+<?php $this->load->view('pages/vote/VoteStepper'); ?>
+
 <style>
     .hidden {
         display: none !important;
@@ -24,7 +27,29 @@
 </div>
 
 
+<!-- MODAL For Error Upload -->
+<div class="modal fade" id="errorUpload" tabindex="-1" role="dialog" aria-labelledby="errorUpload" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Error saat mencoba mengupload gambar.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
 <script>
     $("#form-photo").submit(function(e) {
@@ -119,11 +144,18 @@
             contentType: false,
             processData: false,
             error: function(err) {
-                // TODO: DO SOMETHING WHEN SOMETHING GOES WRONG
+                $('#errorUpload').modal('show')
             },
             success: function(data) {
-                location.reload()
+                data = JSON.parse(data)
+                if (!data['ok']) {
+                    $('#errorUpload').modal('show')
+                } else {
+                    location.reload()
+                }
             },
         })
     }
 </script>
+
+<?php $this->load->view('pages/vote/Footer'); ?>

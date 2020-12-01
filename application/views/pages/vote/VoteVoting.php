@@ -1,3 +1,6 @@
+<?php $this->load->view('pages/vote/Header'); ?>
+<?php $this->load->view('pages/vote/VoteStepper'); ?>
+
 <style>
     .scale {
         transition: 0.2s;
@@ -14,7 +17,7 @@
     }
 
     .selected {
-        transform: scale(1.09);
+        transform: scale(1.05);
         border: 3px solid rgba(100, 100, 200, .5);
         z-index: 90;
     }
@@ -94,3 +97,6 @@
         e.querySelector('.choose').classList.remove('hidden')
     }
 </script>
+
+
+<?php $this->load->view('pages/vote/Footer'); ?>

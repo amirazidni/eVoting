@@ -1,5 +1,5 @@
 <div style="text-align: center;" class="mt-3">
-    <h1>E-Voting</h1>
+    <h1>E-Voting <?= $comitteeName ? ' - ' .  $comitteeName : '' ?></h1>
 </div>
 
 <div class="md-stepper-horizontal orange" style="margin-top: 32px;">
