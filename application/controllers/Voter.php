@@ -18,6 +18,7 @@ class Voter extends CI_Controller
         $this->load->model('M_Calon', 'cadidateModel');
         $this->load->model('ComitteeModel', 'comitteeModel');
         $this->load->model('M_pengawas', 'operatorModel');
+        $this->load->model('UserOverlapModel', 'userOverlapModel');
 
         // Helper
         $this->load->helper('cookie');
@@ -189,6 +190,7 @@ class Voter extends CI_Controller
                     if (count($usersVoted) > 0) {
 
                         $this->voteModel->setPhone($deviceToken, $phone);
+                        $this->userOverlapModel->insertUserOverlap($deviceToken, $user['id'], $phone);
 
                         return $this->user($comitteeName, "User sudah melakukan voting.\n Hubungi Operator jika merasa belum pernah melakukan voting!.");
                     }

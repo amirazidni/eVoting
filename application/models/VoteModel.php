@@ -1,4 +1,5 @@
 <?php
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class VoteModel extends CI_Model
 {
@@ -78,6 +79,12 @@ class VoteModel extends CI_Model
     public function setPhone(string $deviceToken, string $phone)
     {
         $data = ['phone' => $phone];
+        $this->db->where('deviceToken', $deviceToken)->update($this->table, $data);
+    }
+
+    public function setNote(string $deviceToken, string $note)
+    {
+        $data = ['note' => $note];
         $this->db->where('deviceToken', $deviceToken)->update($this->table, $data);
     }
 
