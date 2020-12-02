@@ -82,6 +82,12 @@ class VoteModel extends CI_Model
         $this->db->where('deviceToken', $deviceToken)->update($this->table, $data);
     }
 
+    public function setVerify(string $deviceToken)
+    {
+        $data = ['isVerify' => true];
+        $this->db->where('deviceToken', $deviceToken)->update($this->table, $data);
+    }
+
     public function setNote(string $deviceToken, string $note)
     {
         $data = ['note' => $note];

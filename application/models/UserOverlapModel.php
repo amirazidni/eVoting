@@ -7,8 +7,16 @@ class UserOverlapModel extends CI_Model
 
     public function insertUserOverlap(string $deviceToken, string $userId, string $phone)
     {
-        $data = ['deviceToken' => $deviceToken, 'userId' => $userId, 'phone' => $phone];
-        $this->db->insert($this->table, $data);
+        $count = $this->db->select('count(id) as count')->from($this->table)
+            ->where('deviceToken', $deviceToken)->get()->result();
+        $data = ['userId' => $userId, 'phone' => $phone];
+
+        if ($count[0]->count > 0) {
+            $this->db->where('deviceToken', $deviceToken)->update($this->table, $data);
+        } else {
+            $data['deviceToken'] = $deviceToken;
+            $this->db->insert($this->table, $data);
+        }
     }
 
     public function getCount(string $phone)

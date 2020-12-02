@@ -20,6 +20,10 @@
         td {
             white-space: nowrap;
         }
+
+        .pointer {
+            cursor: pointer;
+        }
     </style>
 
 </head>

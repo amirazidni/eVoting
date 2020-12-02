@@ -54,6 +54,17 @@ class Operator extends CI_Controller
         return redirect(base_url('operator/verify'));
     }
 
+    public function setVerify()
+    {
+        $deviceToken = $_POST['deviceToken'];
+        $lastSearch = $_POST['lastSearch'];
+
+        $this->voteModel->setVerify($deviceToken);
+        $this->session->set_flashdata('lastSearch', $lastSearch);
+
+        return redirect(base_url('operator/verify'));
+    }
+
     public function getsVerify()
     {
         $search = $_POST['search']['value'];

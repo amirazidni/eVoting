@@ -150,27 +150,46 @@
                 }
             }, {
                 data: "note",
-                render: (data) => {
+                render: (data, type) => {
+                    let note
                     if (data) {
-                        return data
+                        if (data.length > 36) {
+                            note = data.substring(0, 32) + ' ...'
+                        } else {
+                            note = data
+                        }
+                    } else {
+                        note = '-'
                     }
 
-                    return ''
+                    return `<p class="pointer">${note}</p>`
                 }
             }, {
                 data: "action",
                 render: (data, type, row) => {
                     let note = row['note']
                     let deviceToken = row['deviceToken']
-                    let btnNote = `
-                            <button class="btn btn-sm btn-success" onclick="openNoteModal('${deviceToken}', '${note ?? ''}')">${ note ? 'Update' : 'Add'} Note</button>
-                        `
+                    let isVerify = row['isVerify'] == '1'
+                    let btnNote = `<button class="btn btn-sm btn-success" onclick="openNoteModal('${deviceToken}', '${note ?? ''}')">${ note ? 'Update' : 'Add'} Note</button>`
+                    let btnVerify = `
+                    <form class="d-inline" action="<?= base_url('operator/setVerify'); ?>" method="post">
+                        <input type="text" name="deviceToken" value="${deviceToken}" hidden>
+                        <input id=${deviceToken + '-search'} type="text" name="lastSearch" hidden>
+                        <button class="btn btn-sm btn-primary ml-2" ${isVerify ? 'disabled' : ''} onclick="onSetVerify('${deviceToken + '-search'}', this)">${isVerify ? 'Verified' : 'Verify'}</button>
+                    </form>
+                    `
 
-                    return btnNote
+                    return btnNote + btnVerify
                 }
             }, ]
         })
     })
+
+    function onSetVerify(id, event) {
+        console.log("Event")
+        console.log(event)
+        $(`#${id}`).val($('#tbl-verify_filter input').val())
+    }
 
     function openNoteModal(deviceToken, note) {
         $('#note-textarea').val(note)
