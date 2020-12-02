@@ -16,7 +16,8 @@ class Datarekap extends CI_Controller
     if ($status_id == "loginadmin") {
       $this->view_admin();
     } else if ($status_id == "loginoperator") {
-      $this->view_operator();
+      // $this->view_operator();
+      return redirect(base_url('operator'));
     } else {
       redirect('welcome_admin');
     }

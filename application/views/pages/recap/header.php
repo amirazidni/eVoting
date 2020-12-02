@@ -60,7 +60,6 @@
       <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
 
-
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -76,7 +75,11 @@
             </li>
 
             <li class="nav-item">
-              <a href="Datapem" class="nav-link <?php if($this->uri->segment(1) == 'pengawas') {echo 'active';} else {echo '';} ?>">
+              <a href="Datapem" class="nav-link <?php if ($this->uri->segment(1) == 'pengawas') {
+                                                  echo 'active';
+                                                } else {
+                                                  echo '';
+                                                } ?>">
                 <i class="nav-icon fas fa-users"></i>
                 <p>
                   Data Pemilih
@@ -110,7 +113,11 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="datarekap" class="nav-link <?php if($this->uri->segment(1) == 'datarekap') {echo 'active';} else {echo '';} ?>">
+              <a href="datarekap" class="nav-link <?php if ($this->uri->segment(1) == 'datarekap') {
+                                                    echo 'active';
+                                                  } else {
+                                                    echo '';
+                                                  } ?>">
                 <i class="nav-icon fas fa-tasks"></i>
                 <p>
                   Rekap Data
