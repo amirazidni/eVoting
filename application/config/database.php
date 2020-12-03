@@ -72,10 +72,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 */
 
 
-$active_group = 'deploy';
+$active_group = 'default';
 $query_builder = TRUE;
-if ($_SERVER['REMOTE_ADDR'] == '::1') {
-	$active_group = 'default';
+
+if (ENVIRONMENT == 'production') {
+	$active_group = 'deploy';
 }
 
 $db['default'] = array(
