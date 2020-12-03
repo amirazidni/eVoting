@@ -61,7 +61,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-      <a href="Dasbor" class="brand-link">
+      <a href="dashboard" class="brand-link">
         <img src="<?= base_url() ?>assets/dist/img/ex-logo1.png" alt="eVoting Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Voting</span>
       </a>
@@ -77,7 +77,7 @@
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
             <li class="nav-item">
-              <a href="Dasbor" class="nav-link">
+              <a href="dashboard" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
                   Dashboard
@@ -285,49 +285,49 @@
                 </button>
               </div>
               <div class="modal-body">
-                <?= form_open_multipart('', ['id'=>'edit_form']); ?>
+                <?= form_open_multipart('', ['id' => 'edit_form']); ?>
                 <div class="row form-group">
                   <div class="col col-md-3"><label for="edit_nomorurut" class="form-control-label">Nomor Urut</label></div>
-                    <div class="col-12 col-md-9">
-                      <input type="number" id="edit_nomorurut" name="nomorurut" placeholder="Nomor Urut" class="form-control">
-                    </div>
-                  </div>
-
-                  <div class="row form-group">
-                    <div class="col col-md-3"><label for="edit_nama1" class="form-control-label">Presiden BEM</label></div>
-                    <div class="col-12 col-md-9">
-                      <input type="text" id="edit_nama1" name="nama1" placeholder="Nama Presiden" class="form-control">
-                    </div>
-                  </div>
-
-                  <div class="row form-group">
-                    <div class="col col-md-3"><label for="edit_nama2" class="form-control-label">Wakil Presiden BEM</label></div>
-                    <div class="col-12 col-md-9">
-                      <input type="text" id="edit_nama2" name="nama2" placeholder="Nama Wakil Presiden" class="form-control">
-                    </div>
-                  </div>
-                  <div class="row form-group">
-                    <div class="col col-md-3"><label for="disabled-input" class="form-control-label">Visi</label></div>
-                    <div class="col-12 col-md-9">
-                      <textarea class="form-control" name="visi" id="edit_visi"></textarea>
-                    </div>
-                  </div>
-                  <div class="row form-group">
-                    <div class="col col-md-3"><label for="disabled-input" class="form-control-label">Misi</label></div>
-                    <div class="col-12 col-md-9">
-                      <textarea class="form-control" name="misi" id="edit_misi"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="upfoto">Foto</label>
-                    <img id="edit_foto" src="" width="40"> <br>
-                    <input class="form-control-file" type="file" name="upfoto" id="upfoto" />
+                  <div class="col-12 col-md-9">
+                    <input type="number" id="edit_nomorurut" name="nomorurut" placeholder="Nomor Urut" class="form-control">
                   </div>
                 </div>
-                <div class="modal-footer">
-                  <button type="reset" class="btn btn-danger">Reset</button>
-                  <button type="submit" class="btn btn-primary">Ubah</button>
+
+                <div class="row form-group">
+                  <div class="col col-md-3"><label for="edit_nama1" class="form-control-label">Presiden BEM</label></div>
+                  <div class="col-12 col-md-9">
+                    <input type="text" id="edit_nama1" name="nama1" placeholder="Nama Presiden" class="form-control">
+                  </div>
                 </div>
+
+                <div class="row form-group">
+                  <div class="col col-md-3"><label for="edit_nama2" class="form-control-label">Wakil Presiden BEM</label></div>
+                  <div class="col-12 col-md-9">
+                    <input type="text" id="edit_nama2" name="nama2" placeholder="Nama Wakil Presiden" class="form-control">
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <div class="col col-md-3"><label for="disabled-input" class="form-control-label">Visi</label></div>
+                  <div class="col-12 col-md-9">
+                    <textarea class="form-control" name="visi" id="edit_visi"></textarea>
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <div class="col col-md-3"><label for="disabled-input" class="form-control-label">Misi</label></div>
+                  <div class="col-12 col-md-9">
+                    <textarea class="form-control" name="misi" id="edit_misi"></textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="upfoto">Foto</label>
+                  <img id="edit_foto" src="" width="40"> <br>
+                  <input class="form-control-file" type="file" name="upfoto" id="upfoto" />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="reset" class="btn btn-danger">Reset</button>
+                <button type="submit" class="btn btn-primary">Ubah</button>
+              </div>
               <?= form_close(); ?>
             </div>
             <!-- /.modal-content -->
@@ -429,7 +429,7 @@
             render: function(data, type, row) {
               return `
               <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${row.id}" href="javascript:void(0)"><i class="fas fa-edit"></i></a>
-              <a class="btn btn-sm btn-danger" href="<?= base_url('datacal/delete/')?>${row.id}" onclick="return confirm('Yakin ingin menghapus nomor urut ${row.nomorurut}?');"><i class="fa fa-trash"></i></a>`;
+              <a class="btn btn-sm btn-danger" href="<?= base_url('datacal/delete/') ?>${row.id}" onclick="return confirm('Yakin ingin menghapus nomor urut ${row.nomorurut}?');"><i class="fa fa-trash"></i></a>`;
             },
             orderable: false
           }

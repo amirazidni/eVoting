@@ -46,6 +46,7 @@ class Voter extends CI_Controller
 
     public function notyet()
     {
+        print_r($_SERVER['CI_ENV']);
         return $this->load->view('pages/NotYet');
     }
 

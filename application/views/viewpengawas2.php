@@ -58,7 +58,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-      <a href="Dasbor" class="brand-link">
+      <a href="dashboard" class="brand-link">
         <img src="<?= base_url() ?>assets/dist/img/ex-logo1.png" alt="eVoting Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Voting</span>
       </a>
@@ -74,7 +74,7 @@
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
             <li class="nav-item">
-              <a href="Dasbor" class="nav-link">
+              <a href="dashboard" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
                   Dashboard
@@ -349,12 +349,20 @@
           url: `<?= base_url('pengawas2/show_all'); ?>`,
           type: "post",
         },
-        columns: [
-          {data: 'id'},
-          {data: "nim"},
-          {data: "nama"},
-          {data: "kelas"},
-          {data: "aktivasi",
+        columns: [{
+            data: 'id'
+          },
+          {
+            data: "nim"
+          },
+          {
+            data: "nama"
+          },
+          {
+            data: "kelas"
+          },
+          {
+            data: "aktivasi",
             render: function(data, type, row) {
               if (data == 0) {
                 return `<button type="button" class="btn btn-sm btn-danger">Belum Diaktivasi</button>`;
@@ -363,7 +371,8 @@
               }
             }
           },
-          {data: "suara",
+          {
+            data: "suara",
             render: function(data, type, row) {
               if (data == 0) {
                 return `<button type="button" class="btn btn-sm btn-danger">Belum Memilih</button>`;
