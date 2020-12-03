@@ -19,7 +19,7 @@
                             <table id="tbl-token" class="w-100 table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Device ID</th>
+                                        <th>Network Address</th>
                                         <th>Jumlah User</th>
                                         <th>Nim</th>
                                         <th>Rekap</th>
@@ -76,11 +76,11 @@
             "processing": true,
             "serverSide": true,
             "ajax": {
-                url: `<?= base_url('operator/getsRecapToken'); ?>`,
+                url: `<?= base_url('operator/getsRecapNetwork'); ?>`,
                 type: "POST",
             },
             "columns": [{
-                data: "parentToken"
+                data: "ipAddress"
             }, {
                 data: "count"
             }, {
@@ -112,9 +112,9 @@
             }, {
                 data: "action",
                 render: (data, type, row) => {
-                    let parentToken = row['parentToken']
+                    let ipAddress = row['ipAddress']
 
-                    return `<button class="btn btn-sm btn-primary ml-2" onclick="location.href='<?= base_url('operator/token/'); ?>${parentToken}'">Detail</button>`;
+                    return `<button class="btn btn-sm btn-primary ml-2" onclick="location.href='<?= base_url('operator/network/'); ?>${ipAddress}'">Detail</button>`;
                 }
             }]
         }).search('<?= $lastSearch; ?>').draw()

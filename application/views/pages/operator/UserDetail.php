@@ -9,92 +9,97 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="mb-2">
+                    <h1>User ID <?= $userId; ?></h1>
+                </div>
+            </div>
+        </section>
         <section class="content">
             <div class="container-fluid">
-                <div class="pt-4">
-                    <div class="card">
-                        <div class="card-body table-responsive">
-                            <table id="tbl-user-detail" class="w-100 table table-bordered table-striped">
-                                <thead>
+                <div class="card">
+                    <div class="card-body table-responsive">
+                        <table id="tbl-user-detail" class="w-100 table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>NIM</th>
+                                    <th>Nama Pemilih</th>
+                                    <th>Kelas</th>
+                                    <th>No. Telp</th>
+                                    <th>KPU</th>
+                                    <th>Note</th>
+                                    <th>Vote</th>
+                                    <th>Photo</th>
+                                    <th>Rekap</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($users as $item) {
+                                ?>
                                     <tr>
-                                        <th>NIM</th>
-                                        <th>Nama Pemilih</th>
-                                        <th>Kelas</th>
-                                        <th>No. Telp</th>
-                                        <th>KPU</th>
-                                        <th>Note</th>
-                                        <th>Vote</th>
-                                        <th>Photo</th>
-                                        <th>Rekap</th>
-                                        <th>Aksi</th>
+                                        <td><?= $item['nim']; ?></td>
+                                        <td><?= $item['nama']; ?></td>
+                                        <td><?= $item['kelas']; ?></td>
+                                        <td><?= $item['phone']; ?></td>
+                                        <td><?= $item['comitteeName'] ?? '-'; ?></td>
+                                        <td>
+                                            <?php
+
+                                            $data = $item['note'];
+                                            if ($data) {
+                                                if (strlen($data) > 24) {
+                                                    $note = substr($data, 0, 20) . ' ...';
+                                                } else {
+                                                    $note = $data;
+                                                }
+                                            } else {
+                                                $note = '-';
+                                            }
+
+                                            ?>
+                                            <p class="pointer" onclick="onDetailNote(`<?= $data; ?>`)"><?= $note; ?></p>
+                                            <?php
+
+                                            ?>
+                                        </td>
+                                        <td><?= $item['candidateNumber']; ?></td>
+                                        <td>
+                                            <?php
+
+                                            if ($item['photoPath']) {
+                                            ?>
+                                                <button class="btn btn-info btn-sm" onclick="onPhotoDetail('<?= base_url('assets/voter/' . $item['photoPath']); ?>')">Lihat Foto</button>
+                                            <?php
+                                            } else {
+                                                echo '<p><b> - </b></p>';
+                                            }
+
+                                            ?>
+                                        </td>
+                                        <td><?= $item['recap'] == 'CLEAN' ? 'Bersih' : ($item['recap'] == 'DIRTY' ? 'Kotor' : ' - '); ?></td>
+                                        <td>
+                                            <form class="d-inline" action="<?= base_url('operator/setRecap'); ?>" method="post">
+                                                <input type="text" name="deviceToken" value="<?= $item['deviceToken']; ?>" hidden>
+                                                <input type="text" name="recap" value="CLEAN" hidden>
+                                                <input type="text" name="userId" value="<?= $userId; ?>" hidden>
+                                                <button class="btn btn-success btn-sm" <?= $item['recap'] == 'CLEAN' ? 'disabled' : ''; ?>>Bersih</button>
+                                            </form>
+                                            <form class="d-inline" action="<?= base_url('operator/setRecap'); ?>" method="post">
+                                                <input type="text" name="deviceToken" value="<?= $item['deviceToken']; ?>" hidden>
+                                                <input type="text" name="recap" value="DIRTY" hidden>
+                                                <input type="text" name="userId" value="<?= $userId; ?>" hidden>
+                                                <button class="btn btn-danger btn-sm" <?= $item['recap'] == 'DIRTY' ? 'disabled' : ''; ?>>Kotor</button>
+                                            </form>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    foreach ($users as $item) {
-                                    ?>
-                                        <tr>
-                                            <td><?= $item['nim']; ?></td>
-                                            <td><?= $item['nama']; ?></td>
-                                            <td><?= $item['kelas']; ?></td>
-                                            <td><?= $item['phone']; ?></td>
-                                            <td><?= $item['comitteeName'] ?? '-'; ?></td>
-                                            <td>
-                                                <?php
-
-                                                $data = $item['note'];
-                                                if ($data) {
-                                                    if (strlen($data) > 24) {
-                                                        $note = substr($data, 0, 20) . ' ...';
-                                                    } else {
-                                                        $note = $data;
-                                                    }
-                                                } else {
-                                                    $note = '-';
-                                                }
-
-                                                ?>
-                                                <p class="pointer" onclick="onDetailNote(`<?= $data; ?>`)"><?= $note; ?></p>
-                                                <?php
-
-                                                ?>
-                                            </td>
-                                            <td><?= $item['candidateNumber']; ?></td>
-                                            <td>
-                                                <?php
-
-                                                if ($item['photoPath']) {
-                                                ?>
-                                                    <button class="btn btn-info btn-sm" onclick="onPhotoDetail('<?= base_url('assets/voter/' . $item['photoPath']); ?>')">Lihat Foto</button>
-                                                <?php
-                                                } else {
-                                                    echo '<p><b> - </b></p>';
-                                                }
-
-                                                ?>
-                                            </td>
-                                            <td><?= $item['recap'] == 'CLEAN' ? 'Bersih' : ($item['recap'] == 'DIRTY' ? 'Kotor' : ' - '); ?></td>
-                                            <td>
-                                                <form class="d-inline" action="<?= base_url('operator/setRecap'); ?>" method="post">
-                                                    <input type="text" name="deviceToken" value="<?= $item['deviceToken']; ?>" hidden>
-                                                    <input type="text" name="recap" value="CLEAN" hidden>
-                                                    <input type="text" name="userId" value="<?= $userId; ?>" hidden>
-                                                    <button class="btn btn-success btn-sm" <?= $item['recap'] == 'CLEAN' ? 'disabled' : ''; ?>>Bersih</button>
-                                                </form>
-                                                <form class="d-inline" action="<?= base_url('operator/setRecap'); ?>" method="post">
-                                                    <input type="text" name="deviceToken" value="<?= $item['deviceToken']; ?>" hidden>
-                                                    <input type="text" name="recap" value="DIRTY" hidden>
-                                                    <input type="text" name="userId" value="<?= $userId; ?>" hidden>
-                                                    <button class="btn btn-danger btn-sm" <?= $item['recap'] == 'DIRTY' ? 'disabled' : ''; ?>>Kotor</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    <?php
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div>
+                                <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

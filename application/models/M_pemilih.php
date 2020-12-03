@@ -11,6 +11,12 @@ class M_pemilih extends CI_Model
 		$this->load->library('l_password');
 	}
 
+	public function getCount()
+	{
+		$res = $this->db->query('select count(id) as count from pemilih')->result();
+		return $res[0]->count;
+	}
+
 	function jumlah_pemilih()
 	{
 		$totalpemilih = $this->db->query("SELECT * FROM pemilih WHERE delete_at IS NULL");

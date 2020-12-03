@@ -224,7 +224,7 @@ class VoteModel extends CI_Model
         }
 
         $sql = '
-        select v.parentToken
+        select v.id
         from tbl_vote as v
         inner join pemilih as p
         on p.id=v.userId
@@ -240,7 +240,7 @@ class VoteModel extends CI_Model
     public function getRecapTokenCountAll()
     {
         $sql = '
-        select v.parentToken
+        select v.id
         from tbl_vote as v
         group by v.parentToken
         having count(v.userId) > 1
@@ -286,18 +286,83 @@ class VoteModel extends CI_Model
         on ca.id=v.vote
         where v.parentToken=?
         ';
-        // $sql = '
-        // select v.deviceToken, p.nim, p.nama, p.kelas, v.phone, v.comitteeCode, v.note, v.recap, c.comitteeName, v.photoPath, v.vote, ca.nomorurut as candidateNumber
-        // from tbl_vote as v
-        // inner join pemilih as p
-        // on p.id=v.userId
-        // left join tbl_comittee as c
-        // on c.comitteeCode=v.comitteeCode
-        // left join calon as ca
-        // on ca.id=v.vote
-        // where v.userId=?
-        // ';
         $res = $this->db->query($sql, $parentId)->result_array();
+        return $res;
+    }
+
+    /// RECAP FOR NETWORK ///
+    public function getRecapNetworkCount(string $search)
+    {
+        if ($search) {
+            $search = "%{$search}%";
+        } else {
+            $search = '%';
+        }
+
+        $sql = '
+        select v.id
+        from tbl_vote as v
+        inner join pemilih as p
+        on p.id=v.userId
+        where p.nim like ? and v.vote is not null
+        group by v.ipAddress
+        having count(v.userId) > 1
+        ';
+        $count = $this->db->query($sql, $search)->num_rows();
+
+        return $count;
+    }
+
+    public function getRecapNetworkCountAll()
+    {
+        $sql = '
+        select v.id
+        from tbl_vote as v
+        group by v.ipAddress
+        having count(v.userId) > 1
+        ';
+        $count = $this->db->query($sql)->num_rows();
+
+        return $count;
+    }
+
+    public function getRecapNetworkData(string $search, int $offset = 0, int $limit = 5)
+    {
+        if ($search) {
+            $search = "%{$search}%";
+        } else {
+            $search = '%';
+        }
+
+        $sql = '
+        select v.ipAddress, v.parentToken, count(v.ipAddress) as count, group_concat(p.nim) as nims, group_concat(v.recap) as recaps
+        from tbl_vote as v
+        inner join pemilih as p
+        on p.id=v.userId
+        where p.nim like ? and v.vote is not null
+        group by v.ipAddress
+        having count(v.userId) > 1
+        limit ? offset ?
+        ';
+        $data = $this->db->query($sql, [$search, $limit, $offset])->result_array();
+
+        return $data;
+    }
+
+    public function getByIpAddress(string $ipAddress)
+    {
+        $sql = '
+        select v.deviceToken, p.nim, p.nama, p.kelas, v.phone, v.comitteeCode, v.note, v.recap, c.comitteeName, v.photoPath, v.vote, ca.nomorurut as candidateNumber
+        from tbl_vote as v
+        inner join pemilih as p
+        on p.id=v.userId
+        left join tbl_comittee as c
+        on c.comitteeCode=v.comitteeCode
+        left join calon as ca
+        on ca.id=v.vote
+        where v.ipAddress=?
+        ';
+        $res = $this->db->query($sql, $ipAddress)->result_array();
         return $res;
     }
 }

@@ -26,6 +26,12 @@ class M_calon extends CI_Model
 		return $res;
 	}
 
+	public function getCount()
+	{
+		$res = $this->db->query('select count(id) as count from calon')->result();
+		return $res[0]->count;
+	}
+
 	function jumlah_calon()
 	{
 

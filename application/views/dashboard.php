@@ -216,6 +216,7 @@
                   <a href="Hasilpilih" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
+
               <!-- ./col -->
               <div class="col-lg-3 col-6">
                 <!-- small box -->
@@ -234,6 +235,7 @@
                 </div>
               </div>
               <!-- ./col -->
+
             </div>
             <!-- /.row -->
             <!-- Main row -->
@@ -388,7 +390,7 @@
           data: [0, 0],
           backgroundColor: ['#00a65a', '#ffc107'],
         }],
-        labels: ['Suara Masuk', 'Suara Belum Digunakan'],
+        labels: ['Suara Masuk', 'Suara Belum Digunakan', 'Something'],
       },
       options: {
         maintainAspectRatio: false,
@@ -405,9 +407,9 @@
     })
 
     function update() {
-      $.getJSON("<?php base_url() ?>Dasbor/update_realtime", function(data) {
-        pemilih.innerHTML = data.pemilih
-        calon.innerHTML = data.calon
+      $.getJSON("<?php base_url() ?>Dashboard/updateRealtime", function(data) {
+        pemilih.innerHTML = data.voterCount
+        calon.innerHTML = data.candidateCount
         pilihan.innerHTML = data.pilihan
         sisa.innerHTML = data.sisa
       })
@@ -418,6 +420,7 @@
       // pieConfig.data.datasets[0].data[1] = sisa.innerHTML; //suara sisa
       pieConfig.data.datasets[0].data[0] = 1200
       pieConfig.data.datasets[0].data[1] = 200
+      pieConfig.data.datasets[0].data[2] = 300
       window.myPie.update();
     }
   </script>

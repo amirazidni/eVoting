@@ -13,6 +13,15 @@ class Voter extends CI_Controller
     {
         parent::__construct();
 
+        date_default_timezone_set('Asia/Jakarta');
+        $date = (int)date('H');
+
+        if ($date > 16 || $date < 8) {
+            if (uri_string() != "voter/notyet") {
+                return redirect(base_url('voter/notyet'));
+            }
+        }
+
         // Models
         $this->load->model('VoteModel', 'voteModel');
         $this->load->model('M_Calon', 'cadidateModel');
@@ -33,6 +42,11 @@ class Voter extends CI_Controller
     public function index()
     {
         return redirect(base_url('voter/vote'));
+    }
+
+    public function notyet()
+    {
+        return $this->load->view('pages/NotYet');
     }
 
     public function vote()

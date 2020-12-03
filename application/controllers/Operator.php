@@ -76,7 +76,7 @@ class Operator extends CI_Controller
     public function network(string $ipAddress = '')
     {
         if ($ipAddress) {
-            $res = $this->voteModel->getByParentId($ipAddress);
+            $res = $this->voteModel->getByIpAddress($ipAddress);
             return $this->load->view('pages/operator/NetworkDetail', [
                 'users' => $res,
                 'ipAddress' => $ipAddress
@@ -132,6 +132,17 @@ class Operator extends CI_Controller
         $this->voteModel->setRecap($deviceToken, $recap);
 
         return redirect(base_url('operator/token/' . $parentToken));
+    }
+
+    public function setRecapNetwork()
+    {
+        $deviceToken = $_POST['deviceToken'];
+        $recap = $_POST['recap'];
+        $ipAddress = $_POST['ipAddress'];
+
+        $this->voteModel->setRecap($deviceToken, $recap);
+
+        return redirect(base_url('operator/network/' . $ipAddress));
     }
 
     public function setVerify()
@@ -192,6 +203,25 @@ class Operator extends CI_Controller
         $count = $this->voteModel->getRecapTokenCount($search);
         $countAll = $this->voteModel->getRecapTokenCountAll();
         $data = $this->voteModel->getRecapTokenData($search, $offset, $limit);
+
+        header('Content-type: application/json');
+        echo json_encode([
+            'draw' => $draw,
+            'recordsTotal' => $countAll,
+            'recordsFiltered' => $count,
+            'data' => $data
+        ]);
+    }
+
+    public function getsRecapNetwork()
+    {
+        $search = $_POST['search']['value'];
+        $limit = $_POST['length'];
+        $offset = $_POST['start'];
+        $draw = $_POST['draw'];
+        $count = $this->voteModel->getRecapNetworkCount($search);
+        $countAll = $this->voteModel->getRecapNetworkCountAll();
+        $data = $this->voteModel->getRecapNetworkData($search, $offset, $limit);
 
         header('Content-type: application/json');
         echo json_encode([
