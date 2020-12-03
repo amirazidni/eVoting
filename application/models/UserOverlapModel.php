@@ -53,13 +53,13 @@ class UserOverlapModel extends CI_Model
         }
 
         $query = "
-        select v.deviceToken, p.nim, p.nama, p.kelas, uo.phone, v.comitteeCode, v.note, v.vote, v.isVerify
+        select v.deviceToken, p.nim, p.nama, p.kelas, uo.phone, v.comitteeCode, v.note, v.vote, v.isVerify, v.updatedAt
         from tbl_vote as v
         left join {$this->table} as uo
         on v.deviceToken = uo.deviceToken
         left join pemilih as p
         on p.id = uo.userId
-        where uo.phone like ?
+        where uo.phone like ? and v.vote is NULL
         limit ? offset ? 
         ";
 

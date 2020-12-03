@@ -169,7 +169,9 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                   <div class="inner">
-                    <h3><div id="pemilih"></div></h3>
+                    <h3>
+                      <div id="pemilih"></div>
+                    </h3>
 
                     <p>Jumlah Pemilih</p>
                   </div>
@@ -186,7 +188,9 @@
                 <!-- small box -->
                 <div class="small-box bg-danger">
                   <div class="inner">
-                    <h3><div id="calon"></div></h3>
+                    <h3>
+                      <div id="calon"></div>
+                    </h3>
                     <p>Jumlah Calon</p>
                   </div>
                   <div class="icon">
@@ -200,7 +204,9 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                   <div class="inner">
-                    <h3><div id="suara_masuk"></div></h3>
+                    <h3>
+                      <div id="suara_masuk"></div>
+                    </h3>
 
                     <p>Suara Masuk</p>
                   </div>
@@ -215,7 +221,9 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                   <div class="inner">
-                    <h3><div id="sisa"></div></h3>
+                    <h3>
+                      <div id="sisa"></div>
+                    </h3>
 
                     <p>Suara Belum Digunakan</p>
                   </div>
@@ -257,28 +265,28 @@
               <!-- right col (We are only adding the ID to make the widgets sortable)-->
               <section class="col-lg-5 connectedSortable">
                 <div class="card card-warning collapsed-card">
-                <div class="card-header">
-                  <h3 class="card-title">
-                    <i class="fa fa-cog fa-spin fa-fw"></i>
-                    
-                    Pengolahan Lanjutan
-                  </h3>
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                    </button>
+                  <div class="card-header">
+                    <h3 class="card-title">
+                      <i class="fa fa-cog fa-spin fa-fw"></i>
+
+                      Pengolahan Lanjutan
+                    </h3>
+                    <div class="card-tools">
+                      <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                    <!-- /.card-tools -->
                   </div>
-                  <!-- /.card-tools -->
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <a onClick="return confirm('Ini akan menghapus semua suara masuk. Yakin?')" href="#" class="btn btn-danger"><i class="fas fa-undo"></i> Reset Suara Masuk</a>
+                  <!-- /.card-header -->
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <a onClick="return confirm('Ini akan menghapus semua suara masuk. Yakin?')" href="#" class="btn btn-danger"><i class="fas fa-undo"></i> Reset Suara Masuk</a>
+                      </div>
                     </div>
                   </div>
+                  <!-- /.card-body -->
                 </div>
-                <!-- /.card-body -->
-              </div>
               </section>
               <!-- right col -->
             </div>
@@ -325,37 +333,45 @@
     <!-- jQuery -->
     <script src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
-    <script src="<?= base_url() ?>assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- <script src="<?= base_url() ?>assets/plugins/jquery-ui/jquery-ui.min.js"></script> -->
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
-      $.widget.bridge('uibutton', $.ui.button)
+      // $.widget.bridge('uibutton', $.ui.button)
     </script>
     <!-- Bootstrap 4 -->
     <script src="<?= base_url() ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- ChartJS -->
     <script src="<?= base_url() ?>assets/plugins/chart.js/Chart.min.js"></script>
+
     <!-- Sparkline -->
-    <script src="<?= base_url() ?>assets/plugins/sparklines/sparkline.js"></script>
+    <!-- <script src="<?= base_url() ?>assets/plugins/sparklines/sparkline.js"></script> -->
     <!-- JQVMap -->
-    <script src="<?= base_url() ?>assets/plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- <script src="<?= base_url() ?>assets/plugins/jqvmap/jquery.vmap.min.js"></script> -->
+    <!-- <script src="<?= base_url() ?>assets/plugins/jqvmap/maps/jquery.vmap.usa.js"></script> -->
     <!-- jQuery Knob Chart -->
-    <script src="<?= base_url() ?>assets/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- <script src="<?= base_url() ?>assets/plugins/jquery-knob/jquery.knob.min.js"></script> -->
     <!-- daterangepicker -->
-    <script src="<?= base_url() ?>assets/plugins/moment/moment.min.js"></script>
-    <script src="<?= base_url() ?>assets/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- <script src="<?= base_url() ?>assets/plugins/moment/moment.min.js"></script> -->
+    <!-- <script src="<?= base_url() ?>assets/plugins/daterangepicker/daterangepicker.js"></script> -->
     <!-- Tempusdominus Bootstrap 4 -->
-    <script src="<?= base_url() ?>assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- <script src="<?= base_url() ?>assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script> -->
     <!-- Summernote -->
-    <script src="<?= base_url() ?>assets/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- <script src="<?= base_url() ?>assets/plugins/summernote/summernote-bs4.min.js"></script> -->
     <!-- overlayScrollbars -->
-    <script src="<?= base_url() ?>assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- <script src="<?= base_url() ?>assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script> -->
     <!-- AdminLTE App -->
     <script src="<?= base_url() ?>assets/dist/js/adminlte.js"></script>
+
+
+
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="<?= base_url() ?>assets/dist/js/pages/dashboard.js"></script>
+    <!-- <script src="<?= base_url() ?>assets/dist/js/pages/dashboard.js"></script> -->
     <!-- AdminLTE for demo purposes -->
-    <script src="<?= base_url() ?>assets/dist/js/demo.js"></script>
+    <!-- <script src="<?= base_url() ?>assets/dist/js/demo.js"></script> -->
+
+
+
+
   </body>
 
   </html>
@@ -364,54 +380,44 @@
     var calon = document.getElementById('calon');
     var pilihan = document.getElementById('suara_masuk');
     var sisa = document.getElementById('sisa');
-    $(document).ready(function() {
-        selesai();
-        updatePie();
-    });
-    
-    function selesai() {
-      setTimeout(function() {
-        update();
-        selesai();
-      }, 200);
-    };
-    
-    function update() {
-      $.getJSON("<?php base_url() ?>Dasbor/update_realtime", function(data) {
-            pemilih.innerHTML = data.pemilih;
-            calon.innerHTML = data.calon;
-            pilihan.innerHTML = data.pilihan;
-            sisa.innerHTML = data.sisa;
-            
-      });
-    };
-    function updatePie() {
-      setTimeout(function() {
-        pieConfig.data.datasets[0].data[0] = pilihan.innerHTML; //suara masuk 
-        pieConfig.data.datasets[0].data[1] = sisa.innerHTML; //suara sisa       
-        window.myPie.update();
-        updatePie();
-      }, 2000);
-    }
-    
-
     /* ChartJS */
-    var pieConfig        = {
+    let pieConfig = {
       type: 'pie',
       data: {
-				datasets: [{
-					data: [ 0, 0 ],
-					backgroundColor : ['#00a65a', '#ffc107'],
-				}],
-				labels: [ 'Suara Masuk', 'Suara Belum Digunakan'],
+        datasets: [{
+          data: [0, 0],
+          backgroundColor: ['#00a65a', '#ffc107'],
+        }],
+        labels: ['Suara Masuk', 'Suara Belum Digunakan'],
       },
-      options :{
-        maintainAspectRatio : false,
-        responsive : true,
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
       }
+    }
+
+    $(document).ready(function() {
+      let ctx = document.getElementById('pieChart').getContext('2d')
+      window.myPie = new Chart(ctx, pieConfig)
+
+      update()
+      updatePie()
+    })
+
+    function update() {
+      $.getJSON("<?php base_url() ?>Dasbor/update_realtime", function(data) {
+        pemilih.innerHTML = data.pemilih
+        calon.innerHTML = data.calon
+        pilihan.innerHTML = data.pilihan
+        sisa.innerHTML = data.sisa
+      })
     };
-    window.onload = function() {
-			var ctx = document.getElementById('pieChart').getContext('2d');
-			window.myPie = new Chart(ctx, pieConfig);
-		};  
-</script>
+
+    function updatePie() {
+      // pieConfig.data.datasets[0].data[0] = pilihan.innerHTML; //suara masuk
+      // pieConfig.data.datasets[0].data[1] = sisa.innerHTML; //suara sisa
+      pieConfig.data.datasets[0].data[0] = 1200
+      pieConfig.data.datasets[0].data[1] = 200
+      window.myPie.update();
+    }
+  </script>

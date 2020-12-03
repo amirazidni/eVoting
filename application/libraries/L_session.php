@@ -12,6 +12,11 @@ class L_session
     $this->data_id = $this->CI->session->userdata();
   }
 
+  public function isAuth()
+  {
+    return isset($this->data_id["status"]);
+  }
+
   public function admin()
   {
     if (
@@ -36,7 +41,8 @@ class L_session
   public function pengawas()
   {
     if (
-      $this->data_id["status"] != "loginoperator") {
+      $this->data_id["status"] != "loginoperator"
+    ) {
       return true;
     }
   }
@@ -44,7 +50,8 @@ class L_session
   public function pengawas2()
   {
     if (
-      $this->data_id["status"] != "loginpengawas") {
+      $this->data_id["status"] != "loginpengawas"
+    ) {
       return true;
     }
   }

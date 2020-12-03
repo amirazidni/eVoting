@@ -26,6 +26,7 @@
                                             <th>No. Telp</th>
                                             <th>KPU</th>
                                             <th>Note</th>
+                                            <th>Terakhir Update</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -71,18 +72,21 @@
         </div>
     </div>
 
-    <!--Modal Logout -->
-    <div class="modal fade" id="konfirmkeluar" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-sm" role="document">
+    <!-- Modal Detail Note -->
+    <div class="modal fade" id="note-detail-modal" tabindex="-1" role="dialog" aria-labelledby="note-detail-modal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticModalLabel">Apakah anda yakin ingin keluar?</h5>
+                    <h5 class="modal-title">Detail Note</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <pre id="note-detail"></pre>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
-                    <form action="<?= site_url('welcome_admin/logout'); ?>">
-                        <input type="submit" class="btn btn-primary" value="Ya">
-                    </form>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -110,11 +114,7 @@
 
 <script type="text/javascript">
     $(document).ready(() => {
-        let tableVerify = $("#tbl-verify")
-        tableVerify.DataTable({
-            'initComplete': () => {
-                $('#tbl-verify_filter input').val('<?= $lastSearch; ?>')
-            },
+        $("#tbl-verify").DataTable({
             "paging": true,
             "lengthChange": true,
             "searching": true,
@@ -162,32 +162,37 @@
                         note = '-'
                     }
 
-                    return `<p class="pointer">${note}</p>`
+                    return `<p class="pointer" onclick="onDetailNote(\`${data}\`)">${note}</p>`
                 }
+            }, {
+                data: 'updatedAt',
             }, {
                 data: "action",
                 render: (data, type, row) => {
                     let note = row['note']
                     let deviceToken = row['deviceToken']
                     let isVerify = row['isVerify'] == '1'
-                    let btnNote = `<button class="btn btn-sm btn-success" onclick="openNoteModal('${deviceToken}', '${note ?? ''}')">${ note ? 'Update' : 'Add'} Note</button>`
+                    let btnNote = `<button class="btn btn-sm btn-success" onclick="openNoteModal('${deviceToken}', \`${note ?? ''}\`)">${ note ? 'Update' : 'Add'} Note</button>`
                     let btnVerify = `
                     <form class="d-inline" action="<?= base_url('operator/setVerify'); ?>" method="post">
                         <input type="text" name="deviceToken" value="${deviceToken}" hidden>
                         <input id=${deviceToken + '-search'} type="text" name="lastSearch" hidden>
-                        <button class="btn btn-sm btn-primary ml-2" ${isVerify ? 'disabled' : ''} onclick="onSetVerify('${deviceToken + '-search'}', this)">${isVerify ? 'Verified' : 'Verify'}</button>
+                        <button class="btn btn-sm btn-primary ml-2" ${isVerify ? 'disabled' : ''} onclick="onSetVerify('${deviceToken + '-search'}')">${isVerify ? 'Verified' : 'Verify'}</button>
                     </form>
                     `
 
                     return btnNote + btnVerify
                 }
             }, ]
-        })
+        }).search('<?= $lastSearch; ?>').draw()
     })
 
-    function onSetVerify(id, event) {
-        console.log("Event")
-        console.log(event)
+    function onDetailNote(note) {
+        $('#note-detail').text(note)
+        $('#note-detail-modal').modal('show')
+    }
+
+    function onSetVerify(id) {
         $(`#${id}`).val($('#tbl-verify_filter input').val())
     }
 

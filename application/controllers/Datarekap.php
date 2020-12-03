@@ -14,13 +14,14 @@ class Datarekap extends CI_Controller
   {
     $status_id = $this->session_id['status'];
     if ($status_id == "loginadmin") {
-      $this->view_admin();
-    } else if ($status_id == "loginoperator") {
-      $this->view_operator();
-      // return redirect(base_url('operator'));
-    } else {
-      redirect('welcome_admin');
+      return redirect(base_url('operator'));
     }
+
+    if ($status_id == "loginoperator") {
+      return redirect(base_url('operator'));
+    }
+
+    redirect('welcome_admin');
   }
 
   public function get_data($data = "select")
@@ -37,15 +38,15 @@ class Datarekap extends CI_Controller
     }
   }
 
-  private function view_admin()
-  {
-    $this->load->view('pages/recap/view_admin', ['view' => 'admin']);
-  }
+  // private function view_admin()
+  // {
+  //   $this->load->view('pages/recap/view_admin', ['view' => 'admin']);
+  // }
 
-  private function view_operator()
-  {
-    $this->load->view('pages/recap/view_operator', ['view' => 'operator']);
-  }
+  // private function view_operator()
+  // {
+  //   $this->load->view('pages/recap/view_operator', ['view' => 'operator']);
+  // }
 
   private function select()
   {

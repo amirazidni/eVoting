@@ -55,9 +55,9 @@ class Voter extends CI_Controller
                 $this->deviceUserName,
                 $this->devicePhotoName
             ]);
-            $deviceToken = $this->generateID();
+            $deviceToken = generateID();
             $ip = $this->input->ip_address();
-            $parentToken = $this->generateID();
+            $parentToken = generateID();
 
             $this->setCookie($this->deviceCookieName, $deviceToken);
             $this->setCookie($this->deviceParentname, $parentToken);
@@ -77,7 +77,7 @@ class Voter extends CI_Controller
 
         // Check if Device Exist
         if (!$isTokenSet) {
-            $deviceToken = $this->generateID();
+            $deviceToken = generateID();
             $ip = $this->input->ip_address();
             $this->setCookie($this->deviceCookieName, $deviceToken);
             $this->voteModel->insertDeviceToken($ip, $parentToken, $deviceToken);
@@ -98,23 +98,6 @@ class Voter extends CI_Controller
         $comitteeName = '';
         if (isset($device['comitteeCode'])) {
             $comitteeName = $this->getComitteeName($device['comitteeCode']);
-        }
-
-        // Set Operator
-        if (!isset($device['operatorId'])) {
-            $operators = $this->operatorModel->getOperators();
-            $index = $this->getCache('operatorIndex');
-
-            if ($index == (count($operators) - 1)) {
-                $index = 0;
-                $this->setCache('operatorIndex', $index);
-            } else {
-                $this->cache->increment('operatorIndex');
-            }
-
-            $operator = $operators[$index];
-
-            $this->voteModel->setOperatorId($deviceToken, $operator['id']);
         }
 
         // render guide if not isGuided
@@ -255,7 +238,7 @@ class Voter extends CI_Controller
             $this->deviceUserName
         ]);
 
-        $deviceToken = $this->generateID();
+        $deviceToken = generateID();
         $parentToken = $_COOKIE[$this->deviceParentname];
         $ip = $this->input->ip_address();
 
@@ -307,8 +290,8 @@ class Voter extends CI_Controller
                 $this->devicePhotoName
             ]);
 
-            $parentToken = $this->generateID();
-            $deviceToken = $this->generateID();
+            $parentToken = generateID();
+            $deviceToken = generateID();
 
             $this->setCookie($this->deviceCookieName, $deviceToken);
             $this->setCookie($this->deviceParentname, $parentToken);
@@ -335,12 +318,12 @@ class Voter extends CI_Controller
 
             if ($isParentSet) {
                 $parentToken = $_COOKIE[$this->deviceParentname];
-                $deviceToken = $this->generateID();
+                $deviceToken = generateID();
 
                 $this->setCookie($this->deviceCookieName, $deviceToken);
             } else {
-                $deviceToken = $this->generateID();
-                $parentToken = $this->generateID();
+                $deviceToken = generateID();
+                $parentToken = generateID();
 
                 $this->setCookie($this->deviceCookieName, $deviceToken);
                 $this->setCookie($this->deviceParentname, $parentToken);
@@ -365,8 +348,31 @@ class Voter extends CI_Controller
             return;
         }
 
-        $device = $this->voteModel->getByToken($_COOKIE[$this->deviceCookieName])[0];
-        $operator = $this->operatorModel->getOperator($device['operatorId'])[0];
+        $deviceToken = $_COOKIE[$this->deviceCookieName];
+        $device = $this->voteModel->getByToken($deviceToken)[0];
+        $operatorId = '';
+
+        // Set Operator
+        if (!isset($device['operatorId'])) {
+            $operators = $this->operatorModel->getOperators();
+            $index = $this->getCache('operatorIndex');
+
+            if ($index == (count($operators) - 1)) {
+                $index = 0;
+                $this->setCache('operatorIndex', $index);
+            } else {
+                $this->cache->increment('operatorIndex');
+            }
+
+            $operator = $operators[$index];
+            $operatorId = $operator['id'];
+
+            $this->voteModel->setOperatorId($deviceToken, $operator['id']);
+        } else {
+            $operatorId = $device['operatorId'];
+        }
+
+        $operator = $this->operatorModel->getOperator($operatorId)[0];
         $text = "Halo akun saya sudah digunakan untuk voting oleh orang lain.%0ANomor saya : " . $device['phone'];
 
         redirect("https://api.whatsapp.com/send?phone=" . $operator['phone'] . "&text=$text");
@@ -395,7 +401,7 @@ class Voter extends CI_Controller
             return $this->refresh();
         }
 
-        $baseName = $this->generateID();
+        $baseName = generateID();
         $imgName = $baseName . '.png';
         $img = $_FILES['image'];
 
@@ -431,7 +437,7 @@ class Voter extends CI_Controller
             return $this->refresh();
         }
 
-        $baseName = $this->generateID();
+        $baseName = generateID();
         $imgName = $baseName . '.png';
         $img = $_FILES['image'];
 
@@ -484,7 +490,7 @@ class Voter extends CI_Controller
     private function setCookie(string $key, string $value)
     {
         setcookie($key, $value, [
-            'expires' => $this->getExpires(),
+            'expires' => time() + 3600 * 24 * 7,
             'path' => '/',
             'httponly' => true,
             'samesite' => 'Strict',
@@ -495,30 +501,11 @@ class Voter extends CI_Controller
 
     private function clearCookies(array $cookies)
     {
-        foreach ($cookies as $key => $item) {
+        foreach ($cookies as $item) {
             if (isset($_COOKIE[$item])) {
                 delete_cookie($item);
             }
         }
-    }
-
-    private function getOneDay()
-    {
-        return 3600 * 24 * 7;
-    }
-
-    private function getExpires()
-    {
-        return time() + $this->getOneDay();
-    }
-
-    private function generateID()
-    {
-        $version =  1;
-        $random = base_convert(rand(), 10, 36);
-        $unique = uniqid();
-
-        return $unique . $version . $random;
     }
 
     // VIEW //
@@ -537,12 +524,12 @@ class Voter extends CI_Controller
             'word'          => $captcha,
             'img_path'      => './assets/captcha/',
             'img_url'       => base_url('assets/captcha/'),
-            'img_width'     => '300',
-            'img_height'    => 100,
-            'expiration'    => $this->getOneDay(),
+            'img_width'     => '250',
+            'img_height'    => 150,
             'word_length'   => strlen($captcha),
-            'font_size'     => 20,
-            'color'        => array(
+            'font_path'     => FCPATH . 'assets/font/Roboto-MediumItalic.ttf',
+            'font_size'     => 42,
+            'color'         => array(
                 'background' => array(255, 255, 255),
                 'border' => array(255, 255, 255),
                 'text' => array(0, 0, 0),

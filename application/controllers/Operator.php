@@ -2,8 +2,6 @@
 
 class Operator extends CI_Controller
 {
-    private $user;
-
     public function __construct()
     {
         parent::__construct();
@@ -12,13 +10,27 @@ class Operator extends CI_Controller
         $this->load->model('UserOverlapModel', 'userOverlapModel');
         $this->load->model('VoteModel', 'voteModel');
 
-        // Session
-        $this->user = $this->session->userdata();
+        // Libraries
+        $user = $this->session->userdata();
+        $status = $user['status'];
+
+        if (!$status) {
+            return redirect('welcome_admin');
+        }
+
+        if ($status != 'loginoperator' && $status != 'loginadmin') {
+            return redirect('welcome_admin');
+        }
     }
 
     public function index()
     {
         return redirect(base_url('operator/verify'));
+    }
+
+    public function dashboard()
+    {
+        return $this->load->view('pages/operator/Dashboard');
     }
 
     public function verify()
@@ -29,16 +41,42 @@ class Operator extends CI_Controller
         ]);
     }
 
-    public function dashboard()
+    public function user(string $userId = '')
     {
-        return $this->load->view('pages/operator/Dashboard');
+        if ($userId) {
+            $res = $this->voteModel->getByUserID($userId);
+            return $this->load->view('pages/operator/UserDetail', [
+                'users' => $res,
+                'userId' => $userId
+            ]);
+        }
+
+        $lastSearch = $this->session->flashdata('lastSearch');
+        return $this->load->view('pages/operator/User', [
+            'lastSearch' => $lastSearch
+        ]);
     }
 
-    public function test(string $phone = "")
+    public function token(string $deviceToken = '')
     {
-        $data = $this->userOverlapModel->getData($phone);
+        if ($deviceToken) {
+            # code...
+        }
 
-        print_r("data");
+        $lastSearch = $this->session->flashdata('lastSearch');
+        return $this->load->view('pages/operator/Token', [
+            'lastSearch' => $lastSearch
+        ]);
+    }
+
+    public function test(string $search = "")
+    {
+        $count = $this->voteModel->getRecapCount($search);
+        $countAll = $this->voteModel->getRecapCountAll();
+        $data = $this->voteModel->getRecapData($search);
+
+        print_r($count);
+        print_r($countAll);
         print_r($data);
     }
 
@@ -52,6 +90,17 @@ class Operator extends CI_Controller
         $this->session->set_flashdata('lastSearch', $lastSearch);
 
         return redirect(base_url('operator/verify'));
+    }
+
+    public function setRecap()
+    {
+        $deviceToken = $_POST['deviceToken'];
+        $recap = $_POST['recap'];
+        $userId = $_POST['userId'];
+
+        $this->voteModel->setRecap($deviceToken, $recap);
+
+        return redirect(base_url('operator/user/' . $userId));
     }
 
     public function setVerify()
@@ -74,6 +123,25 @@ class Operator extends CI_Controller
         $count = $this->userOverlapModel->getCount($search);
         $countAll = $this->userOverlapModel->getCountAll();
         $data = $this->userOverlapModel->getData($search, $offset, $limit);
+
+        header('Content-type: application/json');
+        echo json_encode([
+            'draw' => $draw,
+            'recordsTotal' => $countAll,
+            'recordsFiltered' => $count,
+            'data' => $data
+        ]);
+    }
+
+    public function getsRecapUser()
+    {
+        $search = $_POST['search']['value'];
+        $limit = $_POST['length'];
+        $offset = $_POST['start'];
+        $draw = $_POST['draw'];
+        $count = $this->voteModel->getRecapCount($search);
+        $countAll = $this->voteModel->getRecapCountAll();
+        $data = $this->voteModel->getRecapData($search, $offset, $limit);
 
         header('Content-type: application/json');
         echo json_encode([

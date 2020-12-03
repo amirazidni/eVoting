@@ -6,8 +6,13 @@ class Dasbor extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+
+		// MODELS
 		$this->load->model('M_calon', 'mc');
 		$this->load->model('M_pemilih', 'mp');
+		$this->load->model('VoteModel', 'voteModel');
+
+		// LIBRARIES
 		$this->load->library("l_session");
 		if ($this->l_session->admin()) {
 			redirect('welcome_admin');
@@ -19,7 +24,7 @@ class Dasbor extends CI_Controller
 		$data = [
 			'totalcalon'	=> $this->mc->jumlah_calon(),
 			'data'      	=> $this->mc->show_calon(),
-			'datapemilih1'	=> $this->mp->show_pemilih()
+			'datapemilih1'	=> $this->mp->show_pemilih(),
 		];
 
 		$this->load->view('dashboard', $data);

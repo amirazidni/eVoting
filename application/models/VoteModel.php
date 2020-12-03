@@ -128,4 +128,88 @@ class VoteModel extends CI_Model
         $data = ['isGuided' => $guided];
         $this->db->where('deviceToken', $deviceToken)->update($this->table, $data);
     }
+
+    public function setRecap(string $deviceToken, string $recap)
+    {
+        $data = ['recap' => $recap];
+        $this->db->where('deviceToken', $deviceToken)->update($this->table, $data);
+    }
+
+    public function getRecapCount(string $search)
+    {
+        if ($search) {
+            $search = "%{$search}%";
+        } else {
+            $search = '%';
+        }
+
+        $sql = '
+        SELECT v.userId
+        FROM tbl_vote as v
+        inner join pemilih as p
+        on p.id=v.userId
+        where (p.nim like ? or p.nama like ?) and v.vote is not null
+        GROUP BY v.userId
+        HAVING COUNT(*) > 1;
+        ';
+        $count = $this->db->query($sql, [$search, $search])->num_rows();
+
+        return $count;
+    }
+
+    public function getRecapCountAll()
+    {
+        $sql = '
+        SELECT v.userId
+        FROM tbl_vote as v
+        inner join pemilih as p
+        on p.id=v.userId
+        where v.vote is not null
+        GROUP BY v.userId
+        HAVING COUNT(v.userId) > 1;
+        ';
+        $count = $this->db->query($sql)->num_rows();
+
+        return $count;
+    }
+
+    public function getRecapData(string $search, int $offset = 0, int $limit = 5)
+    {
+        if ($search) {
+            $search = "%{$search}%";
+        } else {
+            $search = '%';
+        }
+
+        $sql = '
+        SELECT v.userId, p.nim, p.nama, p.kelas, COUNT(v.userId) as count, group_concat(v.phone) as phones, group_concat(v.recap) as recaps
+        FROM tbl_vote as v
+        inner join pemilih as p
+        on p.id=v.userId
+        where (p.nim like ? or p.nama like ?) and v.vote is not null
+        GROUP BY v.userId
+        HAVING COUNT(v.userId) > 1
+        limit ? offset ?
+        ';
+        $data = $this->db->query($sql, [$search, $search, $limit, $offset])->result_array();
+
+        return $data;
+    }
+
+    public function getByUserID(string $userID)
+    {
+        $sql = '
+        select v.deviceToken, p.nim, p.nama, p.kelas, v.phone, v.comitteeCode, v.note, v.recap, c.comitteeName, v.photoPath, v.vote, ca.nomorurut as candidateNumber
+        from tbl_vote as v
+        inner join pemilih as p
+        on p.id=v.userId
+        left join tbl_comittee as c
+        on c.comitteeCode=v.comitteeCode
+        left join calon as ca
+        on ca.id=v.vote
+        where v.userId=?
+        ';
+        $res = $this->db->query($sql, $userID)->result_array();
+        return $res;
+    }
 }

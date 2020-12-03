@@ -37,7 +37,7 @@ class M_pengawas extends CI_Model
 		$this->l_password->setVal($this->db->escape_str($this->input->post('password', true)));
 		$password = $this->l_password->getEnc();
 		$field = array(
-			'id' => date("YmdHis"),
+			'id' => generateID(),
 			'username' => $this->db->escape_str($this->input->post('username', true)),
 			'password' => $password,
 			'namapengawas' => $this->db->escape_str($this->input->post('namapengawas', true)),
