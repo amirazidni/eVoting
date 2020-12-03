@@ -51,6 +51,7 @@ class Dashboard extends CI_Controller
 
 		print_r("Result");
 		print_r($result);
+		print_r($_SERVER['REMOTE_ADDR']);
 	}
 
 	function updateRealtime()
