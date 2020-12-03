@@ -5,6 +5,33 @@ class VoteModel extends CI_Model
 {
     private $table = 'tbl_vote';
 
+    public function getVoteCount()
+    {
+        $count = $this->db->query('
+        select count(id) as count
+        from tbl_vote where vote is not null
+        ')->result();
+        return $count[0]->count;
+    }
+
+    public function getRecapVoteCount()
+    {
+        $sql = '
+        SELECT count(v.userId) as count
+        FROM tbl_vote as v
+        where v.vote is not null
+        GROUP BY v.userId
+        HAVING COUNT(v.userId) > 1;
+        ';
+        $data = $this->db->query($sql)->result_array();
+
+        return $data;
+    }
+
+    public function getCleanVoteCount()
+    {
+    }
+
     public function setOperatorId(string $deviceToken, string $operatorId)
     {
         $data = ['operatorId' => $operatorId];

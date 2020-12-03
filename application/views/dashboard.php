@@ -199,6 +199,7 @@
                   <a href="Datacal" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
+
               <!-- ./col -->
               <div class="col-lg-3 col-6">
                 <!-- small box -->
@@ -234,8 +235,25 @@
                   <a href="Datapem" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
-              <!-- ./col -->
 
+              <!-- ./col -->
+              <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                  <div class="inner">
+                    <h3>
+                      <div id="recap"></div>
+                    </h3>
+
+                    <p>Suara Rekapitulasi</p>
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-android-walk"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ./col -->
             </div>
             <!-- /.row -->
             <!-- Main row -->
@@ -382,6 +400,8 @@
     var calon = document.getElementById('calon');
     var pilihan = document.getElementById('suara_masuk');
     var sisa = document.getElementById('sisa');
+    let recap = $('#recap')
+
     /* ChartJS */
     let pieConfig = {
       type: 'pie',
@@ -408,10 +428,17 @@
 
     function update() {
       $.getJSON("<?php base_url() ?>Dashboard/updateRealtime", function(data) {
+
+        let recapNum = 0
+        for (const item of data.recapVote) {
+          recapNum += Number(item.count)
+        }
+
         pemilih.innerHTML = data.voterCount
         calon.innerHTML = data.candidateCount
-        pilihan.innerHTML = data.pilihan
+        pilihan.innerHTML = data.voteCount
         sisa.innerHTML = data.sisa
+        recap.text(recapNum)
       })
     };
 

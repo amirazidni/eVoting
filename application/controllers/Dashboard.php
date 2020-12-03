@@ -37,14 +37,30 @@ class Dashboard extends CI_Controller
 		$this->load->view('dashboard');
 	}
 
+	public function test()
+	{
+		$voterCount = $this->voterModel->getCount();
+		$candidateCount = $this->candidateModel->getCount();
+		$voteCount = $this->voteModel->getVoteCount();
+
+		$result = [
+			'voterCount' => $voterCount,
+			'candidateCount' => $candidateCount,
+			'voteCount' => $voteCount,
+		];
+
+		print_r("Result");
+		print_r($result);
+	}
+
 	function updateRealtime()
 	{
 		$voterCount = $this->voterModel->getCount();
 		$candidateCount = $this->candidateModel->getCount();
-		// $voteCount = $this->voteModel->getCount();
+		$voteCount = $this->voteModel->getVoteCount();
 		// $cleanVote = $this->voteModel->getCleanVoteCount();
 		// $dirtyVote = $this->voteModel->getDirtyVoteCount();
-		// $recapVote = $this->voteModel->getRecapVoteCount();
+		$recapVote = $this->voteModel->getRecapVoteCount();
 		// $pemilih = $this->voterModel->getCount();
 		// $calon = $this->candidateModel->jumlah_calon();
 		// $suara_masuk = $this->voterModel->suara_masuk();
@@ -53,10 +69,11 @@ class Dashboard extends CI_Controller
 		$result = [
 			'voterCount' => $voterCount,
 			'candidateCount' => $candidateCount,
+			'voteCount' => $voteCount,
 			// 'voteCount' => $voteCount,
 			// 'cleanVote' => $cleanVote,
 			// 'dirtyVote' => $dirtyVote,
-			// 'recapVote' => $recapVote
+			'recapVote' => $recapVote
 		];
 		// $result = array(
 		// 	'pemilih' => $pemilih,
