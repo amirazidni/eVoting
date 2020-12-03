@@ -9,17 +9,24 @@ class Voter extends CI_Controller
     private $deviceUserName     = '_SYS_US_';
     private $devicePhotoName    = '_SYS_PO_';
 
+    private $forceKeyName       = '_forceKey_';
+
     public function __construct()
     {
         parent::__construct();
 
-        date_default_timezone_set('Asia/Jakarta');
-        $date = (int)date('H');
+        if ($this->uri->segment(2) == 'force') {
+            return;
+        }
 
-        if ($date > 16 || $date < 8) {
-            if (uri_string() != "voter/notyet") {
-                return redirect(base_url('voter/notyet'));
+        if (isset($_COOKIE[$this->forceKeyName])) {
+            $forceKey = $_COOKIE[$this->forceKeyName];
+            if ($forceKey != $this->getForceKey()) {
+                $this->clearCookies($this->forceKeyName);
+                $this->isolate();
             }
+        } else {
+            return $this->isolate();
         }
 
         // Models
@@ -36,7 +43,7 @@ class Voter extends CI_Controller
         $this->load->library('l_password');
 
         // Drivers
-        $this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
+        // $this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
     }
 
     public function index()
@@ -46,8 +53,18 @@ class Voter extends CI_Controller
 
     public function notyet()
     {
-        print_r(ENVIRONMENT);
         return $this->load->view('pages/NotYet');
+    }
+
+    public function force(string $key)
+    {
+        $forceKey = $this->getForceKey();
+
+        if ($forceKey == $key) {
+            $this->setCookie($this->forceKeyName, $forceKey);
+        }
+
+        return $this->refresh();
     }
 
     public function vote()
@@ -468,6 +485,18 @@ class Voter extends CI_Controller
         $this->refresh();
     }
 
+    public function getForceKey()
+    {
+        $forceKey = $this->getCache("forcekey");
+        if (!$forceKey) {
+            $file = fopen('force_key', 'r');
+            $forceKey = fread($file, filesize('comittee_key'));
+            fclose($file);
+        }
+
+        return $forceKey;
+    }
+
     private function getComitteeName(string $comitteeCode): string
     {
         if (!$comitteeCode) {
@@ -490,6 +519,18 @@ class Voter extends CI_Controller
     private function refresh()
     {
         return redirect(base_url('voter/vote'));
+    }
+
+    public function isolate()
+    {
+        date_default_timezone_set('Asia/Jakarta');
+        $date = (int)date('H');
+
+        if ($date > 16 || $date < 8) {
+            if (uri_string() != "voter/notyet") {
+                return redirect(base_url('voter/notyet'));
+            }
+        }
     }
 
     private function getCache(string $key)
