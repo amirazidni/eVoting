@@ -24,7 +24,7 @@ class Voter extends CI_Controller
 
         // Models
         $this->load->model('VoteModel', 'voteModel');
-        $this->load->model('M_Calon', 'cadidateModel');
+        $this->load->model('M_calon', 'cadidateModel');
         $this->load->model('ComitteeModel', 'comitteeModel');
         $this->load->model('M_pengawas', 'operatorModel');
         $this->load->model('UserOverlapModel', 'userOverlapModel');
