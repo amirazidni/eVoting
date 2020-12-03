@@ -16,7 +16,7 @@
 
                         <!-- /.card-header -->
                         <div class="card-body table-responsive">
-                            <table id="tbl-verify" class="w-100 table table-bordered table-striped">
+                            <table id="tbl-user" class="w-100 table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th>NIM</th>
@@ -64,8 +64,7 @@
 
 <script type="text/javascript">
     $(document).ready(() => {
-        let tableVerify = $("#tbl-verify")
-        tableVerify.DataTable({
+        $("#tbl-user").DataTable({
             'initComplete': () => {
                 $('#tbl-verify_filter input').val('<?= $lastSearch; ?>')
             },
@@ -105,7 +104,7 @@
                     return `<button class="btn btn-sm btn-primary ml-2" onclick="location.href='<?= base_url('operator/user/'); ?>${userId}'">Detail</button>`;
                 }
             }]
-        })
+        }).search('<?= $lastSearch; ?>').draw()
     })
 </script>
 

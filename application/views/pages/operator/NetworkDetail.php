@@ -75,16 +75,16 @@
                                             </td>
                                             <td><?= $item['recap'] == 'CLEAN' ? 'Bersih' : ($item['recap'] == 'DIRTY' ? 'Kotor' : ' - '); ?></td>
                                             <td>
-                                                <form class="d-inline" action="<?= base_url('operator/setRecap'); ?>" method="post">
+                                                <form class="d-inline" action="<?= base_url('operator/setRecapToken'); ?>" method="post">
                                                     <input type="text" name="deviceToken" value="<?= $item['deviceToken']; ?>" hidden>
                                                     <input type="text" name="recap" value="CLEAN" hidden>
-                                                    <input type="text" name="userId" value="<?= $userId; ?>" hidden>
+                                                    <input type="text" name="parentToken" value="<?= $parentToken; ?>" hidden>
                                                     <button class="btn btn-success btn-sm" <?= $item['recap'] == 'CLEAN' ? 'disabled' : ''; ?>>Bersih</button>
                                                 </form>
-                                                <form class="d-inline" action="<?= base_url('operator/setRecap'); ?>" method="post">
+                                                <form class="d-inline" action="<?= base_url('operator/setRecapToken'); ?>" method="post">
                                                     <input type="text" name="deviceToken" value="<?= $item['deviceToken']; ?>" hidden>
                                                     <input type="text" name="recap" value="DIRTY" hidden>
-                                                    <input type="text" name="userId" value="<?= $userId; ?>" hidden>
+                                                    <input type="text" name="parentToken" value="<?= $parentToken; ?>" hidden>
                                                     <button class="btn btn-danger btn-sm" <?= $item['recap'] == 'DIRTY' ? 'disabled' : ''; ?>>Kotor</button>
                                                 </form>
                                             </td>

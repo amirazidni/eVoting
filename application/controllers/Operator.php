@@ -57,10 +57,14 @@ class Operator extends CI_Controller
         ]);
     }
 
-    public function token(string $deviceToken = '')
+    public function token(string $parentToken = '')
     {
-        if ($deviceToken) {
-            # code...
+        if ($parentToken) {
+            $res = $this->voteModel->getByParentId($parentToken);
+            return $this->load->view('pages/operator/TokenDetail', [
+                'users' => $res,
+                'parentToken' => $parentToken
+            ]);
         }
 
         $lastSearch = $this->session->flashdata('lastSearch');
@@ -69,11 +73,27 @@ class Operator extends CI_Controller
         ]);
     }
 
+    public function network(string $ipAddress = '')
+    {
+        if ($ipAddress) {
+            $res = $this->voteModel->getByParentId($ipAddress);
+            return $this->load->view('pages/operator/NetworkDetail', [
+                'users' => $res,
+                'ipAddress' => $ipAddress
+            ]);
+        }
+
+        $lastSearch = $this->session->flashdata('lastSearch');
+        return $this->load->view('pages/operator/Network', [
+            'lastSearch' => $lastSearch
+        ]);
+    }
+
     public function test(string $search = "")
     {
-        $count = $this->voteModel->getRecapCount($search);
-        $countAll = $this->voteModel->getRecapCountAll();
-        $data = $this->voteModel->getRecapData($search);
+        $count = $this->voteModel->getRecapTokenCount($search);
+        $countAll = $this->voteModel->getRecapTokenCountAll();
+        $data = $this->voteModel->getRecapTokenData($search);
 
         print_r($count);
         print_r($countAll);
@@ -101,6 +121,17 @@ class Operator extends CI_Controller
         $this->voteModel->setRecap($deviceToken, $recap);
 
         return redirect(base_url('operator/user/' . $userId));
+    }
+
+    public function setRecapToken()
+    {
+        $deviceToken = $_POST['deviceToken'];
+        $recap = $_POST['recap'];
+        $parentToken = $_POST['parentToken'];
+
+        $this->voteModel->setRecap($deviceToken, $recap);
+
+        return redirect(base_url('operator/token/' . $parentToken));
     }
 
     public function setVerify()
@@ -139,9 +170,28 @@ class Operator extends CI_Controller
         $limit = $_POST['length'];
         $offset = $_POST['start'];
         $draw = $_POST['draw'];
-        $count = $this->voteModel->getRecapCount($search);
-        $countAll = $this->voteModel->getRecapCountAll();
-        $data = $this->voteModel->getRecapData($search, $offset, $limit);
+        $count = $this->voteModel->getRecapUserCount($search);
+        $countAll = $this->voteModel->getRecapUserCountAll();
+        $data = $this->voteModel->getRecapUserData($search, $offset, $limit);
+
+        header('Content-type: application/json');
+        echo json_encode([
+            'draw' => $draw,
+            'recordsTotal' => $countAll,
+            'recordsFiltered' => $count,
+            'data' => $data
+        ]);
+    }
+
+    public function getsRecapToken()
+    {
+        $search = $_POST['search']['value'];
+        $limit = $_POST['length'];
+        $offset = $_POST['start'];
+        $draw = $_POST['draw'];
+        $count = $this->voteModel->getRecapTokenCount($search);
+        $countAll = $this->voteModel->getRecapTokenCountAll();
+        $data = $this->voteModel->getRecapTokenData($search, $offset, $limit);
 
         header('Content-type: application/json');
         echo json_encode([

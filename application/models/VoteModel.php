@@ -135,7 +135,8 @@ class VoteModel extends CI_Model
         $this->db->where('deviceToken', $deviceToken)->update($this->table, $data);
     }
 
-    public function getRecapCount(string $search)
+    /// RECAP FOR USER ///
+    public function getRecapUserCount(string $search)
     {
         if ($search) {
             $search = "%{$search}%";
@@ -157,7 +158,7 @@ class VoteModel extends CI_Model
         return $count;
     }
 
-    public function getRecapCountAll()
+    public function getRecapUserCountAll()
     {
         $sql = '
         SELECT v.userId
@@ -173,7 +174,7 @@ class VoteModel extends CI_Model
         return $count;
     }
 
-    public function getRecapData(string $search, int $offset = 0, int $limit = 5)
+    public function getRecapUserData(string $search, int $offset = 0, int $limit = 5)
     {
         if ($search) {
             $search = "%{$search}%";
@@ -210,6 +211,93 @@ class VoteModel extends CI_Model
         where v.userId=?
         ';
         $res = $this->db->query($sql, $userID)->result_array();
+        return $res;
+    }
+
+    /// RECAP FOR TOKEN ///
+    public function getRecapTokenCount(string $search)
+    {
+        if ($search) {
+            $search = "%{$search}%";
+        } else {
+            $search = '%';
+        }
+
+        $sql = '
+        select v.parentToken
+        from tbl_vote as v
+        inner join pemilih as p
+        on p.id=v.userId
+        where p.nim like ? and v.vote is not null
+        group by v.parentToken
+        having count(v.userId) > 1
+        ';
+        $count = $this->db->query($sql, $search)->num_rows();
+
+        return $count;
+    }
+
+    public function getRecapTokenCountAll()
+    {
+        $sql = '
+        select v.parentToken
+        from tbl_vote as v
+        group by v.parentToken
+        having count(v.userId) > 1
+        ';
+        $count = $this->db->query($sql)->num_rows();
+
+        return $count;
+    }
+
+    public function getRecapTokenData(string $search, int $offset = 0, int $limit = 5)
+    {
+        if ($search) {
+            $search = "%{$search}%";
+        } else {
+            $search = '%';
+        }
+
+        $sql = '
+        select v.parentToken, count(v.parentToken) as count, group_concat(p.nim) as nims, group_concat(v.recap) as recaps
+        from tbl_vote as v
+        inner join pemilih as p
+        on p.id=v.userId
+        where p.nim like ? and v.vote is not null
+        group by v.parentToken
+        having count(v.userId) > 1
+        limit ? offset ?
+        ';
+        $data = $this->db->query($sql, [$search, $limit, $offset])->result_array();
+
+        return $data;
+    }
+
+    public function getByParentId(string $parentId)
+    {
+        $sql = '
+        select v.deviceToken, p.nim, p.nama, p.kelas, v.phone, v.comitteeCode, v.note, v.recap, c.comitteeName, v.photoPath, v.vote, ca.nomorurut as candidateNumber
+        from tbl_vote as v
+        inner join pemilih as p
+        on p.id=v.userId
+        left join tbl_comittee as c
+        on c.comitteeCode=v.comitteeCode
+        left join calon as ca
+        on ca.id=v.vote
+        where v.parentToken=?
+        ';
+        // $sql = '
+        // select v.deviceToken, p.nim, p.nama, p.kelas, v.phone, v.comitteeCode, v.note, v.recap, c.comitteeName, v.photoPath, v.vote, ca.nomorurut as candidateNumber
+        // from tbl_vote as v
+        // inner join pemilih as p
+        // on p.id=v.userId
+        // left join tbl_comittee as c
+        // on c.comitteeCode=v.comitteeCode
+        // left join calon as ca
+        // on ca.id=v.vote
+        // where v.userId=?
+        // ';
+        $res = $this->db->query($sql, $parentId)->result_array();
         return $res;
     }
 }
