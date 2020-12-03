@@ -37,23 +37,6 @@ class Dashboard extends CI_Controller
 		$this->load->view('dashboard');
 	}
 
-	public function test()
-	{
-		$voterCount = $this->voterModel->getCount();
-		$candidateCount = $this->candidateModel->getCount();
-		$voteCount = $this->voteModel->getVoteCount();
-
-		$result = [
-			'voterCount' => $voterCount,
-			'candidateCount' => $candidateCount,
-			'voteCount' => $voteCount,
-		];
-
-		print_r("Result");
-		print_r($result);
-		print_r($_SERVER['REMOTE_ADDR']);
-	}
-
 	function updateRealtime()
 	{
 		$voterCount = $this->voterModel->getCount();
