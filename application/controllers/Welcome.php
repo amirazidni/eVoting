@@ -22,7 +22,7 @@ class Welcome extends CI_Controller
 				redirect("form");
 				break;
 			case "loginadmin":
-				redirect("dasbor");
+				redirect("dashboard");
 				break;
 			case "loginoperator":
 				redirect("pengawas");

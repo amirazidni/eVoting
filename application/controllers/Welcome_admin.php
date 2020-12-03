@@ -21,7 +21,7 @@ class Welcome_admin extends CI_Controller
         redirect("form");
         break;
       case "loginadmin":
-        redirect("dasbor");
+        redirect("dashboard");
         break;
       case "loginoperator":
         redirect("pengawas");
@@ -45,8 +45,8 @@ class Welcome_admin extends CI_Controller
     $username = $this->db->escape_str($this->input->post('username', true));
     $password = $this->db->escape_str($this->input->post('password', true));
     $this->l_password->setEnc($username);
-		$this->l_password->setVal($password);
-		$password = $this->l_password->getEnc();
+    $this->l_password->setVal($password);
+    $password = $this->l_password->getEnc();
     $where = [
       'username' => $username,
       'password' => $password
@@ -65,10 +65,10 @@ class Welcome_admin extends CI_Controller
         'status' => "loginadmin",
       ];
       $this->session->set_userdata($session_admin);
-      redirect(base_url("Dasbor"));
+      redirect(base_url("dashboard"));
     } else if ($cek1 > 0) {
       $session = $this->m_login->cek_login('operator', $where)->row_array();
-      if($session['level'] == 'operator') {
+      if ($session['level'] == 'operator') {
         $session_operator = [
           'id' => $session['id'],
           'username' => $session['username'],
@@ -77,7 +77,7 @@ class Welcome_admin extends CI_Controller
         ];
         $this->session->set_userdata($session_operator);
         redirect(base_url("pengawas"));
-      } else if($session['level'] == 'pengawas') {
+      } else if ($session['level'] == 'pengawas') {
         $session_operator = [
           'id' => $session['id'],
           'username' => $session['username'],
@@ -87,7 +87,7 @@ class Welcome_admin extends CI_Controller
         $this->session->set_userdata($session_operator);
         redirect(base_url("pengawas2"));
       }
-    } else if($cek_delete['delete_at'] != null || $cek_delete1['delete_at'] == null) {
+    } else if ($cek_delete['delete_at'] != null || $cek_delete1['delete_at'] == null) {
       redirect('welcome_admin/login?pesan=hapus');
     } else {
       redirect('welcome_admin/login?pesan=gagal');
@@ -95,8 +95,8 @@ class Welcome_admin extends CI_Controller
   }
 
   public function logout()
-	{
-		$this->session->sess_destroy();
-		redirect('welcome_admin/login?pesan=logout');
-	}
+  {
+    $this->session->sess_destroy();
+    redirect('welcome_admin/login?pesan=logout');
+  }
 }
