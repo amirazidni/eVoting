@@ -15,7 +15,7 @@ class Welcome extends CI_Controller
 		$this->data_id = $this->session->userdata();
 	}
 
-	public function index()
+	private function index()
 	{
 		switch ($this->data_id['status']) {
 			case "loginmahasiswa":
@@ -36,12 +36,12 @@ class Welcome extends CI_Controller
 		}
 	}
 
-	public function login()
+	private function login()
 	{
 		$this->load->view('login');
 	}
 
-	public function aksi_login()
+	private function aksi_login()
 	{
 		$username = $this->db->escape_str($this->input->post('username', true));
 		$password = $this->db->escape_str($this->input->post('password', true));
@@ -88,7 +88,7 @@ class Welcome extends CI_Controller
 		}
 	}
 
-	public function logout()
+	private function logout()
 	{
 		$this->session->sess_destroy();
 		redirect('welcome/login?pesan=logout');

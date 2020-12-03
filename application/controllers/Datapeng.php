@@ -6,11 +6,15 @@ class Datapeng extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('M_pengawas', 'mp');
+
+		// Session
 		$this->load->library("l_session");
 		if ($this->l_session->admin()) {
 			redirect('welcome_admin');
 		}
+
+		// Models
+		$this->load->model('M_pengawas', 'mp');
 	}
 
 	public function index()
@@ -27,7 +31,7 @@ class Datapeng extends CI_Controller
 
 	public function insert()
 	{
-		$result	=	$this->mp->insert_data();
+		$result = $this->mp->insert_data();
 		if ($result) {
 			$this->session->set_flashdata('success_msg', 'Data berhasil ditambah');
 		} else {

@@ -42,7 +42,7 @@ class M_pengawas extends CI_Model
 			'password' => $password,
 			'namapengawas' => $this->db->escape_str($this->input->post('namapengawas', true)),
 			'level' => $this->db->escape_str($this->input->post('level', true)),
-
+			'phone' => $this->db->escape_str($this->input->post('phone', true)),
 		);
 		$this->db->insert('operator', $field);
 		if ($this->db->affected_rows() > 0) {
@@ -75,8 +75,8 @@ class M_pengawas extends CI_Model
 			'username' => $this->db->escape_str($this->input->post('username', true)),
 			'password' => $password,
 			'namapengawas' => $this->db->escape_str($this->input->post('namapengawas', true)),
-			'level' => $this->db->escape_str($this->input->post('level', true))
-
+			'level' => $this->db->escape_str($this->input->post('level', true)),
+			'phone' => $this->db->escape_str($this->input->post('phone', true)),
 		);
 		$this->db->update('operator', $field);
 

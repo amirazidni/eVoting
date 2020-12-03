@@ -170,7 +170,7 @@
                 <div class="small-box bg-info">
                   <div class="inner">
                     <h3>
-                      <div id="pemilih"></div>
+                      <div id="voter"></div>
                     </h3>
 
                     <p>Jumlah Pemilih</p>
@@ -189,7 +189,7 @@
                 <div class="small-box bg-danger">
                   <div class="inner">
                     <h3>
-                      <div id="calon"></div>
+                      <div id="candidate"></div>
                     </h3>
                     <p>Jumlah Calon</p>
                   </div>
@@ -206,7 +206,7 @@
                 <div class="small-box bg-success">
                   <div class="inner">
                     <h3>
-                      <div id="suara_masuk"></div>
+                      <div id="voteCount"></div>
                     </h3>
 
                     <p>Suara Masuk</p>
@@ -221,10 +221,28 @@
               <!-- ./col -->
               <div class="col-lg-3 col-6">
                 <!-- small box -->
+                <div class="small-box bg-success">
+                  <div class="inner">
+                    <h3>
+                      <div id="cleanVote"></div>
+                    </h3>
+
+                    <p>Suara Bersih</p>
+                  </div>
+                  <div class="icon">
+                    <i class="ion ion-android-checkbox"></i>
+                  </div>
+                  <a href="Hasilpilih" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+
+              <!-- ./col -->
+              <div class="col-lg-3 col-6">
+                <!-- small box -->
                 <div class="small-box bg-warning">
                   <div class="inner">
                     <h3>
-                      <div id="sisa"></div>
+                      <div id="unused"></div>
                     </h3>
 
                     <p>Suara Belum Digunakan</p>
@@ -250,6 +268,7 @@
                   <div class="icon">
                     <i class="ion ion-android-walk"></i>
                   </div>
+                  <a href="Datapem" class="small-box-footer">Lihat Detail <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
 
@@ -352,55 +371,22 @@
 
     <!-- jQuery -->
     <script src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <!-- <script src="<?= base_url() ?>assets/plugins/jquery-ui/jquery-ui.min.js"></script> -->
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-      // $.widget.bridge('uibutton', $.ui.button)
-    </script>
     <!-- Bootstrap 4 -->
     <script src="<?= base_url() ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- ChartJS -->
     <script src="<?= base_url() ?>assets/plugins/chart.js/Chart.min.js"></script>
-
-    <!-- Sparkline -->
-    <!-- <script src="<?= base_url() ?>assets/plugins/sparklines/sparkline.js"></script> -->
-    <!-- JQVMap -->
-    <!-- <script src="<?= base_url() ?>assets/plugins/jqvmap/jquery.vmap.min.js"></script> -->
-    <!-- <script src="<?= base_url() ?>assets/plugins/jqvmap/maps/jquery.vmap.usa.js"></script> -->
-    <!-- jQuery Knob Chart -->
-    <!-- <script src="<?= base_url() ?>assets/plugins/jquery-knob/jquery.knob.min.js"></script> -->
-    <!-- daterangepicker -->
-    <!-- <script src="<?= base_url() ?>assets/plugins/moment/moment.min.js"></script> -->
-    <!-- <script src="<?= base_url() ?>assets/plugins/daterangepicker/daterangepicker.js"></script> -->
-    <!-- Tempusdominus Bootstrap 4 -->
-    <!-- <script src="<?= base_url() ?>assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script> -->
-    <!-- Summernote -->
-    <!-- <script src="<?= base_url() ?>assets/plugins/summernote/summernote-bs4.min.js"></script> -->
-    <!-- overlayScrollbars -->
-    <!-- <script src="<?= base_url() ?>assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script> -->
     <!-- AdminLTE App -->
     <script src="<?= base_url() ?>assets/dist/js/adminlte.js"></script>
-
-
-
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <!-- <script src="<?= base_url() ?>assets/dist/js/pages/dashboard.js"></script> -->
-    <!-- AdminLTE for demo purposes -->
-    <!-- <script src="<?= base_url() ?>assets/dist/js/demo.js"></script> -->
-
-
-
-
   </body>
 
   </html>
   <script type="text/javascript">
-    var pemilih = document.getElementById('pemilih');
-    var calon = document.getElementById('calon');
-    var pilihan = document.getElementById('suara_masuk');
-    var sisa = document.getElementById('sisa');
+    let voter = $('#voter')
+    let candidate = $('#candidate')
     let recap = $('#recap')
+    let unused = $('#unused')
+    let voteCount = $('#voteCount')
+    let cleanVote = $('#cleanVote')
 
     /* ChartJS */
     let pieConfig = {
@@ -410,7 +396,7 @@
           data: [0, 0],
           backgroundColor: ['#00a65a', '#ffc107'],
         }],
-        labels: ['Suara Masuk', 'Suara Belum Digunakan', 'Something'],
+        labels: ['Suara Masuk', 'Suara Belum Digunakan'],
       },
       options: {
         maintainAspectRatio: false,
@@ -418,36 +404,34 @@
       }
     }
 
-    $(document).ready(function() {
+    $(document).ready(() => {
       let ctx = document.getElementById('pieChart').getContext('2d')
-      window.myPie = new Chart(ctx, pieConfig)
+      let piechart = new Chart(ctx, pieConfig)
+      let counting = 5
 
-      update()
-      updatePie()
+      setInterval(() => {
+        $.getJSON("<?= base_url('dashboard/updateRealtime') ?>", (data) => {
+          let recapNum = 0
+          for (const item of data.recapVote) {
+            recapNum += Number(item.count)
+          }
+
+          voter.text(data.voterCount)
+          candidate.text(data.candidateCount)
+          voteCount.text(data.voteCount)
+          unused.text(data.voterCount - data.voteCount)
+          recap.text(recapNum)
+          cleanVote.text(data.voteCount - recapNum)
+
+          if (counting++ >= 5) {
+            // Update Pie Chart
+            pieConfig.data.datasets[0].data[0] = data.voteCount
+            pieConfig.data.datasets[0].data[1] = data.voterCount - data.voteCount
+            piechart.update();
+
+            counting = 0
+          }
+        })
+      }, 5000)
     })
-
-    function update() {
-      $.getJSON("<?php base_url() ?>Dashboard/updateRealtime", function(data) {
-
-        let recapNum = 0
-        for (const item of data.recapVote) {
-          recapNum += Number(item.count)
-        }
-
-        pemilih.innerHTML = data.voterCount
-        calon.innerHTML = data.candidateCount
-        pilihan.innerHTML = data.voteCount
-        sisa.innerHTML = data.sisa
-        recap.text(recapNum)
-      })
-    };
-
-    function updatePie() {
-      // pieConfig.data.datasets[0].data[0] = pilihan.innerHTML; //suara masuk
-      // pieConfig.data.datasets[0].data[1] = sisa.innerHTML; //suara sisa
-      pieConfig.data.datasets[0].data[0] = 1200
-      pieConfig.data.datasets[0].data[1] = 200
-      pieConfig.data.datasets[0].data[2] = 300
-      window.myPie.update();
-    }
   </script>

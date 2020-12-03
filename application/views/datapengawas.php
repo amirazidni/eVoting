@@ -31,7 +31,7 @@
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item">
-          <h2 class="text-dark">Data Calon</h2>
+          <h2 class="text-dark">Data Pengawas</h2>
         </li>
       </ul>
 
@@ -186,6 +186,7 @@
                       <tr>
                         <th>No</th>
                         <th>Username</th>
+                        <th>Phone</th>
                         <th>Nama Pengawas</th>
                         <th>Level</th>
                         <th>Aksi</th>
@@ -194,17 +195,19 @@
                     </thead>
                     <tbody>
                       <?php $no = 1;
-                      foreach ($data as $i) :
-                        $id = $i['id'];
-                        $username = $i['username'];
-                        $namapengawas = $i['namapengawas'];
-                        $level = $i['level'];
+                      foreach ($data as $item) :
+                        $id = $item['id'];
+                        $username = $item['username'];
+                        $namapengawas = $item['namapengawas'];
+                        $level = $item['level'];
+                        $phone = $item['phone'];
                       ?>
                         <tr>
-                          <td><?php echo "$no" ?></td>
-                          <td><?php echo $username; ?> </td>
-                          <td><?php echo $namapengawas; ?> </td>
-                          <td><?php echo $level; ?></td>
+                          <td><?= $no++ ?></td>
+                          <td><?= $username; ?> </td>
+                          <td><?= $phone; ?></td>
+                          <td><?= $namapengawas; ?> </td>
+                          <td><?= $level; ?></td>
                           <td>
 
                             <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editdata<?php echo $id; ?>" href=""><i class="fa fa-edit"></i></a>
@@ -212,8 +215,9 @@
 
                           </td>
                         </tr>
-                      <?php $no++;
-                      endforeach; ?>
+                      <?php
+                      endforeach;
+                      ?>
                     </tbody>
 
                   </table>
@@ -227,6 +231,7 @@
           <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
+
         <!--Modal tambah-->
         <div class="modal fade" id="tambahdata" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" style="display: none;" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
@@ -240,26 +245,31 @@
 
               <form action="datapeng/insert" method="post">
                 <div class="modal-body">
-
+                  <div class="row form-group">
+                    <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Phone</label></div>
+                    <div class="col-12 col-md-9">
+                      <input type="tel" name="phone" placeholder="phone" required class="form-control">
+                    </div>
+                  </div>
                   <div class="row form-group">
                     <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Username</label></div>
                     <div class="col-12 col-md-9">
-                      <input type="text" id="nis" name="username" placeholder="Username" required class="form-control"></div>
+                      <input type="text" name="username" placeholder="Username" required class="form-control"></div>
                   </div>
                   <div class="row form-group">
                     <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Password</label></div>
                     <div class="col-12 col-md-9">
-                      <input type="password" id="password" name="password" placeholder="Password" class="form-control"></div>
+                      <input type="password" name="password" placeholder="Password" class="form-control"></div>
                   </div>
                   <div class="row form-group">
                     <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Nama Pengawas</label></div>
                     <div class="col-12 col-md-9">
-                      <input type="text" id="namapengawas" name="namapengawas" class="form-control"></div>
+                      <input type="text" name="namapengawas" class="form-control"></div>
                   </div>
                   <div class="row form-group">
                     <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Level Pengawas</label></div>
                     <div class="col-12 col-md-9">
-                      <select id="input_apahayo" class="form-control" style="width: 100%;" name="level">
+                      <select class="form-control" style="width: 100%;" name="level">
                         <option selected="selected" value="">Pilihan...</option>
                         <?php foreach ($hak_akses as $j => $k) { ?>
                           <option value="<?= $k; ?>"><?= $k; ?></option>
@@ -284,12 +294,13 @@
         <!--Modal Edit-->
 
         <?php
-        foreach ($data as $i) :
-          $id = $i['id'];
-          $username = $i['username'];
-          $password = $i['password'];
-          $namapengawas = $i['namapengawas'];
-          $level = $i['level'];
+        foreach ($data as $item) :
+          $id = $item['id'];
+          $username = $item['username'];
+          $password = $item['password'];
+          $namapengawas = $item['namapengawas'];
+          $level = $item['level'];
+          $phone = $item['phone'];
         ?>
           <div class="modal fade" id="editdata<?php echo $id; ?>" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" style="display: none;" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
@@ -306,25 +317,34 @@
                   <div class="modal-body">
 
                     <div class="row form-group">
-                      <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Username
-                        </label></div>
+                      <div class="col col-md-3">
+                        <label for="disabled-input" class=" form-control-label">Username
+                        </label>
+                      </div>
                       <div class="col-12 col-md-9">
-                        <input type="text" id="nis" name="username" placeholder="NIS" class="form-control" value="<?php echo $username; ?>"></div>
+                        <input type="text" name="username" placeholder="NIS" class="form-control" value="<?php echo $username; ?>">
+                      </div>
+                    </div>
+                    <div class="row form-group">
+                      <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Phone</label></div>
+                      <div class="col-12 col-md-9">
+                        <input type="tel" name="phone" placeholder="phone" required class="form-control" value="<?= $phone; ?>">
+                      </div>
                     </div>
                     <div class="row form-group">
                       <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Passowrd</label></div>
                       <div class="col-12 col-md-9">
-                        <input type="password" id="password" name="password" placeholder="NIS" class="form-control" value="<?php echo $password; ?>"></div>
+                        <input type="password" name="password" placeholder="NIS" class="form-control" value="<?php echo $password; ?>"></div>
                     </div>
                     <div class="row form-group">
                       <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Nama Pengawas</label></div>
                       <div class="col-12 col-md-9">
-                        <input type="text" id="namapengawas" name="namapengawas" placeholder="NAMA" class="form-control" value="<?php echo $namapengawas; ?>"></div>
+                        <input type="text" name="namapengawas" placeholder="NAMA" class="form-control" value="<?php echo $namapengawas; ?>"></div>
                     </div>
                     <div class="row form-group">
                       <div class="col col-md-3"><label for="disabled-input" class=" form-control-label">Level Pengawas</label></div>
                       <div class="col-12 col-md-9">
-                        <select id="input_apahayo" class="form-control" style="width: 100%;" name="level">
+                        <select class="form-control" style="width: 100%;" name="level">
                           <option selected="selected" value="">Pilihan...</option>
                           <?php foreach ($hak_akses as $j => $k) { ?>
                             <option <?php if ($k == $level) {
