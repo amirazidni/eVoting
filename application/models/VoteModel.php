@@ -85,6 +85,14 @@ class VoteModel extends CI_Model
         return $result->result_array();
     }
 
+    public function getUserByNim(string $nim)
+    {
+        $res = $this->db->get_where('pemilih', [
+            'nim' => $nim
+        ]);
+        return $res->result_array();
+    }
+
     public function checkUserExist(string $nim, string $pass): array
     {
         $result = $this->db->get_where('pemilih', [
