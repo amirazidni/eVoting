@@ -45,6 +45,12 @@ class Voter extends CI_Controller
 
     public function notyet()
     {
+        $hour = (int)date('H');
+        $timeVote = $hour > 9 && $hour < 16;
+
+        if ($timeVote) {
+            return $this->refresh();
+        }
         return $this->load->view('pages/NotYet');
     }
 
