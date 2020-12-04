@@ -63,11 +63,11 @@
                         <div class="modal-body">
                             <div>
                                 <h6>VISI</h6>
-                                <p class="ml-3"><?= $item['visi']; ?></p>
+                                <pre class="ml-3"><?= $item['visi']; ?></pre>
                             </div>
                             <div>
                                 <h6>MISI</h6>
-                                <p class="ml-3"><?= $item['misi']; ?></p>
+                                <pre class="ml-3"><?= $item['misi']; ?></pre>
                             </div>
                         </div>
                         <div class="modal-footer">
