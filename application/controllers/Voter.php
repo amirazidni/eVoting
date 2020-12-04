@@ -188,17 +188,35 @@ class Voter extends CI_Controller
                 $password = $this->db->escape_str($password);
                 $phone = $this->db->escape_str($phone);
 
-                $this->l_password->setEnc($nim);
-                $this->l_password->setVal($password);
-
-                $pass = $this->l_password->getEnc();
-                $users = $this->voteModel->checkUserExist($nim, $pass);
+                $users = $this->voteModel->getUserByNim($nim);
 
                 if (count($users) == 0) {
                     return $this->user($comitteeName, "User belum terdaftar");
                 }
 
-                $user = $users[0];
+                // $users = $this->voteModel->checkUserExist($nim, $pass);
+                $this->l_password->setEnc($nim);
+                $this->l_password->setVal($password);
+
+                $pass = $this->l_password->getEnc();
+                $count = count($users);
+                $found = false;
+                $user = '';
+
+                for ($i = 0; $i < $count; $i++) {
+                    if (!$found) {
+                        $item = $users[$i];
+                        if ($item['password'] == $pass) {
+                            $found = true;
+                            $user = $item;
+                        }
+                    }
+                }
+
+                if (!$found) {
+                    return $this->user($comitteeName, "Password yang anda masukan salah");
+                }
+
                 if (!$device['isVerify']) {
                     $usersVoted = $this->voteModel->checkUserVoted($user['id']);
 
@@ -420,6 +438,11 @@ class Voter extends CI_Controller
             $this->voteModel->setGuided($deviceToken, false);
         }
         return $this->refresh();
+    }
+
+    public function insecureissues()
+    {
+        return $this->load->view('pages/Insecure');
     }
 
     // UPLOAD IMAGE FROM DESKTOP BROWSER //
