@@ -14,12 +14,13 @@
         <p class="text-center mb-0">Foto digunakan untuk verifikasi saat dilakukan rekapitulasi</p>
         <p class="text-center mb-0">Pastikan foto yang diambil tidak rusak dan jelas</p>
         <p class="text-center mb-0">Foto yang rusak saat rekapitulasi berkemungkinan tidak dihitung</p>
-        <p class="text-center mt-3"><b>Jangan lupa untuk mengaktifkan dan mengizinkan akses kamera!</b></p>
-        <p class="text-center mt-3"><b>Refresh jika kamera tidak juga muncul!</b></p>
+        <p class="text-center mb-0">Jangan lupa untuk mengaktifkan dan mengizinkan akses kamera!</p>
+        <p class="text-center mb-0">Refresh jika kamera tidak juga muncul!</p>
 
         <?php
         if (!$isMobile) {
         ?>
+            <p class="text-center mt-3"><b>Anda tertedeksi menggunakan dekstop. Gunakan link <a onclick="window.open('<?= base_url('voter/insecureissues'); ?>')" style="color: blue;" class="pointer">INI</a> jika terhambat saat mengambil foto!</b></p>
             <button class="btn btn-primary mx-auto px-5 d-block mt-3" onclick="agreeCaptureImage()">Setuju</button>
         <?php
         }

@@ -422,6 +422,11 @@ class Voter extends CI_Controller
         return $this->refresh();
     }
 
+    public function insecureissues()
+    {
+        return $this->load->view('pages/Insecure');
+    }
+
     // UPLOAD IMAGE FROM DESKTOP BROWSER //
     // BECAUSE USING JAVACRIPT
     // Return a JSON instead
