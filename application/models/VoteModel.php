@@ -28,8 +28,41 @@ class VoteModel extends CI_Model
         return $data;
     }
 
+    public function getRecapVote()
+    {
+        $sql = '
+        SELECT v.userId, group_concat(v.vote) as votes, group_concat(v.recap) as recaps
+        FROM tbl_vote as v
+        where v.vote is not null and v.recap is not null
+        GROUP BY v.userId
+        HAVING COUNT(v.userId) > 1;
+        ';
+
+        return $this->db->query($sql)->result_array();
+    }
+
     public function getCleanVoteCount()
     {
+        $count = $this->db->query('
+        select 
+        from tbl_vote as v
+        where v.vote is not null
+        group by v.userId
+        having count(v.userId) = 1
+        ');
+        return $count->result_array();
+    }
+
+    public function getCleanVote()
+    {
+        $count = $this->db->query('
+        select v.userId, v.vote
+        from tbl_vote as v
+        where v.vote is not null
+        group by v.userId
+        having count(v.userId) = 1
+        ');
+        return $count->result_array();
     }
 
     public function setOperatorId(string $deviceToken, string $operatorId)

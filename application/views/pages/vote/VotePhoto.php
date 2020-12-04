@@ -9,7 +9,7 @@
 
 
 <div class="card mx-auto mb-3 mt-3 pt-2" style="max-width: 800px;">
-    <h4 class="card-title text-center">Foto kamu atau kartu KTM mu</h4>
+    <h4 class="card-title text-center">Foto kamu dan kartu KTM mu</h4>
     <div class="card-body" id="body-inform">
         <p class="text-center mb-0">Foto digunakan untuk verifikasi saat dilakukan rekapitulasi</p>
         <p class="text-center mb-0">Pastikan foto yang diambil tidak rusak dan jelas</p>

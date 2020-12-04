@@ -89,17 +89,6 @@ class Operator extends CI_Controller
         ]);
     }
 
-    public function test(string $search = "")
-    {
-        $count = $this->voteModel->getRecapTokenCount($search);
-        $countAll = $this->voteModel->getRecapTokenCountAll();
-        $data = $this->voteModel->getRecapTokenData($search);
-
-        print_r($count);
-        print_r($countAll);
-        print_r($data);
-    }
-
     public function note()
     {
         $note = $_POST['note'];
