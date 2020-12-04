@@ -15,19 +15,19 @@ class Voter extends CI_Controller
     {
         parent::__construct();
 
-        if ($this->uri->segment(2) == 'force') {
-            return;
-        }
+        // if ($this->uri->segment(2) == 'force') {
+        //     return;
+        // }
 
-        if (isset($_COOKIE[$this->forceKeyName])) {
-            $forceKey = $_COOKIE[$this->forceKeyName];
-            if ($forceKey != $this->getForceKey()) {
-                $this->clearCookies($this->forceKeyName);
-                $this->isolate();
-            }
-        } else {
-            return $this->isolate();
-        }
+        // if (isset($_COOKIE[$this->forceKeyName])) {
+        //     $forceKey = $_COOKIE[$this->forceKeyName];
+        //     if ($forceKey != $this->getForceKey()) {
+        //         $this->clearCookies($this->forceKeyName);
+        //         $this->isolate();
+        //     }
+        // } else {
+        //     return $this->isolate();
+        // }
 
         // Models
         $this->load->model('VoteModel', 'voteModel');
