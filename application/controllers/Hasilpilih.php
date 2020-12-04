@@ -21,19 +21,19 @@ class Hasilpilih extends CI_Controller
 
 	public function index()
 	{
-		$cleanVote = $this->voteModel->getCleanVote();
-		$recapVote = $this->voteModel->getRecapVote();
+		// $cleanVote = $this->voteModel->getCleanVote();
+		// $recapVote = $this->voteModel->getRecapVote();
 
-		print_r("Recap Vote");
-		print_r($recapVote);
-		print_r("Clean VOte");
-		print_r($cleanVote);
+		// print_r("Recap Vote");
+		// print_r($recapVote);
+		// print_r("Clean VOte");
+		// print_r($cleanVote);
 
-		// $x = [
-		// 	'data' 			=> $this->mc->show_calon(),
-		// 	'datapemilih' 	=> $this->mp->show_pemilih()
-		// ];
-		// $this->load->view('hasilpemilihan', $x);
+		$x = [
+			'data' 			=> $this->mc->show_calon(),
+			'datapemilih' 	=> $this->mp->show_pemilih()
+		];
+		$this->load->view('hasilpemilihan', $x);
 	}
 
 	public function export()
