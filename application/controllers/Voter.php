@@ -53,6 +53,8 @@ class Voter extends CI_Controller
 
     public function notyet()
     {
+        print_r("HOUR");
+        print_r(date('H'));
         return $this->load->view('pages/NotYet');
     }
 

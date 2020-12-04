@@ -23,11 +23,29 @@ class Hasilpilih extends CI_Controller
 	{
 		// $cleanVote = $this->voteModel->getCleanVote();
 		// $recapVote = $this->voteModel->getRecapVote();
+		// $vote = [];
+
+		// foreach ($cleanVote as $item) {
+		// 	if (isset($vote[$item['vote']])) {
+		// 		$vote[$item['vote']]++;
+		// 	} else {
+		// 		$vote[$item['vote']] = 1;
+		// 	}
+		// }
+
+		// foreach ($recapVote as $item) {
+		// 	$itemRecaps = explode(",", $item['recaps']);
+		// 	$itemVotes = explode(',', $item['votes']);
+
+
+		// }
 
 		// print_r("Recap Vote");
 		// print_r($recapVote);
 		// print_r("Clean VOte");
 		// print_r($cleanVote);
+		// print_r("Vote");
+		// print_r($vote);
 
 		$x = [
 			'data' 			=> $this->mc->show_calon(),

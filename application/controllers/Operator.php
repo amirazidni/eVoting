@@ -89,6 +89,10 @@ class Operator extends CI_Controller
         ]);
     }
 
+    // public function all()
+    // {
+    // }
+
     public function note()
     {
         $note = $_POST['note'];
