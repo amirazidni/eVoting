@@ -25,6 +25,19 @@
     .full-width {
         width: 100%;
     }
+
+    pre {
+        white-space: pre-wrap;
+        /* css-3 */
+        white-space: -moz-pre-wrap;
+        /* Mozilla, since 1999 */
+        white-space: -pre-wrap;
+        /* Opera 4-6 */
+        white-space: -o-pre-wrap;
+        /* Opera 7 */
+        word-wrap: break-word;
+        /* Internet Explorer 5.5+ */
+    }
 </style>
 
 <div style="margin-left: 7.5%; margin-right: 7.5%;">
@@ -63,11 +76,11 @@
                         <div class="modal-body">
                             <div>
                                 <h6>VISI</h6>
-                                <p class="ml-3"><?= $item['visi']; ?></p>
+                                <pre class="ml-3"><?= $item['visi']; ?></pre>
                             </div>
                             <div>
                                 <h6>MISI</h6>
-                                <p class="ml-3"><?= $item['misi']; ?></p>
+                                <pre class="ml-3"><?= $item['misi']; ?></pre>
                             </div>
                         </div>
                         <div class="modal-footer">
