@@ -15,19 +15,14 @@ class Voter extends CI_Controller
     {
         parent::__construct();
 
-        // if ($this->uri->segment(2) == 'force') {
-        //     return;
-        // }
-
-        // if (isset($_COOKIE[$this->forceKeyName])) {
-        //     $forceKey = $_COOKIE[$this->forceKeyName];
-        //     if ($forceKey != $this->getForceKey()) {
-        //         $this->clearCookies($this->forceKeyName);
-        //         $this->isolate();
-        //     }
-        // } else {
-        //     return $this->isolate();
-        // }
+        $hour = (int)date('H');
+        $timeVote = $hour > 9 && $hour < 16;
+        if (uri_string() != 'voter/notyet') {
+            if (!$timeVote) {
+                header('Location: ' . base_url('voter/notyet'));
+                exit();
+            }
+        }
 
         // Models
         $this->load->model('VoteModel', 'voteModel');
@@ -41,9 +36,6 @@ class Voter extends CI_Controller
 
         // Library
         $this->load->library('l_password');
-
-        // Drivers
-        // $this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
     }
 
     public function index()
@@ -53,8 +45,7 @@ class Voter extends CI_Controller
 
     public function notyet()
     {
-        print_r("HOUR");
-        print_r(date('H-i'));
+        print(date('e'));
         return $this->load->view('pages/NotYet');
     }
 
@@ -544,18 +535,6 @@ class Voter extends CI_Controller
     private function refresh()
     {
         return redirect(base_url('voter/vote'));
-    }
-
-    public function isolate()
-    {
-        date_default_timezone_set('Asia/Jakarta');
-        $date = (int)date('H');
-
-        if ($date > 16 || $date < 8) {
-            if (uri_string() != "voter/notyet") {
-                return redirect(base_url('voter/notyet'));
-            }
-        }
     }
 
     private function getCache(string $key)

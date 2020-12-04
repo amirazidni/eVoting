@@ -62,6 +62,9 @@ if ($_SERVER['HTTP_HOST'] == 'localhost') {
 	define('ENVIRONMENT', 'production');
 }
 
+// Set Detault ZONE
+date_default_timezone_set('Asia/Jakarta');
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
