@@ -163,7 +163,7 @@
       <!-- Main content -->
       <section class="content">
         <div class="container-fluid">
-          <a class="btn btn-success" href="<?php echo base_url('Hasilpilih/export'); ?>">
+          <a class="btn btn-success" href="<?= base_url('Hasilpilih/export'); ?>">
             <i class="fa fa-print"></i>
             Cetak
           </a>
@@ -296,76 +296,10 @@
 
   <!-- jQuery -->
   <script src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
-  <!-- jQuery UI 1.11.4 -->
-  <!-- <script src="<?= base_url() ?>assets/plugins/jquery-ui/jquery-ui.min.js"></script> -->
-  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-  <!-- <script>
-    $.widget.bridge('uibutton', $.ui.button)
-  </script> -->
   <!-- Bootstrap 4 -->
   <script src="<?= base_url() ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <!-- ChartJS -->
-  <!-- <script src="<?= base_url() ?>assets/plugins/chart.js/Chart.min.js"></script> -->
-  <!-- Sparkline -->
-  <!-- <script src="<?= base_url() ?>assets/plugins/sparklines/sparkline.js"></script> -->
-  <!-- JQVMap -->
-  <!-- <script src="<?= base_url() ?>assets/plugins/jqvmap/jquery.vmap.min.js"></script> -->
-  <!-- <script src="<?= base_url() ?>assets/plugins/jqvmap/maps/jquery.vmap.usa.js"></script> -->
-  <!-- jQuery Knob Chart -->
-  <!-- <script src="<?= base_url() ?>assets/plugins/jquery-knob/jquery.knob.min.js"></script> -->
-  <!-- daterangepicker -->
-  <!-- <script src="<?= base_url() ?>assets/plugins/moment/moment.min.js"></script> -->
-  <!-- <script src="<?= base_url() ?>assets/plugins/daterangepicker/daterangepicker.js"></script> -->
-  <!-- Tempusdominus Bootstrap 4 -->
-  <!-- <script src="<?= base_url() ?>assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script> -->
-  <!-- Summernote -->
-  <!-- <script src="<?= base_url() ?>assets/plugins/summernote/summernote-bs4.min.js"></script> -->
-  <!-- overlayScrollbars -->
-  <!-- <script src="<?= base_url() ?>assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script> -->
   <!-- AdminLTE App -->
   <script src="<?= base_url() ?>assets/dist/js/adminlte.js"></script>
-  <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-  <!-- <script src="<?= base_url() ?>assets/dist/js/pages/dashboard.js"></script> -->
-  <!-- AdminLTE for demo purposes -->
-  <!-- <script src="<?= base_url() ?>assets/dist/js/demo.js"></script> -->
-
-  <script>
-    // $(function() {
-    //   /* ChartJS
-    //    * -------
-    //    * Here we will create a few charts using ChartJS
-    //    */
-    //   //-------------
-    //   //- PIE CHART -
-    //   //-------------
-    //   // Get context with jQuery - using jQuery's .get() method.
-    //   var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    //   var pieData = {
-    //     labels: [
-    //       'Suara Masuk',
-    //       'Suara Belum Digunakan',
-    //     ],
-    //     datasets: [{
-    //       data: [75, 55],
-    //       backgroundColor: ['#00a65a', '#eeeeee'],
-    //     }]
-    //   }
-    //   var pieOptions = {
-    //     maintainAspectRatio: false,
-    //     responsive: true,
-    //   }
-    //   //Create pie or douhnut chart
-    //   // You can switch between pie and douhnut using the method below.
-    //   var pieChart = new Chart(pieChartCanvas, {
-    //     type: 'pie',
-    //     data: pieData,
-    //     options: pieOptions
-    //   })
-
-
-    // })
-  </script>
-
 </body>
 
 </html>
