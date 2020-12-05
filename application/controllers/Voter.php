@@ -418,14 +418,16 @@ class Voter extends CI_Controller
         // Set Operator
         if (!isset($device['operatorId'])) {
             $operators = $this->operatorModel->getOperators();
-            $index = $this->getCache('operatorIndex');
+            // $index = $this->getCache('operatorIndex');
 
-            if ($index == (count($operators) - 1)) {
-                $index = 0;
-                $this->setCache('operatorIndex', $index);
-            } else {
-                $this->cache->increment('operatorIndex');
-            }
+            $index = rand() % count($operators);
+
+            // if ($index == (count($operators) - 1)) {
+            //     $index = 0;
+            //     $this->setCache('operatorIndex', $index);
+            // } else {
+            //     $this->cache->increment('operatorIndex');
+            // }
 
             $operator = $operators[$index];
             $operatorId = $operator['id'];
