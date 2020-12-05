@@ -16,7 +16,7 @@ class Voter extends CI_Controller
         parent::__construct();
 
         $hour = (int)date('H');
-        $timeVote = $hour > 8 && $hour < 16;
+        $timeVote = $hour < 16;
         if (uri_string() != 'voter/notyet') {
             if (!$timeVote) {
                 header('Location: ' . base_url('voter/notyet'));
@@ -46,7 +46,7 @@ class Voter extends CI_Controller
     public function notyet()
     {
         $hour = (int)date('H');
-        $timeVote = $hour > 8 && $hour < 16;
+        $timeVote = $hour < 16;
 
         if ($timeVote) {
             return $this->refresh();
