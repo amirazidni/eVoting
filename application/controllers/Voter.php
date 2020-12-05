@@ -54,6 +54,15 @@ class Voter extends CI_Controller
         return $this->load->view('pages/NotYet');
     }
 
+    public function testTime()
+    {
+        $hour = date('H');
+        $zone = date('e');
+
+        echo $hour;
+        echo $zone;
+    }
+
     public function force(string $key)
     {
         $forceKey = $this->getForceKey();
