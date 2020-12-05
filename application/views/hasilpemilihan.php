@@ -163,84 +163,45 @@
       <!-- Main content -->
       <section class="content">
         <div class="container-fluid">
-          <a class="btn btn-success" href="<?php echo base_url('Hasilpilih/export'); ?>"><i class="fa fa-print">
-            </i> Cetak</a>
+          <a class="btn btn-success" href="<?php echo base_url('Hasilpilih/export'); ?>">
+            <i class="fa fa-print"></i>
+            Cetak
+          </a>
 
-          <?php $nototal = 0;
-          $belummemilih = 0;
-          $sudahmemilih = 0;
-          $sudahaktivasi = 0;
-          $belumaktivasi = 0;
-          $sudahaktivasibelummilih = 0;
-          foreach ($datapemilih->result_array() as $j) :
-            $id = $j['id'];
-            $suara = $j['suara'];
-            $aktivasi = $j['aktivasi'];
-            if ($suara != 0) {
-              $sudahmemilih++;
-            }
-            if ($suara == 0) {
-              $belummemilih++;
-            }
-            if ($aktivasi != 0) {
-              $sudahaktivasi++;
-            }
-            if ($aktivasi == 0) {
-              $belumaktivasi++;
-            }
-            if ($suara == 0 && $aktivasi != 0) {
-              $sudahaktivasibelummilih++;
-            };
-            $nototal++;
-          endforeach;
-
-          ?>
           <hr>
           <div class="container">
             <div class="row">
-              <div class="col-4"> Jumlah Pemilih : <?php echo $nototal; ?> <br> Sudah aktivasi belum memilih : <?php echo $sudahaktivasibelummilih; ?> </div>
-              <div class="col-4 text-center"> Sudah Memilih : <?php echo $sudahmemilih; ?><br>Sudah Aktivasi : <?php echo $sudahaktivasi; ?></div>
-              <div class="col-4 text-right"> Belum Memilih : <?php echo $belummemilih; ?><br>Belum Aktivasi : <?php echo $belumaktivasi; ?></div>
+              <div class="col-4"> Jumlah Pemilih : <?= $voterCount; ?> </div>
+              <div class="col-4 text-center"> Sudah Memilih : <?= $total; ?></div>
+              <div class="col-4 text-right"> Belum Memilih : <?= ($voterCount - $total); ?></div>
             </div>
           </div>
           <hr>
 
           <div class="row">
+            <?php foreach ($candidates as $candidate) : ?>
 
-            <?php $no = 1;
-            foreach ($data->result_array() as $i) :
-              $id = $i['id'];
-              $nama1 = $i['nama1'];
-              $nama2 = $i['nama2'];
-              $visi = $i['visi'];
-              $misi = $i['misi'];
-              $foto = $i['foto'];
-              $i['vote'] = count($this->db->get_where('pemilih', ['suara' => $id])->result_array());
-              $vote = $i['vote'];
-            ?>
               <div class="col-md-4">
                 <aside class="profile-nav alt">
                   <section class="card">
                     <div class="card-header user-header alt bg-dark">
                       <div class="media">
                         <a href="#">
-                          <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="" src="<?php echo base_url('upload/' . $foto) ?>">
+                          <img class="align-self-center rounded-circle mr-3" style="width:85px; height:85px;" alt="" src="<?php echo base_url('upload/' . $candidate['foto']) ?>">
                         </a>
                         <div class="media-body">
-                          <h2 class="text-light display-6"><?php echo $nama1; ?> &</h2>
-                          <h2 class="text-light display-6"><?php echo $nama2; ?></h2>
-                          <p>Calon No <?php echo $no; ?></p>
+                          <h2 class="text-light display-6"><?php echo $candidate['nama1']; ?> &</h2>
+                          <h2 class="text-light display-6"><?php echo $candidate['nama2']; ?></h2>
+                          <p>Calon No <?php echo $candidate['nomorurut']; ?></p>
                         </div>
                       </div>
                     </div>
 
-
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item">
                         <center>
-                          <h1><br><?php echo $vote; ?> Suara</h1>
-                          <h3><?php $persen = ($vote / $nototal) * 100;
-                              echo $persen; ?> %</h3>
+                          <h1><br><?php echo $candidate['votes']; ?> Suara</h1>
+                          <h3><?= number_format(($candidate['votes'] / $total) * 100, 2, '.', '') ?> %</h3>
                           <br><br>
                         </center>
                       </li>
@@ -249,9 +210,7 @@
                 </aside>
               </div>
 
-
-            <?php $no++;
-            endforeach; ?>
+            <?php endforeach; ?>
           </div>
 
         </div> <!-- .content -->

@@ -21,37 +21,65 @@ class Hasilpilih extends CI_Controller
 
 	public function index()
 	{
-		// $cleanVote = $this->voteModel->getCleanVote();
-		// $recapVote = $this->voteModel->getRecapVote();
-		// $vote = [];
+		$calon = $this->candidateModel->show_calon();
+		$cleanVote = $this->voteModel->getCleanVote();
+		$recapVote = $this->voteModel->getRecapVote();
+		$voterCount = $this->voterModel->getCount();
 
-		// foreach ($cleanVote as $item) {
-		// 	if (isset($vote[$item['vote']])) {
-		// 		$vote[$item['vote']]++;
-		// 	} else {
-		// 		$vote[$item['vote']] = 1;
-		// 	}
-		// }
+		$candidates = $calon->result_array();
+		$vote = [];
+		$voteAlpha = [];
+		$total = 0;
 
-		// foreach ($recapVote as $item) {
-		// 	$itemRecaps = explode(",", $item['recaps']);
-		// 	$itemVotes = explode(',', $item['votes']);
+		foreach ($cleanVote as $item) {
+			$total++;
+			if (isset($vote[$item['vote']])) {
+				$vote[$item['vote']]++;
+			} else {
+				$vote[$item['vote']] = 1;
+			}
+		}
 
+		foreach ($recapVote as $item) {
+			$itemRecaps = explode(",", $item['recaps']);
+			$itemVotes = explode(',', $item['votes']);
+			$count = count($itemRecaps);
 
-		// }
+			for ($i = 0; $i < $count; $i++) {
+				if ($itemRecaps[$i] == 'CLEAN') {
+					$total++;
+					if (isset($voteAlpha[$itemVotes[$i]])) {
+						$voteAlpha[$itemVotes[$i]]++;
+					} else {
+						$voteAlpha[$itemVotes[$i]] = 1;
+					}
+				}
+			}
+		}
 
-		// print_r("Recap Vote");
-		// print_r($recapVote);
-		// print_r("Clean VOte");
-		// print_r($cleanVote);
-		// print_r("Vote");
-		// print_r($vote);
+		$candidateCount = count($candidates);
+		for ($i = 0; $i < $candidateCount; $i++) {
+			$id = $candidates[$i]['id'];
 
-		$x = [
-			'data' 			=> $this->mc->show_calon(),
-			'datapemilih' 	=> $this->mp->show_pemilih()
+			if (isset($vote[$id])) {
+				$candidates[$i]['votes'] = $vote[$id];
+			}
+
+			if (isset($voteAlpha[$id])) {
+				if (!isset($candidates[$i]['votes'])) {
+					$candidates[$i]['votes'] = $voteAlpha[$id];
+				} else {
+					$candidates[$i]['votes'] += $voteAlpha[$id];
+				}
+			}
+		}
+
+		$data = [
+			'candidates' => $candidates,
+			'total' => $total,
+			'voterCount' => $voterCount
 		];
-		$this->load->view('hasilpemilihan', $x);
+		$this->load->view('hasilpemilihan', $data);
 	}
 
 	public function export()
