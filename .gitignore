@@ -33,3 +33,4 @@ assets/captcha/*
 assets/voter/*
 comittee/
 dbcache/
+upload/*
