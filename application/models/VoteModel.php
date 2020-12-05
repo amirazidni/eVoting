@@ -28,10 +28,25 @@ class VoteModel extends CI_Model
         return $data;
     }
 
+    public function getRecapVoteExcel()
+    {
+        $sql = '
+        SELECT v.userId, group_concat(v.vote) as votes, group_concat(v.recap) as recaps, group_concat(v.createdAt) as createdAts, group_concat(v.updatedAt) as updatedAts
+        FROM tbl_vote as v
+        inner join pemilih as p
+        on p.id=v.userId
+        where v.vote is not null and v.recap is not null
+        GROUP BY v.userId
+        HAVING COUNT(v.userId) > 1;
+        ';
+
+        return $this->db->query($sql)->result_array();
+    }
+
     public function getRecapVote()
     {
         $sql = '
-        SELECT v.userId, group_concat(v.vote) as votes, group_concat(v.recap) as recaps
+        SELECT v.userId, group_concat(v.vote) as votes, group_concat(v.recap) as recaps, group_concat(v.createdAt) as createdAts, group_concat(v.updatedAt) as updatedAts
         FROM tbl_vote as v
         where v.vote is not null and v.recap is not null
         GROUP BY v.userId
@@ -44,7 +59,7 @@ class VoteModel extends CI_Model
     public function getCleanVoteCount()
     {
         $count = $this->db->query('
-        select 
+        select count(*)
         from tbl_vote as v
         where v.vote is not null
         group by v.userId
@@ -56,7 +71,7 @@ class VoteModel extends CI_Model
     public function getCleanVote()
     {
         $count = $this->db->query('
-        select v.userId, v.vote
+        select v.userId, v.vote, v.updatedAt, v.createdAt
         from tbl_vote as v
         where v.vote is not null
         group by v.userId

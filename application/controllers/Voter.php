@@ -15,14 +15,16 @@ class Voter extends CI_Controller
     {
         parent::__construct();
 
-        $hour = (int)date('H');
-        $timeVote = $hour >= 8 && $hour < 16;
-        if (uri_string() != 'voter/notyet') {
-            if (!$timeVote) {
-                header('Location: ' . base_url('voter/notyet'));
-                exit();
-            }
-        }
+        // $hour = (int)date('H');
+        // $timeVote = $hour >= 8 && $hour < 16;
+        // if (uri_string() != 'voter/notyet') {
+        //     if (!$timeVote) {
+        //         header('Location: ' . base_url('voter/notyet'));
+        //         exit();
+        //     }
+        // }
+        header('Location: ' . base_url('voter/notyet'));
+        exit();
 
         // Models
         $this->load->model('VoteModel', 'voteModel');
@@ -418,17 +420,7 @@ class Voter extends CI_Controller
         // Set Operator
         if (!isset($device['operatorId'])) {
             $operators = $this->operatorModel->getOperators();
-            // $index = $this->getCache('operatorIndex');
-
             $index = rand() % count($operators);
-
-            // if ($index == (count($operators) - 1)) {
-            //     $index = 0;
-            //     $this->setCache('operatorIndex', $index);
-            // } else {
-            //     $this->cache->increment('operatorIndex');
-            // }
-
             $operator = $operators[$index];
             $operatorId = $operator['id'];
 
@@ -488,6 +480,8 @@ class Voter extends CI_Controller
                 'ok' => false,
                 'message' => 'Error when uploading photo.'
             ]);
+
+            return;
         }
 
         echo json_encode([

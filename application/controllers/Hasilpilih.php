@@ -19,12 +19,11 @@ class Hasilpilih extends CI_Controller
 
 	public function index()
 	{
-		$calon = $this->candidateModel->show_calon();
+		$candidates = $this->candidateModel->gets();
 		$cleanVote = $this->voteModel->getCleanVote();
 		$recapVote = $this->voteModel->getRecapVote();
 		$voterCount = $this->voterModel->getCount();
 
-		$candidates = $calon->result_array();
 		$vote = [];
 		$voteAlpha = [];
 		$total = 0;

@@ -11,6 +11,12 @@ class M_pemilih extends CI_Model
 		$this->load->library('l_password');
 	}
 
+	public function gets()
+	{
+		$res = $this->db->select('id, nim, nama, kelas')->from('pemilih')->get()->result_array();
+		return $res;
+	}
+
 	public function getCount()
 	{
 		$res = $this->db->query('select count(id) as count from pemilih')->result();

@@ -20,9 +20,14 @@ class M_calon extends CI_Model
 		$this->delete_at = date('Y-m-d H:i:s');
 	}
 
+	public function gets()
+	{
+		return $this->db->from('calon')->get()->result_array();
+	}
+
 	public function getsCadidate()
 	{
-		$res = $this->db->select()->from('calon')->get()->result_array();
+		$res = $this->db->from('calon')->get()->result_array();
 		return $res;
 	}
 
