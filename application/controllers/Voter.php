@@ -15,9 +15,16 @@ class Voter extends CI_Controller
     {
         parent::__construct();
 
-        $hour = (int)date('H');
-        $timeVote = $hour < 16;
+        // $hour = (int)date('H');
+        // $timeVote = $hour >= 8 && $hour < 16;
         if (uri_string() != 'voter/notyet') {
+            $date = date('G-j-m-Y');
+            $date = explode("-", $date);
+            $timeVote = $date[0] >= 8 && $date[0] < 16 &&
+                $date[1] >= 4 && $date <= 5 &&
+                $date[2] == 12 &&
+                $date[3] == 2020;
+
             if (!$timeVote) {
                 header('Location: ' . base_url('voter/notyet'));
                 exit();
@@ -45,8 +52,12 @@ class Voter extends CI_Controller
 
     public function notyet()
     {
-        $hour = (int)date('H');
-        $timeVote = $hour < 16;
+        $date = date('G-j-m-Y');
+        $date = explode("-", $date);
+        $timeVote = $date[0] >= 8 && $date[0] < 16 &&
+            $date[1] >= 4 && $date <= 5 &&
+            $date[2] == 12 &&
+            $date[3] == 2020;
 
         if ($timeVote) {
             return $this->refresh();
@@ -56,11 +67,17 @@ class Voter extends CI_Controller
 
     public function testTime()
     {
-        $hour = date('H');
+        $hour = date('G');
         $zone = date('e');
+        $day = date('j-m-Y');
+        $month = date('m');
+        $year = date('Y');
 
         echo $hour;
         echo $zone;
+        echo $day;
+        echo $month;
+        echo $year;
     }
 
     public function force(string $key)
