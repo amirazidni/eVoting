@@ -66,7 +66,7 @@ class Voter extends CI_Controller
         echo $zone;
         echo $day;
         echo $month;
-        echo $year
+        echo $year;
     }
 
     public function force(string $key)
