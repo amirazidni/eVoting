@@ -23,8 +23,8 @@ class Voter extends CI_Controller
         //         exit();
         //     }
         // }
-        header('Location: ' . base_url('voter/notyet'));
-        exit();
+        // header('Location: ' . base_url('voter/notyet'));
+        // exit();
 
         // Models
         $this->load->model('VoteModel', 'voteModel');

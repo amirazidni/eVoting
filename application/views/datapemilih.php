@@ -193,8 +193,6 @@
                         <th>NIM</th>
                         <th>Nama Pemilih</th>
                         <th>Kelas</th>
-                        <th>Aktivasi</th>
-                        <th>Suara</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
@@ -352,57 +350,32 @@
           type: "POST",
         },
         "columns": [{
-            data: 'id'
-          },
-          {
-            data: "nim"
-          },
-          {
-            data: "nama"
-          },
-          {
-            data: "kelas"
-          },
-          {
-            data: "aktivasi",
-            render: function(data, type, row) {
-              if (data == 0) {
-                return `<button type="button" class="btn btn-sm btn-danger">Belum Diaktivasi</button>`;
-              } else {
-                return `<button type="button" class="btn btn-sm btn-success">Telah Diaktivasi</button>`;
-              }
+          data: 'id'
+        }, {
+          data: "nim"
+        }, {
+          data: "nama"
+        }, {
+          data: "kelas"
+        }, {
+          data: "id",
+          render: function(data, type, row) {
+            const btn_edit = `<a class="btn btn-sm btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${data}" href="javascript:void(0);"><i class="fa fa-edit"></i></a>`;
+            const btn_hapus = `<a class="btn btn-sm btn-danger" href="<?php echo  base_url('index.php/datapem/delete/'); ?>${data}" onclick="return confirm('Yakin ingin menghapus nim ${row.nim}?');"><i class="fa fa-trash"></i></a>`;
+            if (row.aktivasi == 0) {
+              return `
+                  ${btn_edit} 
+                  <a class="btn btn-sm btn-warning" href="datapem/edita/${data}" title="Absen" href=""><i class="fa fa-lock"></i></a> 
+                  ${btn_hapus}`;
+            } else {
+              return `
+                  ${btn_edit} 
+                  <a class="btn btn-sm btn-primary" href="datapem/editbatal/${data}" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a> 
+                  ${btn_hapus}`;
             }
           },
-          {
-            data: "suara",
-            render: function(data, type, row) {
-              if (data == 0) {
-                return `<button type="button" class="btn btn-sm btn-danger">Belum Memilih</button>`;
-              } else {
-                return `<button type="button" class="btn btn-sm btn-success">Telah Memilih</button>`;
-              }
-            }
-          },
-          {
-            data: "id",
-            render: function(data, type, row) {
-              const btn_edit = `<a class="btn btn-sm btn-success" data-toggle="modal" data-target="#editdata" id="editdata_btn" data-id="${data}" href="javascript:void(0);"><i class="fa fa-edit"></i></a>`;
-              const btn_hapus = `<a class="btn btn-sm btn-danger" href="<?php echo  base_url('index.php/datapem/delete/'); ?>${data}" onclick="return confirm('Yakin ingin menghapus nim ${row.nim}?');"><i class="fa fa-trash"></i></a>`;
-              if (row.aktivasi == 0) {
-                return `
-                ${btn_edit} 
-                <a class="btn btn-sm btn-warning" href="datapem/edita/${data}" title="Absen" href=""><i class="fa fa-lock"></i></a> 
-                ${btn_hapus}`;
-              } else {
-                return `
-                ${btn_edit} 
-                <a class="btn btn-sm btn-primary" href="datapem/editbatal/${data}" title="Batal Absen" href=""><i class="fa fa-unlock"></i></a> 
-                ${btn_hapus}`;
-              }
-            },
-            orderable: false
-          }
-        ]
+          orderable: false
+        }]
       });
 
       const insertData = document.querySelector('#insert_data');
@@ -557,9 +530,9 @@
               alert("Maaf sistem tidak disupport!");
             }
           }
-        });
+        })
       }
-    });
+    })
   </script>
 </body>
 
