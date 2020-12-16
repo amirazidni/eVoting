@@ -15,14 +15,14 @@ class Voter extends CI_Controller
     {
         parent::__construct();
 
-        $hour = (int)date('H');
-        $timeVote = $hour >= 8 && $hour < 18;
-        if (uri_string() != 'voter/notyet') {
-            if (!$timeVote) {
-                header('Location: ' . base_url('voter/notyet'));
-                exit();
-            }
-        }
+        // $hour = (int)date('H');
+        // $timeVote = $hour >= 8 && $hour < 18;
+        // if (uri_string() != 'voter/notyet') {
+        //     if (!$timeVote) {
+        //         header('Location: ' . base_url('voter/notyet'));
+        //         exit();
+        //     }
+        // }
 
         // Models
         $this->load->model('VoteModel', 'voteModel');
