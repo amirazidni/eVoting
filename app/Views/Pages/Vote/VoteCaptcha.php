@@ -1,0 +1,38 @@
+<?= $this->extend('/Pages/Vote/Template'); ?>
+
+<?= $this->section('content'); ?>
+
+<div style="margin-left: 24px; margin-right: 24px;">
+    <div class="card mb-3 mt-3 pt-2 pb-4">
+        <div class="row no-gutters">
+            <div class="col-12">
+                <div style="max-width: 320px; max-height: 320px;" class="card-img rounded mx-auto d-block">
+                    <img style="width: 100%; height: 100%;" src="<?= $captcha ?>" alt="Captcha Image">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card-body">
+                    <form action="<?= base_url('voter/vote'); ?>" method="post" id="form">
+                        <div class="mx-auto form-group" style="width: 320px;">
+                            <input class="form-control" name="captcha" required>
+                        </div>
+                        <?php
+                        if ($error) {
+                        ?>
+                            <div class="alert alert-danger mx-auto" role="alert" style="width: 320px;">
+                                <?= $error; ?>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                        <div style="text-align: center;">
+                            <button class="btn btn-primary px-4 py-2" type="submit">Selanjutnya</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?= $this->endSection(); ?>
