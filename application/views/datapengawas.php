@@ -292,7 +292,6 @@
 
 
         <!--Modal Edit-->
-
         <?php
         foreach ($data as $item) :
           $id = $item['id'];

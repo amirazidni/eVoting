@@ -150,26 +150,20 @@
       </section>
 
 
-      <?php if ($this->session->flashdata('success_msg')) {
-
-      ?>
+      <?php if ($this->session->flashdata('success_msg')) { ?>
         <div class="alert alert-success">
           <center>
             <?php echo $this->session->flashdata('success_msg'); ?>
           </center>
         </div>
-      <?php
-      } ?>
-      <?php if ($this->session->flashdata('error_msg')) {
-
-      ?>
+      <?php } ?>
+      <?php if ($this->session->flashdata('error_msg')) { ?>
         <div class="alert alert-danger">
           <center>
             <?php echo $this->session->flashdata('error_msg'); ?>
           </center>
         </div>
-      <?php
-      } ?>
+      <?php } ?>
 
       <!-- Main content -->
       <section class="content">
@@ -213,7 +207,6 @@
       <!-- /.content -->
     </div>
 
-
     <!-- modal tambah -->
     <div class="modal fade" id="insert_data_modal">
       <div class="modal-dialog">
@@ -225,8 +218,6 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
-    <!-- /modal tambah -->
-
 
     <!-- modal Ubah -->
     <div class="modal fade" id="editdata">

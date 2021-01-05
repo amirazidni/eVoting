@@ -13,8 +13,6 @@
             <div class="container-fluid">
                 <div class="pt-4">
                     <div class="card">
-
-                        <!-- /.card-header -->
                         <div class="card-body table-responsive">
                             <table id="tbl-user" class="w-100 table table-bordered table-striped">
                                 <thead>
@@ -32,13 +30,9 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card -->
                 </div>
-                <!-- /.row -->
             </div>
-            <!-- /.container-fluid -->
         </section>
     </div>
 

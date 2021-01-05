@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Voter extends CI_Controller
+class Vote extends CI_Controller
 {
     private $deviceParentname   = '_SYS_PR_';
     private $deviceCookieName   = '_SYS_DV_';
@@ -15,14 +15,14 @@ class Voter extends CI_Controller
     {
         parent::__construct();
 
-        $hour = (int)date('H');
-        $timeVote = $hour >= 8 && $hour < 18;
-        if (uri_string() != 'voter/notyet') {
-            if (!$timeVote) {
-                header('Location: ' . base_url('voter/notyet'));
-                exit();
-            }
-        }
+        // $hour = (int)date('H');
+        // $timeVote = $hour >= 8 && $hour < 18;
+        // if (uri_string() != 'vote/notyet') {
+        //     if (!$timeVote) {
+        //         header('Location: ' . base_url('vote/notyet'));
+        //         exit();
+        //     }
+        // }
 
         // Models
         $this->load->model('VoteModel', 'voteModel');
@@ -40,7 +40,7 @@ class Voter extends CI_Controller
 
     public function index()
     {
-        return redirect(base_url('voter/vote'));
+        return redirect(base_url('vote/vote'));
     }
 
     public function notyet()
@@ -170,7 +170,7 @@ class Voter extends CI_Controller
 
                 if ($captchaPost == $device['captchaToken']) {
                     $this->setCookie($this->deviceCaptchaName, $captchaPost);
-                    return redirect(base_url('voter/vote'));
+                    return redirect(base_url('vote/vote'));
                 } else {
                     $error = "Captcha yang anda masukan salah.\n Coba Lagi!.";
                 }
@@ -548,7 +548,7 @@ class Voter extends CI_Controller
 
     private function refresh()
     {
-        return redirect(base_url('voter/vote'));
+        return redirect(base_url('vote/vote'));
     }
 
     private function getCache(string $key)
