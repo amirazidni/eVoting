@@ -34,3 +34,5 @@ assets/voter/*
 comittee/
 dbcache/
 upload/*
+index.php
+system/core/Config.php
